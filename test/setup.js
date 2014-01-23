@@ -22,6 +22,11 @@ function myEnv(jq) {
         window.console = console;
         global.window  = window;
         global.$       = window.$;
+        global.jQuery  = window.jQuery;
+        global.Ractive = window.Ractive;
+        global.Stack   = window.RactiveStack;
+
+        chai.use(require('chai-jquery'));
         done(errors);
       }
     });
