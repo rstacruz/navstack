@@ -2,22 +2,13 @@
   window.RactiveStack = factory();
 })(function () {
 
-  var Pane = function(name, initializer, parent) {
-    this.name = name;
-    this.initializer = initializer;
-    this.parent = parent;
-    this.el = null;
-    this.view = null;
-  };
+  var RactiveStack, Pane;
 
-  Pane.prototype = {
-    init: function(el) {
-      this.el = el;
-      this.view = this.initializer.call(this.parent, el);
-    }
-  };
+  /**
+   * Stack.
+   */
 
-  var RactiveStack = Ractive.extend({
+  RactiveStack = Ractive.extend({
     paneEl: "<div class='rstack-pane'>",
 
     init: function () {
@@ -83,6 +74,50 @@
       return init.apply(this, $el);
     }
   });
+
+  /**
+   * Pane
+   */
+
+  Pane = RactiveStack.Pane = function (name, initializer, parent) {
+    /** The identification `name` of this pane, as passed to `register()`. */
+    this.name = name;
+
+    /** Function to create the view. */
+    this.initializer = initializer;
+
+    /** Reference to `RactiveStack`. */
+    this.parent = parent;
+
+    /** DOM element. Created on `init()`. */
+    this.el = null;
+
+    /** View instance as created by initializer. Created on `init()`. */
+    this.view = null;
+  };
+
+  Pane.prototype = {
+    /**
+     * Initializes the pane's view if needed.
+     */
+
+    init: function (el) {
+      if (!this.isInitialized()) this.forceInit(el);
+    },
+
+    /**
+     * Forces initialization even if it hasn't been yet.
+     */
+
+    forceInit: function (el) {
+      this.el = el;
+      this.view = this.initializer.call(this.parent, el);
+    },
+
+    isInitialized: function () {
+      return !! this.el;
+    }
+  };
 
   return RactiveStack;
 
