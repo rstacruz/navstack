@@ -2,17 +2,32 @@
   window.RactiveStack = factory();
 })(function () {
 
+  var Pane = function(name, initializer, parent) {
+    this.name = name;
+    this.initializer = initializer;
+    this.parent = parent;
+    this.el = null;
+    this.view = null;
+  };
+
+  Pane.prototype = {
+    init: function(el) {
+      this.el = el;
+      this.view = this.initializer.call(this.parent, el);
+    }
+  };
+
   var RactiveStack = Ractive.extend({
     paneEl: "<div class='rstack-pane'>",
 
     init: function () {
-      this.stack = {};
       this.initializers = {};
       this.active = null;
       this.activeName = null;
+      this.panes = {};
+      this.stack = [];
 
-      $(this.el)
-        .addClass('rstack');
+      $(this.el).addClass('rstack');
     },
 
     /**
@@ -21,6 +36,7 @@
 
     register: function (name, fn) {
       this.initializers[name] = fn;
+      this.panes[name] = new Pane(name, fn, this);
     },
 
     /**
@@ -35,17 +51,14 @@
       // Get the current pane so we can transition later
       var previous = this.active;
 
-      var init = this.initializers[name];
-      var subview = this._useInitializer(init, $pane);
+      // Initialize it
+      // TODO: prevent double initialization
+      var current = this.panes[name];
+      current.init($pane[0]);
 
-      this.stack[name] = subview;
-
-      // Register it as the active pane
-      var current = this.active = {
-        el: $pane[0],
-        view: subview,
-        name: name
-      };
+      // Register as current
+      this.stack.push(current);
+      this.active = current;
 
       // Transition
       this.paneTransition('forward', current, previous, function() { });

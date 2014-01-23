@@ -24,14 +24,21 @@ testSuite 'stack', ->
     beforeEach ->
       @chrome = new Stack(el: 'body')
 
-      @chrome.register 'home', ($el) =>
-        new HomeView(el: $el, template: '<h1>hi</h1>')
+      @chrome.register 'home', (el) =>
+        new HomeView(el: el, template: '<h1>hi</h1>')
 
-      @chrome.register 'messages', ($el) ->
+      @chrome.register 'messages', (el) ->
 
     describe 'before navigation', ->
+      it 'class', ->
+        expect($ 'body').have.class 'rstack'
+
       it 'empty', ->
         expect($(@chrome.el).find('>*').length).eql 0
+
+      it '.stack', ->
+        expect(@chrome.stack).be.array
+        expect(@chrome.stack).be.empty
 
       it '.active', ->
         expect(@chrome.active).be.null
@@ -49,8 +56,14 @@ testSuite 'stack', ->
       it 'pane should be .rstack-pane', ->
         expect(@$pane).have.class 'rstack-pane'
 
-      it 'should register a stack subview', ->
-        expect($ @chrome.stack.home.el).have.html '<h1>hi</h1>'
+      it '.panes["home"]', ->
+        expect($ @chrome.panes.home.el).have.html '<h1>hi</h1>'
+
+      it '.stack count', ->
+        expect(@chrome.stack).have.length 1
+
+      it '.stack[0]', ->
+        expect(@chrome.stack[0]).eq @chrome.panes.home
 
       it '.active', ->
         expect(@chrome.active).be.object
