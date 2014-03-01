@@ -1,14 +1,15 @@
 (function(factory) {
-  window.RactiveStack = factory();
+  window.RNavigator = factory();
+  window.aoeu = 2;
 })(function () {
 
-  var RactiveStack, Pane;
+  var RNavigator, Pane;
 
   /**
    * Stack.
    */
 
-  RactiveStack = Ractive.extend({
+  RNavigator = Ractive.extend({
     paneEl: "<div class='rstack-pane'>",
 
     init: function () {
@@ -79,14 +80,14 @@
    * Pane
    */
 
-  Pane = RactiveStack.Pane = function (name, initializer, parent) {
+  Pane = RNavigator.Pane = function (name, initializer, parent) {
     /** The identification `name` of this pane, as passed to `register()`. */
     this.name = name;
 
     /** Function to create the view. */
     this.initializer = initializer;
 
-    /** Reference to `RactiveStack`. */
+    /** Reference to `RNavigator`. */
     this.parent = parent;
 
     /** DOM element. Created on `init()`. */
@@ -119,6 +120,6 @@
     }
   };
 
-  return RactiveStack;
+  return RNavigator;
 
 });

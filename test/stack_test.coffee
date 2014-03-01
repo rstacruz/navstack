@@ -8,21 +8,21 @@ testSuite 'stack', ->
     # ok
   
   it 'should define global', ->
-    expect(window.RactiveStack).be.a 'function'
+    expect(window.RNavigator).be.a 'function'
 
   describe 'sanity tests', ->
     beforeEach ->
-      @chrome = new Stack()
+      @chrome = new RNavigator()
 
     it 'instanciatable', ->
-      expect(@chrome).instanceOf Stack
+      expect(@chrome).instanceOf RNavigator
 
     it '.stack', ->
       expect(@chrome.stack).object
 
   describe 'tabs', ->
     beforeEach ->
-      @chrome = new Stack(el: 'body')
+      @chrome = new RNavigator(el: 'body')
 
       @chrome.register 'home', (el) =>
         new HomeView(el: el, template: '<h1>hi</h1>')

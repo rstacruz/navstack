@@ -1,5 +1,5 @@
 {
-  "name": "___",
+  "name": "rnavigator",
   "description": "",
   "keywords": [
     ""
@@ -8,20 +8,19 @@
   "version": "0.1.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/rstacruz/___.git"
+    "url": "https://github.com/rstacruz/rnavigator.git"
   },
   "main": "index",
   "scripts": {
-    "test": "./node_modules/.bin/mocha -R spec --recursive --compilers coffee:coffee-script",
-    "autotest": "./node_modules/.bin/mocha -R spec --recursive --compilers coffee:coffee-script --watch"
+    "test": "./node_modules/.bin/mocha -R spec --recursive --compilers coffee:coffee-script/register"
   },
   "devDependencies": {
-    "mocha": "*",
-    "chai": "*",
-    "coffee-script": "~1.6.3",
-    "sinon": "*",
-    "jsdom": "*",
-    "chai-jquery": "~1.2.0"
+    "mocha": "^1.17.1",
+    "chai": "^1.9.0",
+    "coffee-script": "^1.7.1",
+    "sinon": "^1.8.2",
+    "chai-jquery": "^1.2.1",
+    "jsdom": "^0.10.1"
   },
   "bin": {
     "command": "./bin/command"
