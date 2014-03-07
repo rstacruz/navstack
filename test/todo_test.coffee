@@ -1,9 +1,11 @@
-describe 'Pending', ->
-  describe 'lacking tests', ->
+describe 'To do', ->
+  describe 'tests to write', ->
     xit 'prevent double initialization', ->
     xit 'transitions', ->
 
-  describe 'features to be written', ->
+  describe 'v0.2 features', ->
+    it 'double initialization', ->
+    it 'custom transitions', ->
     xit 'rename .stack to .cache', ->
     xit 'write a proper .stack', ->
 
