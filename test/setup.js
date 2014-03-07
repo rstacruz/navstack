@@ -24,7 +24,7 @@ function myEnv(jq) {
         global.$       = window.$;
         global.jQuery  = window.jQuery;
         global.Ractive = window.Ractive;
-        global.NavStack = window.NavStack;
+        global.Navstack = window.Navstack;
 
         chai.use(require('chai-jquery'));
         done(errors);

@@ -1,14 +1,14 @@
 (function(factory) {
-  window.NavStack = factory();
+  window.Navstack = factory();
 })(function () {
 
-  var NavStack, Pane;
+  var Navstack, Pane;
 
   /**
    * Stack.
    */
 
-  NavStack = function (options) {
+  Navstack = function (options) {
     $.extend(this, options);
     var panes = this.panes;
 
@@ -35,16 +35,16 @@
   };
 
   /**
-   * Creates a new NavStack
+   * Creates a new Navstack
    */
 
-  NavStack.extend = function (proto) {
-    var klass = function() { NavStack.apply(this, arguments); };
-    $.extend(klass.prototype, NavStack.prototype, proto);
+  Navstack.extend = function (proto) {
+    var klass = function() { Navstack.apply(this, arguments); };
+    $.extend(klass.prototype, Navstack.prototype, proto);
     return klass;
   };
 
-  NavStack.prototype = {
+  Navstack.prototype = {
     paneEl: "<div>",
 
     /**
@@ -96,7 +96,7 @@
 
         // Initialize it
         current = this.panes[name];
-        if (!current) throw "NavStack: Unknown pane: "+name;
+        if (!current) throw "Navstack: Unknown pane: "+name;
         current.init($pane[0]);
 
         // Register as current
@@ -180,7 +180,7 @@
     },
 
     /**
-     * Alias for `remove` (to make NavStack behave a bit more like Ractive
+     * Alias for `remove` (to make Navstack behave a bit more like Ractive
      * components).
      */
 
@@ -207,14 +207,14 @@
    *     pane.view
    */
 
-  Pane = NavStack.Pane = function (name, initializer, parent) {
+  Pane = Navstack.Pane = function (name, initializer, parent) {
     /** The identification `name` of this pane, as passed to `register()`. */
     this.name = name;
 
     /** Function to create the view. */
     this.initializer = initializer;
 
-    /** Reference to `NavStack`. */
+    /** Reference to `Navstack`. */
     this.parent = parent;
 
     /** DOM element. Created on `init()`. */
@@ -251,7 +251,7 @@
    * For transitions
    */
 
-  NavStack.transitions = {
+  Navstack.transitions = {
     css: function (prefix) {
       return {
         before: function (direction, current, previous, next) {
@@ -295,6 +295,6 @@
     }
   };
 
-  return NavStack;
+  return Navstack;
 
 });

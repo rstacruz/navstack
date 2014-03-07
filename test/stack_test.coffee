@@ -76,7 +76,3 @@ testSuite 'stack', ->
 
       it '.active.view', ->
         expect(@chrome.active.view).be.instanceOf HomeView
-
-  xit 'prevent double initialization', ->
-
-  xit 'flushing of cached panes', ->
