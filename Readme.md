@@ -38,7 +38,7 @@ stage.push('task:1', function(el) {
   $(el).html("<div class='full-screen'>Task #1 details: ...</div>");
 });
 
-// Go back to old pages using .go() or .back()
+// Switch to older panes using .go()
 stage.go('home');
 ```
 
@@ -49,6 +49,7 @@ this tells Navstack how to construct a tab as they're needed. This allows you to
 `.go()` to any tab at any time.
 
 ``` js
+// Define your panes under the `panes` key
 stage = new Navstack({
   el: '#stage',
   panes: {
@@ -62,6 +63,7 @@ stage = new Navstack({
 
 });
 
+// Switch to a pane
 stage.go('home');
 stage.go('messages');
 ```
