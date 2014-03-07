@@ -8,21 +8,21 @@ testSuite 'stack', ->
     # ok
   
   it 'should define global', ->
-    expect(window.NavStack).be.a 'function'
+    expect(window.Navstack).be.a 'function'
 
   describe 'sanity tests', ->
     beforeEach ->
-      @chrome = new NavStack()
+      @chrome = new Navstack()
 
     it 'instanciatable', ->
-      expect(@chrome).instanceOf NavStack
+      expect(@chrome).instanceOf Navstack
 
     it '.stack', ->
       expect(@chrome.stack).object
 
   describe 'tabs', ->
     beforeEach ->
-      @chrome = new NavStack(el: 'body')
+      @chrome = new Navstack(el: 'body')
 
       @chrome.register 'home', (el) =>
         new HomeView(el: el, template: '<h1>hi</h1>')
