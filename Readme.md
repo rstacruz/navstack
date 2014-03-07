@@ -1,8 +1,8 @@
 Navstack
 ========
 
-A view that manages multiple views. Perfect for tabs, navigation stacks, and 
-similar. Inspired by iOS's UINavigationController.
+Manage a stack of multiple views. Perfect for tabs, navigation stacks, and 
+similar.  Inspired by iOS's UINavigationController.
 
  * __Framework-agnostic__: made to play fair with Backbone, [Ractive], React.js 
  and more. Can even work with plain old jQuery.

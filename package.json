@@ -1,5 +1,5 @@
 {
-  "name": "rnavigator",
+  "name": "navstack",
   "description": "",
   "keywords": [
     ""
@@ -8,7 +8,7 @@
   "version": "0.1.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/rstacruz/rnavigator.git"
+    "url": "https://github.com/rstacruz/navstack.git"
   },
   "main": "index",
   "scripts": {
@@ -20,10 +20,9 @@
     "coffee-script": "^1.7.1",
     "sinon": "^1.8.2",
     "chai-jquery": "^1.2.1",
-    "jsdom": "^0.10.1"
-  },
-  "bin": {
-    "command": "./bin/command"
+    "jsdom": "^0.10.1",
+    "stylus": "^0.42.3",
+    "autoprefixer": "^1.1.20140302"
   },
   "license": "MIT"
 }
