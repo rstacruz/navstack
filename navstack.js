@@ -1,3 +1,10 @@
+/**
+ * Navstack
+ * https://github.com/rstacruz/navstack
+ *
+ * Manages a stack of multiple views.
+ */
+
 (function(factory) {
   window.Navstack = factory();
 })(function () {
@@ -5,7 +12,7 @@
   var Navstack, Pane;
 
   /**
-   * Stack.
+   * A stack.
    */
 
   Navstack = function (options) {
@@ -96,7 +103,7 @@
 
         // Initialize it
         current = this.panes[name];
-        if (!current) throw "Navstack: Unknown pane: "+name;
+        if (!current) throw new Error("Navstack: Unknown pane: "+name);
         current.init($pane[0]);
 
         // Register as current
@@ -110,6 +117,15 @@
 
       // Transition
       var transition = this.transition;
+      if (typeof transition === 'string') {
+        transition = (this.transitions && this.transitions[transition]) ||
+          Navstack.transitions[transition];
+      }
+
+      if (typeof transition !== 'object') {
+        throw new Error("Navstack: invalid 'transition' value");
+      }
+
       transition.before(direction, current, previous, function () {
         $(document).queue(function (next) {
           transition.run(direction, current, previous, function () {
@@ -251,48 +267,55 @@
    * For transitions
    */
 
-  Navstack.transitions = {
-    css: function (prefix) {
-      return {
-        before: function (direction, current, previous, next) {
-          console.log('before', direction);
-          if (direction !== 'first' && current)
-            $(current.el).find('>*')
-              .addClass(prefix+'-hide');
-
-          return next();
-        },
-
-        after: function (direction, current, previous, next) {
-          return next();
-        },
-
-        run: function (direction, current, previous, next) {
-          if (direction === 'first') return next();
-          console.log('run', direction);
-
-          if (previous)
-            $(previous.el).find('>*')
-              .removeClass(prefix+'-hide')
-              .addClass(prefix+'-exit-'+direction);
-
+  Navstack.buildTransition = function (prefix) {
+    return {
+      before: function (direction, current, previous, next) {
+        console.log('before', direction);
+        if (direction !== 'first' && current)
           $(current.el).find('>*')
+            .addClass(prefix+'-hide');
+
+        return next();
+      },
+
+      after: function (direction, current, previous, next) {
+        return next();
+      },
+
+      run: function (direction, current, previous, next) {
+        if (direction === 'first') return next();
+        console.log('run', direction);
+
+        if (previous)
+          $(previous.el).find('>*')
             .removeClass(prefix+'-hide')
-            .addClass(prefix+'-enter-'+direction)
-            .one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function() {
-              if (previous)
-                $(previous.el).find('>*')
-                  .addClass(prefix+'-hide')
-                  .removeClass(prefix+'-exit-'+direction);
+            .addClass(prefix+'-exit-'+direction);
 
-              $(current.el).find('>*')
-                .removeClass(prefix+'-enter-'+direction);
+        $(current.el).find('>*')
+          .removeClass(prefix+'-hide')
+          .addClass(prefix+'-enter-'+direction)
+          .one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function() {
+            if (previous)
+              $(previous.el).find('>*')
+                .addClass(prefix+'-hide')
+                .removeClass(prefix+'-exit-'+direction);
 
-              next();
-            });
-        }
-      };
-    }
+            $(current.el).find('>*')
+              .removeClass(prefix+'-enter-'+direction);
+
+            next();
+          });
+      }
+    };
+  };
+
+  /**
+   * Transitions
+   */
+
+  Navstack.transitions = {
+    slide: Navstack.buildTransition('slide'),
+    modal: Navstack.buildTransition('modal')
   };
 
   return Navstack;

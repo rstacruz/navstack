@@ -68,46 +68,46 @@ $zip = cubic-bezier(0, .75, .25, 1)
  * Animations: vertical slide
  */
 
-.verticalslide-enter-forward
+.modal-enter-forward
   z-index: 2
-  animation: verticalslide-enter-forward $speed $zip
+  animation: modal-enter-forward $speed $zip
   box-shadow: $shadow
 
-.verticalslide-enter-backward
+.modal-enter-backward
   z-index: 1
-  animation: verticalslide-enter-backward $speed $zip
+  animation: modal-enter-backward $speed $zip
 
-.verticalslide-exit-forward
+.modal-exit-forward
   z-index: 1
-  animation: verticalslide-exit-forward $speed $zip
+  animation: modal-exit-forward $speed $zip
 
-.verticalslide-exit-backward
+.modal-exit-backward
   z-index: 2
-  animation: verticalslide-exit-backward $speed $zip
+  animation: modal-exit-backward $speed $zip
   box-shadow: $shadow
 
-.verticalslide-hide
+.modal-hide
   transform: translate(-9999px, 0)
 
-@keyframes verticalslide-enter-forward
+@keyframes modal-enter-forward
   0%
     transform: translate3d(0, 110%, 0)
   100%
     transform: translate3d(0, 0, 0)
 
-@keyframes verticalslide-enter-backward
+@keyframes modal-enter-backward
   0%
     transform: translate3d(0, -40%, 0)
   100%
     transform: translate3d(0, 0, 0)
 
-@keyframes verticalslide-exit-forward
+@keyframes modal-exit-forward
   0%
     transform: translate3d(0, 0, 0)
   100%
     transform: translate3d(0, -40%, 0)
 
-@keyframes verticalslide-exit-backward
+@keyframes modal-exit-backward
   0%
     transform: translate3d(0, 0, 0)
   100%
