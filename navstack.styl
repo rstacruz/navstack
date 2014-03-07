@@ -1,0 +1,114 @@
+$speed ?= 500ms
+$shadow ?= 0 0 40px rgba(black, 0.3), 0 0 20px rgba(black, 0.1)
+$zip = cubic-bezier(0, .75, .25, 1)
+
+/* ----------------------------------------------------------------------------------
+ * Screen
+ */
+
+.full-screen
+  position: absolute
+  top: 0
+  left: 0
+  bottom: 0
+  right: 0
+  background: white
+  overflow: hidden
+
+/* ----------------------------------------------------------------------------------
+ * Animations: slide
+ */
+
+.slide-enter-forward
+  z-index: 2
+  animation: slide-enter-forward $speed $zip
+  box-shadow: $shadow
+
+.slide-enter-backward
+  z-index: 1
+  animation: slide-enter-backward $speed $zip
+
+.slide-exit-forward
+  z-index: 1
+  animation: slide-exit-forward $speed $zip
+
+.slide-exit-backward
+  z-index: 2
+  animation: slide-exit-backward $speed $zip
+  box-shadow: $shadow
+
+.slide-hide
+  transform: translate(-9999px, 0)
+
+@keyframes slide-enter-forward
+  0%
+    transform: translate3d(110%, 0, 0)
+  100%
+    transform: translate3d(0, 0, 0)
+
+@keyframes slide-enter-backward
+  0%
+    transform: translate3d(-40%, 0, 0)
+  100%
+    transform: translate3d(0, 0, 0)
+
+@keyframes slide-exit-forward
+  0%
+    transform: translate3d(0%, 0, 0)
+  100%
+    transform: translate3d(-40%, 0, 0)
+
+@keyframes slide-exit-backward
+  0%
+    transform: translate3d(0%, 0, 0)
+  100%
+    transform: translate3d(110%, 0, 0)
+
+/* ----------------------------------------------------------------------------------
+ * Animations: vertical slide
+ */
+
+.verticalslide-enter-forward
+  z-index: 2
+  animation: verticalslide-enter-forward $speed $zip
+  box-shadow: $shadow
+
+.verticalslide-enter-backward
+  z-index: 1
+  animation: verticalslide-enter-backward $speed $zip
+
+.verticalslide-exit-forward
+  z-index: 1
+  animation: verticalslide-exit-forward $speed $zip
+
+.verticalslide-exit-backward
+  z-index: 2
+  animation: verticalslide-exit-backward $speed $zip
+  box-shadow: $shadow
+
+.verticalslide-hide
+  transform: translate(-9999px, 0)
+
+@keyframes verticalslide-enter-forward
+  0%
+    transform: translate3d(0, 110%, 0)
+  100%
+    transform: translate3d(0, 0, 0)
+
+@keyframes verticalslide-enter-backward
+  0%
+    transform: translate3d(0, -40%, 0)
+  100%
+    transform: translate3d(0, 0, 0)
+
+@keyframes verticalslide-exit-forward
+  0%
+    transform: translate3d(0, 0, 0)
+  100%
+    transform: translate3d(0, -40%, 0)
+
+@keyframes verticalslide-exit-backward
+  0%
+    transform: translate3d(0, 0, 0)
+  100%
+    transform: translate3d(0, 110%, 0)
