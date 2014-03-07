@@ -5,6 +5,8 @@
  * Manages a stack of multiple views.
  */
 
+/* jshint maxcomplexity:9 */
+
 (function(factory) {
   window.Navstack = factory();
 })(function () {

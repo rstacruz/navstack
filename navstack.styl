@@ -75,11 +75,9 @@ $zip = cubic-bezier(0, .75, .25, 1)
 
 .modal-enter-backward
   z-index: 1
-  animation: modal-enter-backward $speed $zip
 
 .modal-exit-forward
   z-index: 1
-  animation: modal-exit-forward $speed $zip
 
 .modal-exit-backward
   z-index: 2
@@ -94,18 +92,6 @@ $zip = cubic-bezier(0, .75, .25, 1)
     transform: translate3d(0, 110%, 0)
   100%
     transform: translate3d(0, 0, 0)
-
-@keyframes modal-enter-backward
-  0%
-    transform: translate3d(0, -40%, 0)
-  100%
-    transform: translate3d(0, 0, 0)
-
-@keyframes modal-exit-forward
-  0%
-    transform: translate3d(0, 0, 0)
-  100%
-    transform: translate3d(0, -40%, 0)
 
 @keyframes modal-exit-backward
   0%
