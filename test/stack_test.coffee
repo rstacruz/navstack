@@ -8,21 +8,21 @@ testSuite 'stack', ->
     # ok
   
   it 'should define global', ->
-    expect(window.RNavigator).be.a 'function'
+    expect(window.NavStack).be.a 'function'
 
   describe 'sanity tests', ->
     beforeEach ->
-      @chrome = new RNavigator()
+      @chrome = new NavStack()
 
     it 'instanciatable', ->
-      expect(@chrome).instanceOf RNavigator
+      expect(@chrome).instanceOf NavStack
 
     it '.stack', ->
       expect(@chrome.stack).object
 
   describe 'tabs', ->
     beforeEach ->
-      @chrome = new RNavigator(el: 'body')
+      @chrome = new NavStack(el: 'body')
 
       @chrome.register 'home', (el) =>
         new HomeView(el: el, template: '<h1>hi</h1>')
@@ -31,7 +31,7 @@ testSuite 'stack', ->
 
     describe 'before navigation', ->
       it 'class', ->
-        expect($ 'body').have.class 'rstack'
+        expect($ 'body[data-stack]').length 1
 
       it 'empty', ->
         expect($(@chrome.el).find('>*').length).eql 0
@@ -53,17 +53,17 @@ testSuite 'stack', ->
       it 'should have one pane', ->
         expect(@$pane.length).eq 1
 
-      it 'pane should be .rstack-pane', ->
-        expect(@$pane).have.class 'rstack-pane'
+      it 'pane should be data-stack-pane', ->
+        expect(@$pane.is('[data-stack-pane]')).true
 
       it '.panes["home"]', ->
         expect($ @chrome.panes.home.el).have.html '<h1>hi</h1>'
 
-      it '.stack count', ->
-        expect(@chrome.stack).have.length 1
+      it '.stackLength', ->
+        expect(@chrome.stackLength()).eq 1
 
-      it '.stack[0]', ->
-        expect(@chrome.stack[0]).eq @chrome.panes.home
+      it '.stack["home"]', ->
+        expect(@chrome.stack.home).eq @chrome.panes.home
 
       it '.active', ->
         expect(@chrome.active).be.object

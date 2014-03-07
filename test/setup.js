@@ -9,7 +9,7 @@ var multisuite = require('./support/multisuite');
 var scripts = {
   'jq-2.0': fs.readFileSync('vendor/jquery-2.0.2.js'),
   'ractive-0.3': fs.readFileSync('vendor/ractive-0.3.9.js'),
-  'rnavigator': fs.readFileSync('rnavigator.js')
+  'navstack': fs.readFileSync('navstack.js')
 };
 
 function myEnv(jq) {
@@ -17,14 +17,14 @@ function myEnv(jq) {
   return function(done) {
     jsdom.env({
       html: '<!doctype html><html><head></head><body></body></html>',
-      src: [ scripts[jq], scripts['ractive-0.3'], scripts.rnavigator ],
+      src: [ scripts[jq], scripts['ractive-0.3'], scripts.navstack ],
       done: function(errors, window) {
         window.console = console;
         global.window  = window;
         global.$       = window.$;
         global.jQuery  = window.jQuery;
         global.Ractive = window.Ractive;
-        global.RNavigator = window.RNavigator;
+        global.NavStack = window.NavStack;
 
         chai.use(require('chai-jquery'));
         done(errors);
