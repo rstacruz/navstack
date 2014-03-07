@@ -286,7 +286,11 @@
 
       run: function (direction, current, previous, next) {
         if (direction === 'first') return next();
-        console.log('run', direction);
+        var $parent =
+          current ? $(current.el).parent() :
+          previous ? $(previous.el).parent() : null;
+
+        $parent.addClass(prefix+'-container');
 
         if (previous)
           $(previous.el).find('>*')
@@ -297,6 +301,8 @@
           .removeClass(prefix+'-hide')
           .addClass(prefix+'-enter-'+direction)
           .one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function() {
+            $parent.removeClass(prefix+'-container');
+
             if (previous)
               $(previous.el).find('>*')
                 .addClass(prefix+'-hide')
