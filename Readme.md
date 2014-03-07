@@ -4,11 +4,11 @@ Navstack
 Manage a stack of multiple views. Perfect for tabs, navigation stacks, and 
 similar.  Inspired by iOS's UINavigationController.
 
- * __Framework-agnostic__: made to play fair with Backbone, [Ractive], React.js 
- and more. Can even work with plain old jQuery.
+ * __Framework-agnostic__: made to play fair with [Backbone], [Ractive], 
+ [React.js ] and more. Can even work with plain old jQuery.
 
  * __Router-friendly__: made to be able to work with pushstate routers (like 
-     page.js).
+     [page.js]).
 
  * __Mobile-like transitions__: buttery-smooth transitions are available out of 
  the box.
@@ -159,3 +159,6 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 [Ractive]: http://ractivejs.org
+[React.js]: http://facebook.github.io/react
+[Backbone]: http://backbonejs.org
+[page.js]: http://visionmedia.github.io/page.js/
