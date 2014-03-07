@@ -17,8 +17,8 @@ Requires nothing but jQuery.
 
 [![Status](https://travis-ci.org/rstacruz/navstack.png?branch=master)](https://travis-ci.org/rstacruz/navstack)
 
-(__Status:__ *very usable but lacking documentation and examples. Will get to 
- that eventually!*)
+(__Status:__ *very usable, but lacking documentation and examples. API is not 
+ fully stable yet. Will get to that eventually!*)
 
 Usage
 -----
