@@ -13,6 +13,11 @@ similar.  Inspired by iOS's UINavigationController.
  * __Mobile-like transitions__: buttery-smooth transitions are available out of 
  the box.
 
+Requires nothing but jQuery.
+
+Usage
+-----
+
 ### Basic usage
 
 ``` js
@@ -76,9 +81,22 @@ stage.go('home');
 
 ### Transitions
 
-Yep.
+Include the [navstack.css](navstack.css) file and use:
 
-### Cheat sheet
+``` js
+stage = new Navstack({
+  transition: 'slide'
+})
+```
+
+Available transitions are:
+
+ * `slide`
+ * `modal`
+ * ...more later
+
+Cheat sheet
+-----------
 
 ``` js
 stage = Navstack.extend({

@@ -1,9 +1,4 @@
 testSuite 'stack', ->
-  HomeView = undefined
-
-  beforeEach ->
-    HomeView = Ractive.extend({})
-
   it 'should work', ->
     # ok
   
@@ -25,7 +20,8 @@ testSuite 'stack', ->
       @chrome = new Navstack(el: 'body')
 
       @chrome.register 'home', (el) =>
-        new HomeView(el: el, template: '<h1>hi</h1>')
+        $(el).html('<h1>hi</h1>')
+        return 31337
 
       @chrome.register 'messages', (el) ->
 
@@ -75,4 +71,4 @@ testSuite 'stack', ->
         expect(@chrome.active.name).eql 'home'
 
       it '.active.view', ->
-        expect(@chrome.active.view).be.instanceOf HomeView
+        expect(@chrome.active.view).eql 31337
