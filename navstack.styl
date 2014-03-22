@@ -75,9 +75,11 @@ $zip = cubic-bezier(0, .75, .25, 1)
 
 .modal-enter-backward
   z-index: 1
+  animation: nil $speed $zip
 
 .modal-exit-forward
   z-index: 1
+  animation: nil $speed $zip
 
 .modal-exit-backward
   z-index: 2
@@ -99,3 +101,12 @@ $zip = cubic-bezier(0, .75, .25, 1)
   100%
     transform: translate3d(0, 110%, 0)
 
+/* ----------------------------------------------------------------------------------
+ * Token animation
+ */
+
+@keyframes nil
+  0%
+    transform: translate3d(0, 0, 0)
+  100%
+    transform: translate3d(0, 0, 0)

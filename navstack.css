@@ -54,9 +54,13 @@
 }
 .modal-enter-backward {
   z-index: 1;
+  -webkit-animation: nil 500ms cubic-bezier(0, 0.75, 0.25, 1);
+  animation: nil 500ms cubic-bezier(0, 0.75, 0.25, 1);
 }
 .modal-exit-forward {
   z-index: 1;
+  -webkit-animation: nil 500ms cubic-bezier(0, 0.75, 0.25, 1);
+  animation: nil 500ms cubic-bezier(0, 0.75, 0.25, 1);
 }
 .modal-exit-backward {
   z-index: 2;
@@ -70,6 +74,9 @@
   -ms-transform: translate(-9999px, 0);
   transform: translate(-9999px, 0);
 }
+/* ----------------------------------------------------------------------------------
+ * Token animation
+ */
 @-webkit-keyframes slide-enter-forward {
   0% {
     -webkit-transform: translate3d(110%, 0, 0);
@@ -278,6 +285,41 @@
     -webkit-transform: translate3d(0, 110%, 0);
     -ms-transform: translate3d(0, 110%, 0);
     transform: translate3d(0, 110%, 0);
+  }
+}
+@-webkit-keyframes nil {
+  0% {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+
+  100% {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+@-ms-keyframes nil {
+  0% {
+    -ms-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+
+  100% {
+    -ms-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes nil {
+  0% {
+    -webkit-transform: translate3d(0, 0, 0);
+    -ms-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+
+  100% {
+    -webkit-transform: translate3d(0, 0, 0);
+    -ms-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
   }
 }
 
