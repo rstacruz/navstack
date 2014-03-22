@@ -78,7 +78,7 @@
     go: function (name) {
       // Switching to the same thing? No need to do anything
       if (this.active && this.active.name === name)
-        return;
+        return this.active.view;
 
       // Get the current pane so we can transition later
       var previous = this.active;
@@ -140,7 +140,9 @@
     },
 
     push: function (name, fn) {
-      this.register(name, fn);
+      if (!this.panes[name])
+        this.register(name, fn);
+
       return this.go(name);
     },
 
@@ -272,7 +274,6 @@
   Navstack.buildTransition = function (prefix) {
     return {
       before: function (direction, current, previous, next) {
-        console.log('before', direction);
         if (direction !== 'first' && current)
           $(current.el).find('>*')
             .addClass(prefix+'-hide');
@@ -323,7 +324,8 @@
 
   Navstack.transitions = {
     slide: Navstack.buildTransition('slide'),
-    modal: Navstack.buildTransition('modal')
+    modal: Navstack.buildTransition('modal'),
+    flip: Navstack.buildTransition('flip')
   };
 
   return Navstack;
