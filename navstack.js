@@ -5,10 +5,13 @@
  * Manages a stack of multiple views.
  */
 
-/* jshint maxcomplexity:9 */
-
 (function(factory) {
-  window.Navstack = factory();
+
+  if (typeof module === 'object')
+    module.exports = factory();
+  else
+    window.Navstack = factory();
+
 })(function () {
 
   var Navstack, Pane;
