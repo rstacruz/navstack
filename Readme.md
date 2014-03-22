@@ -42,6 +42,37 @@ stage.push('task:1', function(el) {
 stage.go('home');
 ```
 
+### Transitions
+
+Include the [navstack.css](navstack.css) file and use:
+
+``` js
+stage = new Navstack({
+  transition: 'slide'
+})
+```
+
+Available transitions are:
+
+ * `slide`
+ * `modal`
+ * ...more later
+
+### As a class
+
+Rather than repetitively defining your constructor parameters across different 
+instances, you can subclass `Navstack` using `Navstack.extend`. This allows you 
+to set preset parameters, as well as define your own methods.
+
+``` js
+Stage = Navstack.extend({
+  /* options go here */
+});
+
+stage = new Stage({ el: '#stage' });
+stage.go('home');
+```
+
 ### Tabs
 
 You can also use it for tabs by creating your tab panes --
@@ -67,40 +98,6 @@ stage = new Navstack({
 stage.go('home');
 stage.go('messages');
 ```
-
-### As a class
-
-``` js
-Stage = Navstack.extend({
-  panes: {
-    home: function (el) {
-      return new Ractive({ el: el, ... });
-    },
-    messages: function (el) {
-      return new Ractive({ el: el, ... });
-    }
-  }
-});
-
-stage = new Stage({ el: '#stage' });
-stage.go('home');
-```
-
-### Transitions
-
-Include the [navstack.css](navstack.css) file and use:
-
-``` js
-stage = new Navstack({
-  transition: 'slide'
-})
-```
-
-Available transitions are:
-
- * `slide`
- * `modal`
- * ...more later
 
 Cheat sheet
 -----------
