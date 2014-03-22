@@ -6,6 +6,9 @@ testSuite 'Pre registration', ->
     @stack = new Navstack
       el: @$el
 
+  afterEach ->
+    @stack.remove()
+
   describe '.push', ->
     it '.push', ->
       view = @stack.push 'home', (el) ->
