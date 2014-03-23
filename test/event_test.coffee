@@ -1,17 +1,11 @@
 require './setup'
 
 describe 'Events', ->
-  describe 'sanity', ->
-    it '.on and .off', ->
-      expect(Navstack.prototype.on).be.function
-      expect(Navstack.prototype.off).be.function
+  beforeEach ->
+    @stack = new Navstack()
 
-    it '.one', ->
-      expect(Navstack.prototype.one).be.function
-
-describe 'Events', ->
-  beforeEach -> @stack = new Navstack()
-  afterEach ->  @stack.remove()
+  afterEach ->
+    @stack.remove()
 
   describe 'chaining', ->
     it '.on', ->
