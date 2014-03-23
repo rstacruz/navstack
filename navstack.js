@@ -77,41 +77,18 @@
       // Get the current pane so we can transition later
       var previous = this.active;
       var current;
-      var direction = 'forward';
 
-      // If `name` pane is in the stack, re-activate it.
-      if (this.stack[name]) {
-        current = this.stack[name];
-        var idx = {
-          previous: this.stackIndexOf(this.active.name),
-          current: this.stackIndexOf(name)
-        };
+      // Spawn the pane if it hasn't been spawned before
+      if (!this.stack[name])
+        this.stack[name] = this._spawnPane(name);
 
-        if (idx.current < idx.previous)
-          direction = 'backward';
-      }
-      // Else, initialize it.
-      else {
-        // Create it
-        var $pane = $(this.paneEl);
-        $pane.attr('data-stack-pane', name);
-        $(this.el).append($pane);
+      current = this.stack[name];
+      direction = this._getDirection(this.active, name);
 
-        // Initialize it
-        current = this.panes[name];
-        if (!current) throw new Error("Navstack: Unknown pane: "+name);
-        current.init($pane[0]);
-
-        // Register as current
-        this.stack[name] = current;
-      }
-
+      // Register a new 'active' pane
       this.active = current;
 
-      // First panes don't transition like the rest.
-      if (!previous) direction = 'first';
-
-      // Transition
+      // Perform the transition
       var transition = this._getTransition(this.transition);
       this._performTransition(transition, direction, current, previous);
 
@@ -198,6 +175,38 @@
 
     _useInitializer: function (init, $el) {
       return init.apply(this, $el);
+    },
+
+    _getDirection: function (from, to) {
+      if (!from) return 'first';
+
+      var idx = {
+        previous: this.stackIndexOf(from),
+        current: this.stackIndexOf(to)
+      };
+
+      if (idx.current < idx.previous)
+        return 'backward';
+      else
+        return 'forward';
+    },
+
+    /**
+     * (Internal) Spawns the pane of a given `name`.
+     */
+
+    _spawnPane: function (name) {
+      // Create the element.
+      var $pane = $(this.paneEl);
+      $pane.attr('data-stack-pane', name);
+      $(this.el).append($pane);
+
+      // Get the pane (previously .register()'ed) and initialize it.
+      var current = this.panes[name];
+      if (!current) throw new Error("Navstack: Unknown pane: "+name);
+      current.init($pane[0]);
+
+      return current;
     },
 
     /**
