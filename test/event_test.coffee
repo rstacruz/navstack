@@ -9,13 +9,29 @@ describe 'Events', ->
     it '.one', ->
       expect(Navstack.prototype.one).be.function
 
+describe 'Events', ->
+  beforeEach -> @stack = new Navstack()
+  afterEach ->  @stack.remove()
+
+  describe 'chaining', ->
+    it '.on', ->
+      expect(@stack.on('f', ->)).eq @stack
+
+    it '.off', ->
+      expect(@stack.off('f', ->)).eq @stack
+
+    it '.one', ->
+      expect(@stack.one('f', ->)).eq @stack
+
+  describe 'one', ->
+    it 'should only trigger once', (done) ->
+      @stack.one 'transition', -> done()
+
+      @stack.push 'home', ->
+      @stack.push 'messages', ->
+      @stack.push 'whatelse', ->
+
   describe 'triggering', ->
-    beforeEach ->
-      @stack = new Navstack()
-
-    afterEach ->
-      @stack.remove()
-
     it 'should work', (done) ->
       @stack.on 'transition', (e) -> done()
       @stack.push 'home', ->
