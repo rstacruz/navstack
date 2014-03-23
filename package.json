@@ -13,6 +13,7 @@
   "main": "index",
   "scripts": {
     "test": "./node_modules/.bin/mocha",
+    "todo": "./node_modules/.bin/mocha test/todo_test.coffee",
     "autotest": "./node_modules/.bin/mocha -R min --watch",
     "prepublish": "make"
   },

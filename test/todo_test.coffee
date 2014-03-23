@@ -1,13 +1,16 @@
-describe 'To do', ->
-  describe 'tests to write', ->
-    xit 'prevent double initialization', ->
-    xit 'transitions', ->
-
-  describe 'v0.2 features', ->
+describe 'To do: v0.2', ->
+  describe 'features', ->
     it 'double initialization', ->
     it 'custom transitions', ->
+
+  xit '"no extra markup" mode', ->
+
+  describe 'stack', ->
     xit 'rename .stack to .cache', ->
     xit 'write a proper .stack', ->
 
+  describe 'flushing', ->
     xit 'flushing of cached panes', ->
-    xit 'register(object)', ->
+
+  describe 'custom pane settings', ->
+    xit 'push(name, object, fn)', ->
