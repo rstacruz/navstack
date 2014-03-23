@@ -112,26 +112,15 @@
       if (!previous) direction = 'first';
 
       // Transition
-      var transition = this.transition;
-      if (typeof transition === 'string') {
-        transition = (this.transitions && this.transitions[transition]) ||
-          Navstack.transitions[transition];
-      }
-
-      if (typeof transition !== 'object') {
-        throw new Error("Navstack: invalid 'transition' value");
-      }
-
-      transition.before(direction, current, previous, function () {
-        $(document).queue(function (next) {
-          transition.run(direction, current, previous, function () {
-            transition.after(direction, current, previous, next);
-          });
-        });
-      });
+      var transition = this._getTransition(this.transition);
+      this._performTransition(transition, direction, current, previous);
 
       return (current && current.view);
     },
+
+    /**
+     * Registers a pane.
+     */
 
     push: function (name, fn) {
       if (!this.panes[name])
@@ -203,13 +192,45 @@
     },
 
     /**
-     * Uses an initializer (registered with `register()`) to initialize a pane.
-     * Returns a view object.
+     * (Internal) Uses an initializer (registered with `register()`)
+     * to initialize a pane. Returns a view object.
      */
 
     _useInitializer: function (init, $el) {
       return init.apply(this, $el);
+    },
+
+    /**
+     * (Internal) get the transition object for the given string `trans`.
+     * Throws an error if it's invalid.
+     */
+
+    _getTransition: function (transition) {
+      if (typeof transition === 'string') {
+        transition = (this.transitions && this.transitions[transition]) ||
+          Navstack.transitions[transition];
+      }
+
+      if (typeof transition !== 'object')
+        throw new Error("Navstack: invalid 'transition' value");
+
+      return transition;
+    },
+
+    /**
+     * (Internal) performs a transition with the given `transition` object.
+     */
+
+    _performTransition: function (transition, direction, current, previous) {
+      transition.before(direction, current, previous, function () {
+        $(document).queue(function (next) {
+          transition.run(direction, current, previous, function () {
+            transition.after(direction, current, previous, next);
+          });
+        });
+      });
     }
+
   };
 
   /**
