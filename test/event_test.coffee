@@ -25,6 +25,7 @@ describe 'Events', ->
 
   describe 'one', ->
     it 'should only trigger once', (done) ->
+      # Will only trigger once
       @stack.one 'transition', -> done()
 
       @stack.push 'home', ->
@@ -36,9 +37,18 @@ describe 'Events', ->
       @stack.on 'transition', (e) -> done()
       @stack.push 'home', ->
 
-    it 'direction', (done) ->
+    it 'attributes', (done) ->
+      @stack.push 'home', ->
+        { id: "Home view" }
+
       @stack.on 'transition', (e) ->
-        expect(e.direction).eq 'first'
+        expect(e.direction).eq 'forward'
+        expect(e.previous.name).eq 'home'
+        expect(e.previous.view.id).eq 'Home view'
+
+        expect(e.current.name).eq 'timeline'
+        expect(e.current.view.id).eq 'Timeline view'
         done()
 
-      @stack.push 'home', ->
+      @stack.push 'timeline', ->
+        { id: "Timeline view" }

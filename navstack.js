@@ -114,7 +114,9 @@
 
       // Event
       this.emitter.trigger($.Event('transition', {
-        direction: direction
+        direction: direction,
+        current: current,
+        previous: previous
       }));
 
       return (current && current.view);
