@@ -22,4 +22,25 @@ testSuite 'Transition basic', ->
     catch e
       expect(e.message).match /invalid 'transition' value/
 
+  describe 'run transitions', ->
+    it 'run transitions', (done) ->
+      order = ""
+      Navstack.transitions.moo =
+        before: (d, cur, prev, next) ->
+          order += "1"
+          next()
+        run: (d, cur, prev, next) ->
+          order += "2"
+          next()
+        after: (d, cur, prev, next) ->
+          order += "3"
+          expect(order).eq "123"
+          done()
 
+      @stack = new Navstack
+        transition: 'moo'
+
+      @stack.push('home', ->)
+
+    afterEach ->
+      delete Navstack.transitions.moo
