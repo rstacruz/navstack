@@ -22,7 +22,6 @@
 
   Navstack = function (options) {
     $.extend(this, options);
-    var panes = this.panes;
 
     this.initializers = {};
     this.active = null;
@@ -33,14 +32,6 @@
     // Create the element, or use the given element, or create it based
     // on the given tag
     this.el = (options && options.el) ? $(options.el) : $('<div>');
-
-    // Allow defining panes in the prototype
-    if (panes) {
-      for (var name in panes) {
-        if (panes.hasOwnProperty(name))
-          this.register(name, panes[name]);
-      }
-    }
 
     $(this.el).attr('data-stack', true);
     this.init(options);

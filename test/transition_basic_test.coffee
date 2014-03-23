@@ -15,11 +15,10 @@ testSuite 'Transition basic', ->
 
   it 'throw on invalid transition', ->
     @stack = new Navstack
-      panes: { home: (el) -> }
       transition: 'foobar'
 
     try
-      @stack.go('home')
+      @stack.push('home', ->)
     catch e
       expect(e.message).match /invalid 'transition' value/
 

@@ -1,6 +1,6 @@
 require './setup'
 
-testSuite 'Pre registration', ->
+testSuite 'Repeat', ->
   beforeEach ->
     @$el = $("<div>").appendTo('body')
     @stack = new Navstack

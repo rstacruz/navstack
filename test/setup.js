@@ -15,7 +15,7 @@ function myEnv(jq) {
   var jsdom = require('jsdom');
   return function(done) {
     jsdom.env({
-      html: '<!doctype html><html><head></head><body></body></html>',
+      html: '<!doctype html>',
       src: [ scripts[jq], scripts.navstack ],
       done: function(errors, window) {
         window.console = console;
