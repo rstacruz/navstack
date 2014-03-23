@@ -28,6 +28,7 @@
     this.activeName = null;
     this.panes = {};
     this.stack = {};
+    this.emitter = $({});
 
     // Create the element, or use the given element, or create it based
     // on the given tag
@@ -66,6 +67,25 @@
     },
 
     /**
+     * Events
+     */
+
+    on: function (event, handler) {
+      this.emitter.on(event, $.proxy(handler, this));
+      return this;
+    },
+
+    off: function (event, handler) {
+      this.emitter.off(event, $.proxy(handler, this));
+      return this;
+    },
+
+    one: function (event, handler) {
+      this.emitter.one(event, $.proxy(handler, this));
+      return this;
+    },
+
+    /**
      * Switches to a given pane `name`.
      */
 
@@ -91,6 +111,11 @@
       // Perform the transition
       var transition = this._getTransition(this.transition);
       this._performTransition(transition, direction, current, previous);
+
+      // Event
+      this.emitter.trigger($.Event('transition', {
+        direction: direction
+      }));
 
       return (current && current.view);
     },
