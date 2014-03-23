@@ -38,7 +38,7 @@
   };
 
   /**
-   * Creates a new Navstack
+   * Subclasses Navstack to create your new Navstack class.
    */
 
   Navstack.extend = function (proto) {
