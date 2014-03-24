@@ -4,7 +4,7 @@ describe 'No extra markup', ->
   beforeEach ->
     @stack = new Navstack()
 
-  it 'create elements when needed (old behavior)', ->
+  xit 'create elements when needed (old behavior)', ->
     @stack.push 'home', (el) ->
       $(el).html('hi')
 

@@ -22,6 +22,7 @@ function myEnv(jq) {
           errors.forEach(function (e) { console.error(e.data); });
           return done(errors[0].data.error);
         }
+        window.navigator.test = true;
 
         window.console = console;
         global.window  = window;

@@ -368,6 +368,9 @@
         this.el = this.view.el;
       } else {
         // Create the DOM element as needed.
+        if (!navigator.test)
+          console.warn("Navstack: creating an element on the fly is going to be deprecated.");
+
         var $pane = $(this.parent.paneEl);
         this.el = $pane;
         this.view = this.initializer.call(this.parent, $pane);

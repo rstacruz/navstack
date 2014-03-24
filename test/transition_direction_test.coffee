@@ -20,7 +20,7 @@ describe 'Transition direction', ->
       expect(e.direction).eq 'forward'
       done()
 
-    @stack.push 'messages', (el) ->
+    @stack.push 'messages', -> { el: $("<div>") }
 
   it 'backward, on 3nd', (done) ->
     @stack.push 'home', -> { el: $("<div>") }
