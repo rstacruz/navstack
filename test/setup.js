@@ -18,6 +18,11 @@ function myEnv(jq) {
       html: '<!doctype html>',
       src: [ scripts[jq], scripts.navstack ],
       done: function(errors, window) {
+        if (errors) {
+          errors.forEach(function (e) { console.error(e.data); });
+          return done(errors[0].data.error);
+        }
+
         window.console = console;
         global.window  = window;
         global.$       = window.$;
@@ -26,7 +31,7 @@ function myEnv(jq) {
         global.Navstack = window.Navstack;
 
         chai.use(require('chai-jquery'));
-        done(errors);
+        done();
       }
     });
   };
