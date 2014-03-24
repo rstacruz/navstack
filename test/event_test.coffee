@@ -17,16 +17,15 @@ describe 'Events', ->
     it '.one', ->
       expect(@stack.one('f', ->)).eq @stack
 
-  describe 'one', ->
+  describe '.one', ->
     it 'should only trigger once', (done) ->
-      # Will only trigger once
       @stack.one 'transition', -> done()
 
       @stack.push 'home', ->
       @stack.push 'messages', ->
       @stack.push 'whatelse', ->
 
-  describe 'remove', ->
+  describe '.on(remove)', ->
     it 'on remove', (done) ->
       @stack.one 'remove', -> done()
       @stack.remove()
