@@ -362,6 +362,9 @@
     forceInit: function (el) {
       var fn = this.initializer;
 
+      if (typeof fn !== 'function')
+        throw new Error("Navstack: pane initializer is not a function");
+
       if (fn.length === 0) {
         // Let the initializer create the element, just use it afterwards.
         this.view = this.initializer.call(this.parent);

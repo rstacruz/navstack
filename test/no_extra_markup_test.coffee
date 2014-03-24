@@ -4,17 +4,15 @@ describe 'No extra markup', ->
   beforeEach ->
     @stack = new Navstack()
 
-  xit 'create elements when needed (old behavior)', ->
+  it 'create elements when needed (old behavior)', ->
     @stack.push 'home', (el) ->
       $(el).html('hi')
 
-    expect(@stack.el.find('> div')).have.length 1
-    expect(@stack.el.find('> div').html()).eq 'hi'
+    expect(@stack.el.find('> div:first-child:last-child').html()).eq 'hi'
 
   it 'don\'t create elements', ->
     @stack.push 'home', ->
       { el: $("<div>hi</div>") }
 
-    expect(@stack.el.find('> div')).have.length 1
-    expect(@stack.el.find('> div').html()).eq 'hi'
+    expect(@stack.el.find('> div:first-child:last-child').html()).eq 'hi'
 
