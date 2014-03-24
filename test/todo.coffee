@@ -3,10 +3,11 @@ describe 'To do: v0.2', ->
     it 'push(name, object, fn)', ->
     it 'zindex', ->
     it 'purging', ->
-    it '"no extra markup" mode', ->
-      # when fn.length == 0, do no extra markup mode
+    it 'update CSS for "no extra markup" mode', ->
 
   describe 'done', ->
+    it '"no extra markup" mode', ->
+
     it 'double initialization', ->
       expect(true).be.true
 
