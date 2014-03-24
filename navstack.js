@@ -21,13 +21,14 @@
    */
 
   Navstack = function (options) {
+    this.transitions = {};
+
     $.extend(this, options);
 
-    this.initializers = {};
     this.active = null;
     this.activeName = null;
     this.panes = {};
-    this.stack = {};
+    this.stack = [];
     this.emitter = $({});
 
     // Create the element, or use the given element, or create it based
@@ -62,7 +63,6 @@
      */
 
     register: function (name, fn) {
-      this.initializers[name] = fn;
       this.panes[name] = new Pane(name, fn, this);
     },
 
@@ -94,23 +94,29 @@
       if (this.active && this.active.name === name)
         return this.active.view;
 
+      if (!this.panes[name])
+        throw new Error("Navstack: unknown pane '"+name+"'");
+
       // Get the current pane so we can transition later
       var previous = this.active;
-      var current;
 
       // Spawn the pane if it hasn't been spawned before
-      if (!this.stack[name])
-        this.stack[name] = this._spawnPane(name);
+      if (!this.panes[name].el) {
+        this._spawnPane(name);
+      }
 
-      current = this.stack[name];
-      direction = this._getDirection(this.active, name);
+      var current = this.panes[name];
+
+      // Insert into stack
+      this._insertIntoStack(current);
 
       // Register a new 'active' pane
       this.active = current;
 
       // Perform the transition
+      var direction = this._getDirection(previous, current);
       var transition = this._getTransition(this.transition);
-      this._performTransition(transition, direction, current, previous);
+      this._runTransition(transition, direction, current, previous);
 
       // Event
       this.emitter.trigger($.Event('transition', {
@@ -161,24 +167,6 @@
     },
 
     /**
-     * Length
-     */
-
-    stackLength: function () {
-      return this.stackKeys().length;
-    },
-
-    /**
-     * Finds the index of each.
-     *
-     *     stackIndexOf('home')
-     */
-
-    stackIndexOf: function (name) {
-      return this.stackKeys().indexOf(name);
-    },
-
-    /**
      * Removes and destroys
      */
 
@@ -205,15 +193,31 @@
       return init.apply(this, $el);
     },
 
+    /**
+     * (Internal) Returns the direction of animation based on the
+     * indices of panes `from` and `to`.
+     *
+     *     // Going to a pane
+     *     this._getDirection('home', 'timeline')
+     *     => 'forward'
+     *
+     *     // Going from a pane
+     *     this._getDirection('timeline', 'home')
+     *     => 'backward'
+     *
+     *     // Pane objects are ok too
+     *     this._getDirection(this.pane['home'], this.pane['timeline']);
+     */
+
     _getDirection: function (from, to) {
       if (!from) return 'first';
 
       var idx = {
-        previous: this.stackIndexOf(from),
-        current: this.stackIndexOf(to)
+        from: this.stack.indexOf((from && from.name) || from),
+        to:   this.stack.indexOf((to && to.name) || to)
       };
 
-      if (idx.current < idx.previous)
+      if (idx.to < idx.from)
         return 'backward';
       else
         return 'forward';
@@ -221,6 +225,7 @@
 
     /**
      * (Internal) Spawns the pane of a given `name`.
+     * Returns the pane instance.
      */
 
     _spawnPane: function (name) {
@@ -258,7 +263,7 @@
      * (Internal) performs a transition with the given `transition` object.
      */
 
-    _performTransition: function (transition, direction, current, previous) {
+    _runTransition: function (transition, direction, current, previous) {
       transition.before(direction, current, previous, function () {
         $(document).queue(function (next) {
           transition.run(direction, current, previous, function () {
@@ -266,7 +271,22 @@
           });
         });
       });
-    }
+    },
+
+    /**
+     * (Internal) updates `this.stack` to include `pane`, taking into
+     * account Z indices.
+     *
+     *     pane = this.pane['home'];
+     *     this._insertIntoStack(pane);
+     */
+
+    _insertIntoStack: function (pane) {
+      var name = pane.name;
+      if (this.stack.indexOf(name) > -1) return;
+
+      this.stack.push(pane.name);
+    },
 
   };
 
