@@ -1,24 +1,23 @@
 describe 'To do: v0.2', ->
-  describe 'features', ->
+  xdescribe 'todo', ->
+    it 'push(name, object, fn)', ->
+    it 'zindex', ->
+    it 'purging', ->
+    it '"no extra markup" mode', ->
+
+  describe 'done', ->
     it 'double initialization', ->
+      expect(true).be.true
 
     it 'custom transitions', ->
       expect(Navstack.transitions).be.object
 
-  xit '"no extra markup" mode', ->
+    it '.stack', ->
+      @stack = new Navstack()
+      expect(@stack.stack).be.array
+      expect(@stack.stack).be.empty
 
-  describe 'stack', ->
-    xit 'rename .stack to .cache', ->
-    xit 'write a proper .stack', ->
-
-  describe 'flushing', ->
-    xit 'flushing of cached panes', ->
-
-  describe 'custom pane settings', ->
-    xit 'push(name, object, fn)', ->
-
-  describe 'events', ->
-    it '.on, .off, .one', ->
+    it '.events', ->
       expect(Navstack.prototype.on).be.function
       expect(Navstack.prototype.off).be.function
       expect(Navstack.prototype.one).be.function

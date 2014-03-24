@@ -55,11 +55,8 @@ testSuite 'stack', ->
       it '.panes["home"]', ->
         expect($ @chrome.panes.home.el).have.html '<h1>hi</h1>'
 
-      it '.stackLength', ->
-        expect(@chrome.stackLength()).eq 1
-
-      it '.stack["home"]', ->
-        expect(@chrome.stack.home).eq @chrome.panes.home
+      it '.stack.length', ->
+        expect(@chrome.stack.length).eq 1
 
       it '.active', ->
         expect(@chrome.active).be.object
