@@ -18,6 +18,8 @@
 
   /**
    * A stack.
+   *
+   *     nav = new Navstack();
    */
 
   Navstack = function (options) {
@@ -25,10 +27,29 @@
 
     $.extend(this, options);
 
-    this.active = null;
-    this.activeName = null;
+    /** Index of panes that have been registered with this Navstack.
+     *  Object with pane names as keys and `Pane` instances as values.
+     *
+     *      nav.push('home', function () { ... });
+     *
+     *      nav.panes['home']
+     *      nav.panes['home'].name
+     *      nav.panes['home'].el
+     *      nav.panes['home'].view
+     */
     this.panes = {};
+
+    /** Alias for the active pane. Same as `nav.pane[nav.activeName]`. This is
+     *  a `Pane` instance. */
+    this.active = null;
+
+    /** Name of the active pane. */
+    this.activeName = null;
+
+    /** Ordered array of pane names of what are the actively. */
     this.stack = [];
+
+    /** (Internal) event emitter. */
     this.emitter = $({});
 
     // Create the element, or use the given element, or create it based
@@ -53,13 +74,22 @@
     paneEl: "<div>",
 
     /**
-     * Constructor
+     * Constructor. Override me.
+     *
+     *     var MyStack = Navstack.extend({
+     *       init: function() {
+     *         // initialize here
+     *       }
+     *     });
      */
 
     init: function () {},
 
     /**
-     * Registers a pane `name` with initializer function `fn`.
+     * Registers a pane `name` with initializer function `fn`, allowing you to
+     * use `.go()` on the registered pane later.
+     *
+     * This is called on `.push`.
      */
 
     register: function (name, fn) {
