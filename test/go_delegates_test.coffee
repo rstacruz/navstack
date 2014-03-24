@@ -9,8 +9,8 @@ describe 'Go delegates', ->
 
   describe '_getDirection()', ->
     beforeEach ->
-      @stack.push 'home', (el) -> { }
-      @stack.push 'settings', (el) -> { }
+      @stack.push 'home', -> { el: $("<div>") }
+      @stack.push 'settings', -> { el: $("<div>") }
 
     it 'forward', ->
       dir = @stack._getDirection('home', 'settings')
