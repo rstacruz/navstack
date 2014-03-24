@@ -23,9 +23,7 @@ describe 'Transition direction', ->
 
     @stack.push 'messages', ->
 
-  xit 'backward, on 3nd', (done) ->
-    assert.fail "Actually returns forward. wtf"
-
+  it 'backward, on 3nd', (done) ->
     @stack.push 'home', ->
     @stack.push 'messages', ->
 
