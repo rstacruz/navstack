@@ -25,21 +25,41 @@ Usage
 
 ### Basic usage
 
+Use `.push()` to create your panes. Just return an object that has an `el` 
+attribute, which has a DOM element that will be pushed to the stack.
+
+You're free to create thi object (and DOM element) in whatever way you choose.
+I suggest using a [Backbone] view, or a [Ractive] instance.
+
 ``` js
 stage = new Navstack({ el: '#stage' });
 
-// Navigate to new pages using push
-stage.push('home', function(el) {
-  $(el).html("<div class='full-screen'>This is the home screen</div>");
+// Navigate to new pages using push.
+stage.push('home', function() {
+  return {
+    el: $("<div class='full-screen'>This is the home screen</div>")
+  };
 });
 
 // The first parameter is an ID for the pane to be pushed
-stage.push('task:1', function(el) {
-  $(el).html("<div class='full-screen'>Task #1 details: ...</div>");
+stage.push('task:1', function() {
+  return {
+    el: $("<div class='full-screen'>Task #1 details: ...</div>");
+  };
 });
 
 // Switch to older panes using .go()
 stage.go('home');
+```
+
+If you prefer, an element can be made for you. Simply make your function accept 
+an argument (`function(el) { ... }`), and an element will be automatically made 
+for you. (This will be deprecated in the future)
+
+``` js
+stage.push('home', function(el) {
+  $(el).html("<div class='full-screen'>This is the home screen</div>");
+});
 ```
 
 ### Transitions
@@ -84,11 +104,15 @@ this tells Navstack how to construct a tab as they're needed. This allows you to
 stage = new Navstack({
   el: '#stage',
   panes: {
-    home: function(el) {
-      $(el).html("<div class='full-screen'>This is the home screen</div>");
-    }
+    home: function() {
+      return {
+        el: $("<div class='full-screen'>This is the home screen</div>")
+      };
+    },
     messages: function(el) {
-      $(el).html("<div class='full-screen'>Messages: ...</div>");
+      return {
+        el: $("<div class='full-screen'>Messages: ...</div>");
+      };
     }
   }
 
@@ -110,8 +134,8 @@ stage = Navstack.extend({
 
 stage.go('page');
 
-stage.push('pane_id', function (el) {
-  /* create a view out of element `el` */
+stage.push('pane_id', function () {
+  return { el: $("<div>...</div>") };
 });
 
 // Access the active pane

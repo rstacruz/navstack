@@ -22,6 +22,7 @@ function myEnv(jq) {
           errors.forEach(function (e) { console.error(e.data); });
           return done(errors[0].data.error);
         }
+        window.navigator.test = true;
 
         window.console = console;
         global.window  = window;
@@ -39,3 +40,8 @@ function myEnv(jq) {
 
 before(myEnv('jq-2.0'));
 global.testSuite = describe;
+
+// Reset when needed
+beforeEach(function () {
+  $('body').html('');
+});

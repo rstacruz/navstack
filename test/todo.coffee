@@ -4,6 +4,7 @@ describe 'To do: v0.2', ->
     it 'zindex', ->
     it 'purging', ->
     it '"no extra markup" mode', ->
+      # when fn.length == 0, do no extra markup mode
 
   describe 'done', ->
     it 'double initialization', ->

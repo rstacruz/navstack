@@ -6,26 +6,25 @@ describe 'Transition direction', ->
   beforeEach ->
     @stack = new Navstack()
 
-
   it 'first', (done) ->
     @stack.one 'transition', (e) ->
       expect(e.direction).eq 'first'
       done()
 
-    @stack.push('home', ->)
+    @stack.push 'home', -> { el: $("<div>") }
 
   it 'forward, on 2nd', (done) ->
-    @stack.push 'home', ->
+    @stack.push 'home', -> { el: $("<div>") }
 
     @stack.one 'transition', (e) ->
       expect(e.direction).eq 'forward'
       done()
 
-    @stack.push 'messages', ->
+    @stack.push 'messages', -> { el: $("<div>") }
 
   it 'backward, on 3nd', (done) ->
-    @stack.push 'home', ->
-    @stack.push 'messages', ->
+    @stack.push 'home', -> { el: $("<div>") }
+    @stack.push 'messages', -> { el: $("<div>") }
 
     @stack.one 'transition', (e) ->
       expect(e.direction).eq 'backward'

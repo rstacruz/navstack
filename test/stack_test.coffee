@@ -1,4 +1,6 @@
-testSuite 'stack', ->
+require './setup'
+
+testSuite 'Stack', ->
   it 'should work', ->
     # ok
   
@@ -19,11 +21,11 @@ testSuite 'stack', ->
     beforeEach ->
       @chrome = new Navstack(el: 'body')
 
-      @chrome.register 'home', (el) =>
-        $(el).html('<h1>hi</h1>')
-        return 31337
+      @chrome.register 'home', ->
+        { el: $('<div><h1>hi</h1></div>'), number: 31337 }
 
-      @chrome.register 'messages', (el) ->
+      @chrome.register 'messages', ->
+        { el: $('<div>') }
 
     describe 'before navigation', ->
       it 'class', ->
@@ -62,10 +64,10 @@ testSuite 'stack', ->
         expect(@chrome.active).be.object
 
       it '.active.el', ->
-        expect(@chrome.active.el.outerHTML).eql @$pane[0].outerHTML
+        expect($(@chrome.active.el)[0].outerHTML).eql @$pane[0].outerHTML
 
       it '.active.name', ->
         expect(@chrome.active.name).eql 'home'
 
       it '.active.view', ->
-        expect(@chrome.active.view).eql 31337
+        expect(@chrome.active.view.number).eql 31337

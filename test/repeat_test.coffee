@@ -11,33 +11,30 @@ testSuite 'Repeat', ->
 
   describe '.push', ->
     it '.push', ->
-      view = @stack.push 'home', (el) ->
-        $(el).html("<div id='home'>Home</div>")
-        "[Home view]"
+      view = @stack.push 'home', ->
+        { el: $("<div>"), title: "Home view" }
 
-      expect(view).eq "[Home view]"
+      expect(view.title).eq "Home view"
 
     it '.push x2', ->
       count = 0
-      view1 = @stack.push 'home', (el) ->
-        $(el).html("<div id='home'>Home</div>")
+
+      view1 = @stack.push 'home', ->
         count++
-        "[Home view]"
+        { el: $("<div id='home'>Home</div>"), title: "Home view" }
 
-      view2 = @stack.push 'home', (el) ->
-        $(el).html("<div id='home'>Home</div>")
-        "[Other home view is ignored]"
+      view2 = @stack.push 'home', ->
+        { el: $("<div id='home'>Home</div>"), title: "I'm ignored" }
 
-      expect(view1).eq "[Home view]"
-      expect(view2).eq "[Home view]"
+      expect(view1.title).eq "Home view"
+      expect(view2.title).eq "Home view"
       expect(count).eq 1
 
-  describe '.go', ->
+  describe '.register, .go', ->
     beforeEach ->
-      @stack.register 'home', (el) ->
-        $(el).html("<div id='home'>Home</div>")
-        "[Home view]"
+      @stack.register 'home', ->
+        { el: $("<div>"), title: "Home view" }
 
     it 'should work', ->
       view = @stack.go 'home'
-      expect(view).eq "[Home view]"
+      expect(view.title).eq "Home view"
