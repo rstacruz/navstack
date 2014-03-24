@@ -18,7 +18,7 @@ testSuite 'Transition basic', ->
       transition: 'foobar'
 
     try
-      @stack.push('home', ->)
+      @stack.push 'home', (el) ->
     catch e
       expect(e.message).match /invalid 'transition' value/
 
@@ -40,7 +40,7 @@ testSuite 'Transition basic', ->
       @stack = new Navstack
         transition: 'moo'
 
-      @stack.push('home', ->)
+      @stack.push 'home', (el) ->
 
     afterEach ->
       delete Navstack.transitions.moo

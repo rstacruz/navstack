@@ -1,4 +1,6 @@
-testSuite 'stack', ->
+require './setup'
+
+testSuite 'Stack', ->
   it 'should work', ->
     # ok
   
@@ -62,7 +64,7 @@ testSuite 'stack', ->
         expect(@chrome.active).be.object
 
       it '.active.el', ->
-        expect(@chrome.active.el.outerHTML).eql @$pane[0].outerHTML
+        expect($(@chrome.active.el)[0].outerHTML).eql @$pane[0].outerHTML
 
       it '.active.name', ->
         expect(@chrome.active.name).eql 'home'

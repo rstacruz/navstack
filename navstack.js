@@ -260,14 +260,14 @@
 
     _spawnPane: function (name) {
       // Create the element.
-      var $pane = $(this.paneEl);
-      $pane.attr('data-stack-pane', name);
-      $(this.el).append($pane);
+      // var $pane = $(this.paneEl);
+      // $pane.attr('data-stack-pane', name);
+      // $(this.el).append($pane);
 
       // Get the pane (previously .register()'ed) and initialize it.
       var current = this.panes[name];
       if (!current) throw new Error("Navstack: Unknown pane: "+name);
-      current.init($pane[0]);
+      current.init();//$pane[0]);
 
       return current;
     },
@@ -360,8 +360,21 @@
      */
 
     forceInit: function (el) {
-      this.el = el;
-      this.view = this.initializer.call(this.parent, el);
+      var fn = this.initializer;
+
+      if (fn.length === 0) {
+        // Let the initializer create the element, just use it afterwards.
+        this.view = this.initializer.call(this.parent);
+        this.el = this.view.el;
+      } else {
+        // Create the DOM element as needed.
+        var $pane = $(this.parent.paneEl);
+        this.el = $pane;
+        this.view = this.initializer.call(this.parent, $pane);
+      }
+
+      $(this.parent.el).append(this.el);
+      this.el.attr('data-stack-pane', this.name);
     },
 
     isInitialized: function () {

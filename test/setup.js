@@ -39,3 +39,8 @@ function myEnv(jq) {
 
 before(myEnv('jq-2.0'));
 global.testSuite = describe;
+
+// Reset when needed
+beforeEach(function () {
+  $('body').html('');
+});

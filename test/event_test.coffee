@@ -21,9 +21,9 @@ describe 'Events', ->
     it 'should only trigger once', (done) ->
       @stack.one 'transition', -> done()
 
-      @stack.push 'home', ->
-      @stack.push 'messages', ->
-      @stack.push 'whatelse', ->
+      @stack.push 'home', (el) ->
+      @stack.push 'messages', (el) ->
+      @stack.push 'whatelse', (el) ->
 
   describe '.on(remove)', ->
     it 'on remove', (done) ->
@@ -33,10 +33,10 @@ describe 'Events', ->
   describe 'triggering', ->
     it 'should work', (done) ->
       @stack.on 'transition', (e) -> done()
-      @stack.push 'home', ->
+      @stack.push 'home', (el) ->
 
     it 'attributes', (done) ->
-      @stack.push 'home', ->
+      @stack.push 'home', (el) ->
         { id: "Home view" }
 
       @stack.on 'transition', (e) ->
@@ -48,5 +48,5 @@ describe 'Events', ->
         expect(e.current.view.id).eq 'Timeline view'
         done()
 
-      @stack.push 'timeline', ->
+      @stack.push 'timeline', (el) ->
         { id: "Timeline view" }
