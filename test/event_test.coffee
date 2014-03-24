@@ -26,6 +26,11 @@ describe 'Events', ->
       @stack.push 'messages', ->
       @stack.push 'whatelse', ->
 
+  describe 'remove', ->
+    it 'on remove', (done) ->
+      @stack.one 'remove', -> done()
+      @stack.remove()
+
   describe 'triggering', ->
     it 'should work', (done) ->
       @stack.on 'transition', (e) -> done()

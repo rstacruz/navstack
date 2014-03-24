@@ -183,6 +183,7 @@
      */
 
     remove: function () {
+      this.emitter.trigger('remove');
       $(this.el).remove();
     },
 
