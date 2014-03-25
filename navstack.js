@@ -144,20 +144,20 @@
 
       // Spawn the pane if it hasn't been spawned before
       if (!this.panes[name].el)
-        this._spawnPane(name);
+        this.spawnPane(name);
 
       var current = this.panes[name];
 
       // Insert into stack
-      this._insertIntoStack(current);
+      this.insertIntoStack(current);
 
       // Register a new 'active' pane
       this.active = current;
 
       // Perform the transition
-      var direction = this._getDirection(previous, current);
-      var transition = this._getTransition(this.transition);
-      this._runTransition(transition, direction, current, previous);
+      var direction = this.getDirection(previous, current);
+      var transition = this.getTransition(this.transition);
+      this.runTransition(transition, direction, current, previous);
 
       // Event
       this.emitter.trigger($.Event('transition', {
@@ -271,31 +271,22 @@
     },
 
     /**
-     * (Internal) Uses an initializer (registered with `register()`)
-     * to initialize a pane. Returns a view object.
-     */
-
-    _useInitializer: function (init, $el) {
-      return init.apply(this, $el);
-    },
-
-    /**
      * (Internal) Returns the direction of animation based on the
      * indices of panes `from` and `to`.
      *
      *     // Going to a pane
-     *     this._getDirection('home', 'timeline')
+     *     this.getDirection('home', 'timeline')
      *     => 'forward'
      *
      *     // Going from a pane
-     *     this._getDirection('timeline', 'home')
+     *     this.getDirection('timeline', 'home')
      *     => 'backward'
      *
      *     // Pane objects are ok too
-     *     this._getDirection(this.pane['home'], this.pane['timeline']);
+     *     this.getDirection(this.pane['home'], this.pane['timeline']);
      */
 
-    _getDirection: function (from, to) {
+    getDirection: function (from, to) {
       if (!from) return 'first';
 
       var idx = {
@@ -314,7 +305,7 @@
      * Returns the pane instance.
      */
 
-    _spawnPane: function (name) {
+    spawnPane: function (name) {
       // Get the pane (previously .register()'ed) and initialize it.
       var current = this.panes[name];
       if (!current) throw new Error("Navstack: Unknown pane: "+name);
@@ -328,7 +319,7 @@
      * Throws an error if it's invalid.
      */
 
-    _getTransition: function (transition) {
+    getTransition: function (transition) {
       if (typeof transition === 'string') {
         transition = (this.transitions && this.transitions[transition]) ||
           Navstack.transitions[transition];
@@ -344,7 +335,7 @@
      * (Internal) performs a transition with the given `transition` object.
      */
 
-    _runTransition: function (transition, direction, current, previous) {
+    runTransition: function (transition, direction, current, previous) {
       transition.before(direction, current, previous, function () {
         $(document).queue(function (next) {
           transition.run(direction, current, previous, function () {
@@ -359,10 +350,10 @@
      * account Z indices.
      *
      *     pane = this.pane['home'];
-     *     this._insertIntoStack(pane);
+     *     this.insertIntoStack(pane);
      */
 
-    _insertIntoStack: function (pane) {
+    insertIntoStack: function (pane) {
       var name = pane.name;
       if (this.stack.indexOf(name) > -1) return;
 

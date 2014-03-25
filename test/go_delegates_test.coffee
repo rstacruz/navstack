@@ -7,38 +7,38 @@ describe 'Go delegates', ->
   afterEach ->
     @stack.remove()
 
-  describe '_getDirection()', ->
+  describe 'getDirection()', ->
     beforeEach ->
       @stack.push 'home', -> $("<div>")
       @stack.push 'settings', -> $("<div>")
 
     it 'forward', ->
-      dir = @stack._getDirection('home', 'settings')
+      dir = @stack.getDirection('home', 'settings')
       expect(dir).eq 'forward'
 
     it 'backward', ->
-      dir = @stack._getDirection('settings', 'home')
+      dir = @stack.getDirection('settings', 'home')
       expect(dir).eq 'backward'
 
     it 'first', ->
-      dir = @stack._getDirection(null, 'settings')
+      dir = @stack.getDirection(null, 'settings')
       expect(dir).eq 'first'
 
-  describe '_getTransition()', ->
+  describe 'getTransition()', ->
     afterEach ->
       delete Navstack.transitions.aoeu
 
     it 'get from global', ->
       Navstack.transitions.aoeu = { hello: 'world' }
 
-      trans = @stack._getTransition('aoeu')
+      trans = @stack.getTransition('aoeu')
       expect(trans).be.object
       expect(trans.hello).eq 'world'
 
     it 'get from class', ->
       @stack.transitions.aoeu = { hello: 'world' }
 
-      trans = @stack._getTransition('aoeu')
+      trans = @stack.getTransition('aoeu')
       expect(trans).be.object
       expect(trans.hello).eq 'world'
 
@@ -47,11 +47,11 @@ describe 'Go delegates', ->
         transitions:
           aoeu: { hello: 'world' }
 
-      trans = @newstack._getTransition('aoeu')
+      trans = @newstack.getTransition('aoeu')
       expect(trans).be.object
       expect(trans.hello).eq 'world'
 
     it 'get from params', ->
-      trans = @stack._getTransition(hello: 'world')
+      trans = @stack.getTransition(hello: 'world')
       expect(trans).be.object
       expect(trans.hello).eq 'world'
