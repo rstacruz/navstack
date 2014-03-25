@@ -438,6 +438,12 @@
     }
   };
 
+  var filterSupported = (function () {
+    var e = document.createElement("div");
+    e.style.webkitFilter = "grayscale(1)";
+    return (window.getComputedStyle(e).webkitFilter === "grayscale(1)");
+  })();
+
   /**
    * For transitions
    */
@@ -445,6 +451,12 @@
   Navstack.buildTransition = function (prefix) {
     return {
       before: function (direction, current, previous, next) {
+
+        $(current && current.el)
+          .add(previous && previous.el)
+          .toggleClass('-navstack-with-filter', filterSupported)
+          .toggleClass('-navstack-no-filter', filterSupported);
+
         if (direction !== 'first' && current)
           $(current.el).addClass(prefix+'-hide');
 
@@ -452,6 +464,10 @@
       },
 
       after: function (direction, current, previous, next) {
+        $(current && current.el)
+          .add(previous && previous.el)
+          .removeClass('-navstack-with-filter -navstack-no-filter');
+
         return next();
       },
 
