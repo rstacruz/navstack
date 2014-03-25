@@ -23,14 +23,16 @@ describe 'Individual adaptors', ->
     beforeEach ->
       @stack.adapt = ['ractive']
       @stack.push 'home', ->
-        el: $("<div class='xyz'>hello</div>")
+        div = $("<div class='xyz'>hello</div>")[0]
+        el: div
+        find: (sel) -> div
         teardown: -> $(".xyz").remove()
 
     it 'push', ->
       expect($('body > div > .xyz')[0]).not.be.undefined
 
     it 'el', ->
-      expect(@stack.panes.home.el.html()).eq "hello"
+      expect($(@stack.panes.home.el).html()).eq "hello"
 
     it 'remove', ->
       @stack.panes.home.adaptor.remove()

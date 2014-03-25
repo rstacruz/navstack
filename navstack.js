@@ -423,12 +423,9 @@
       this.view = this.initializer.call(this.parent);
       this.adaptor = this.parent.getAdaptorFor(this.view);
       this.el = this.adaptor.el();
-      if (!this.el) {
-        console.log(this.view);
-        console.log(this.adaptor.el());
-        console.log(this.adaptor.adaptor);
+
+      if (!this.el)
         throw new Error("Navstack: no element found");
-      }
 
       $(this.el)
         .attr('data-stack-pane', this.name)
@@ -449,8 +446,7 @@
     return {
       before: function (direction, current, previous, next) {
         if (direction !== 'first' && current)
-          $(current.el)
-            .addClass(prefix+'-hide');
+          $(current.el).addClass(prefix+'-hide');
 
         return next();
       },
@@ -461,6 +457,7 @@
 
       run: function (direction, current, previous, next) {
         if (direction === 'first') return next();
+
         var $parent =
           current ? $(current.el).parent() :
           previous ? $(previous.el).parent() : null;
@@ -544,14 +541,15 @@
    */
 
   Navstack.adaptors.ractive = buildAdaptor({
-    el: function (obj) { return obj.el; },
-    check: function (obj) { return (typeof obj.teardown === 'function'); },
+    el: function (obj) { return obj.find('*'); },
+    check: function (obj) {
+      return (typeof obj.teardown === 'function') && (typeof obj.el === 'object');
+    },
     remove: function (obj) { return obj.teardown(); }
   });
 
   /*
    * React.js adaptor
-   * TODO: not sure if correct
    */
 
   Navstack.adaptors.react = buildAdaptor({
