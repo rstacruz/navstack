@@ -31,7 +31,7 @@ describe 'Adaptors', ->
         wrap: (obj, self) ->
           { el: (-> "element"), remove: (->) }
 
-      @stack.adapt = ['custom', 'generic']
+      @stack.adapt = ['custom', 'jquery']
       adaptor = @stack.getAdaptorFor({ want: 'custom' })
 
       expect(adaptor.el()).eq "element"
@@ -43,12 +43,7 @@ describe 'Adaptors', ->
         wrap: (obj, self) ->
           { el: (-> "element"), remove: (->) }
 
-      @stack.adapt = ['custom', 'generic']
+      @stack.adapt = ['custom', 'jquery']
       adaptor = @stack.getAdaptorFor({ want: 'custom' })
 
       expect(adaptor.el()).eq "element"
-
-  describe 'instance', ->
-    beforeEach ->
-      @stack = new Navstack()
-

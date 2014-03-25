@@ -510,7 +510,7 @@
       wrap: function (obj, self) {
         return {
           el: function () { return options.el(obj); },
-          remove: options.remove
+          remove: function () { return options.remove(obj); }
         };
       }
     };
