@@ -1,3 +1,4 @@
+/* jshint es3: true */
 /**
  * Navstack
  * https://github.com/rstacruz/navstack
@@ -23,7 +24,13 @@
    */
 
   Navstack = function (options) {
+    /** Registry of pane transitions.
+     *  A local version of `Navstack.transitions`. */
     this.transitions = {};
+
+    /** Registry of suitable adaptors.
+     *  A local version of `Navstack.adaptors`. */
+    this.adaptors = {};
 
     $.extend(this, options);
 
@@ -56,7 +63,10 @@
     // on the given tag
     this.el = (options && options.el) ? $(options.el) : $('<div>');
 
-    $(this.el).attr('data-stack', true);
+    $(this.el)
+      .attr('data-stack', true)
+      .addClass('-navstack');
+
     this.init(options);
   };
 
@@ -131,9 +141,8 @@
       var previous = this.active;
 
       // Spawn the pane if it hasn't been spawned before
-      if (!this.panes[name].el) {
+      if (!this.panes[name].el)
         this._spawnPane(name);
-      }
 
       var current = this.panes[name];
 
@@ -215,6 +224,48 @@
     },
 
     /**
+     * Returns the adaptors
+     */
+
+    getAdaptors: function () {
+      var adapt = this.adapt || Navstack.adapt;
+      var nav = this;
+
+      return map(adapt, function(name) {
+        var adaptor = (nav.adaptors && nav.adaptors[name]) ||
+          Navstack.adaptors[name];
+
+        if (!adaptor)
+          console.warn("Navstack: unknown adaptor '" + name + "'");
+
+        return adaptor;
+      });
+    },
+
+    /**
+     * Wraps the given `obj` object with a suitable adaptor.
+     *
+     *     view = new Backbone.View({ ... });
+     *     adaptor = nav.getAdaptorFor(view);
+     *
+     *     adaptor.el()
+     *     adaptor.remove()
+     */
+
+    getAdaptorFor: function (obj) {
+      var adaptors = this.getAdaptors();
+
+      for (var i=0; i < adaptors.length; ++i) {
+        var adaptor = adaptors[i];
+
+        if (adaptor.filter(obj))
+          return adaptor.wrap(obj, this);
+      }
+
+      throw new Error("Navstack: no adaptor found. Try returning an object with an 'el' property.");
+    },
+
+    /**
      * (Internal) Uses an initializer (registered with `register()`)
      * to initialize a pane. Returns a view object.
      */
@@ -259,15 +310,10 @@
      */
 
     _spawnPane: function (name) {
-      // Create the element.
-      // var $pane = $(this.paneEl);
-      // $pane.attr('data-stack-pane', name);
-      // $(this.el).append($pane);
-
       // Get the pane (previously .register()'ed) and initialize it.
       var current = this.panes[name];
       if (!current) throw new Error("Navstack: Unknown pane: "+name);
-      current.init();//$pane[0]);
+      current.init();
 
       return current;
     },
@@ -316,7 +362,7 @@
       if (this.stack.indexOf(name) > -1) return;
 
       this.stack.push(pane.name);
-    },
+    }
 
   };
 
@@ -344,6 +390,9 @@
 
     /** View instance as created by initializer. Created on `init()`. */
     this.view = null;
+
+    /** A wrapped version of the `view` */
+    this.adaptor = null;
   };
 
   Pane.prototype = {
@@ -351,33 +400,29 @@
      * Initializes the pane's view if needed.
      */
 
-    init: function (el) {
-      if (!this.isInitialized()) this.forceInit(el);
+    init: function () {
+      if (!this.isInitialized()) this.forceInit();
     },
 
     /**
      * Forces initialization even if it hasn't been yet.
      */
 
-    forceInit: function (el) {
+    forceInit: function () {
       var fn = this.initializer;
 
-      if (fn.length === 0) {
-        // Let the initializer create the element, just use it afterwards.
-        this.view = this.initializer.call(this.parent);
-        this.el = this.view.el;
-      } else {
-        // Create the DOM element as needed.
-        if (!navigator.test)
-          console.warn("Navstack: creating an element on the fly is going to be deprecated.");
+      if (typeof fn !== 'function')
+        throw new Error("Navstack: pane initializer is not a function");
 
-        var $pane = $(this.parent.paneEl);
-        this.el = $pane;
-        this.view = this.initializer.call(this.parent, $pane);
-      }
+      // Let the initializer create the element, just use it afterwards.
+      this.view = this.initializer.call(this.parent);
+      this.adaptor = this.parent.getAdaptorFor(this.view);
+      this.el = this.adaptor.el();
 
-      $(this.parent.el).append(this.el);
-      this.el.attr('data-stack-pane', this.name);
+      $(this.el)
+        .attr('data-stack-pane', this.name)
+        .addClass('-navstack-pane')
+        .appendTo(this.parent.el);
     },
 
     isInitialized: function () {
@@ -393,7 +438,7 @@
     return {
       before: function (direction, current, previous, next) {
         if (direction !== 'first' && current)
-          $(current.el).find('>*')
+          $(current.el)
             .addClass(prefix+'-hide');
 
         return next();
@@ -412,22 +457,22 @@
         $parent.addClass(prefix+'-container');
 
         if (previous)
-          $(previous.el).find('>*')
+          $(previous.el)
             .removeClass(prefix+'-hide')
             .addClass(prefix+'-exit-'+direction);
 
-        $(current.el).find('>*')
+        $(current.el)
           .removeClass(prefix+'-hide')
           .addClass(prefix+'-enter-'+direction)
           .one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function() {
             $parent.removeClass(prefix+'-container');
 
             if (previous)
-              $(previous.el).find('>*')
+              $(previous.el)
                 .addClass(prefix+'-hide')
                 .removeClass(prefix+'-exit-'+direction);
 
-            $(current.el).find('>*')
+            $(current.el)
               .removeClass(prefix+'-enter-'+direction);
 
             next();
@@ -445,6 +490,84 @@
     modal: Navstack.buildTransition('modal'),
     flip: Navstack.buildTransition('flip')
   };
+
+  /**
+   * Adaptors
+   */
+
+  Navstack.adaptors = {};
+
+  /**
+   * (Internal) Helper for building a generic filter
+   */
+
+  function buildAdaptor (options) {
+    return {
+      filter: function (obj) {
+        return typeof obj === 'object' && options.el(obj) && (!!options.check || options.check(obj));
+      },
+
+      wrap: function (obj, self) {
+        return {
+          el: function () { return options.el(obj); },
+          remove: function () { return options.remove(obj); }
+        };
+      }
+    };
+  }
+
+  /*
+   * Backbone adaptor
+   */
+
+  Navstack.adaptors.backbone = buildAdaptor({
+    el: function (obj) { return obj.el; },
+    check: function (obj) { return (typeof obj.remove === 'function'); },
+    remove: function (obj) { return obj.remove(); }
+  });
+
+  /*
+   * Ractive adaptor
+   */
+
+  Navstack.adaptors.ractive = buildAdaptor({
+    el: function (obj) { return obj.el; },
+    check: function (obj) { return (typeof obj.teardown === 'function'); },
+    remove: function (obj) { return obj.teardown(); }
+  });
+
+  /*
+   * React.js adaptor
+   * TODO: not sure if correct
+   */
+
+  Navstack.adaptors.react = buildAdaptor({
+    el: function (obj) { return obj.getDOMNode(); },
+    check: function (obj) { return (typeof obj.getDOMNode === 'function'); },
+    remove: function (obj) { return window.React.unmountComponentAtNode(obj.getDOMNode()); }
+  });
+
+
+  /*
+   * Generic adaptor. Accounts for any object that gives off an `el` property.
+   */
+
+  Navstack.adaptors.jquery = buildAdaptor({
+    el: function (obj) { return $(obj); },
+    check: function (obj) { return $(obj)[0].nodeType === 1; },
+    remove: function (obj) { return $(obj).remove(); }
+  });
+
+  Navstack.adapt = ['backbone', 'ractive', 'react', 'jquery'];
+
+  /*
+   * Helpers
+   */
+
+  function map (obj, fn) {
+    if (obj.map) return obj.map(fn);
+    else throw new Error("Todo: implement map shim");
+  }
 
   return Navstack;
 

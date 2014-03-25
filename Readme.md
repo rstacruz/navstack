@@ -25,41 +25,29 @@ Usage
 
 ### Basic usage
 
-Use `.push()` to create your panes. Just return an object that has an `el` 
-attribute, which has a DOM element that will be pushed to the stack.
-
-You're free to create thi object (and DOM element) in whatever way you choose.
-I suggest using a [Backbone] view, or a [Ractive] instance.
+Use `.push()` to create your panes. Pass a callback that will return a 
+[Backbone] view, [Ractive] or [React.js] instance, or a DOM element.
 
 ``` js
 stage = new Navstack({ el: '#stage' });
 
 // Navigate to new pages using push.
 stage.push('home', function() {
-  return {
-    el: $("<div class='full-screen'>This is the home screen</div>")
-  };
+  return $("<div class='full-screen'>This is the home screen</div>");
 });
 
 // The first parameter is an ID for the pane to be pushed
 stage.push('task:1', function() {
-  return {
-    el: $("<div class='full-screen'>Task #1 details: ...</div>");
-  };
+  return $("<div class='full-screen'>Task #1 details: ...</div>");
+});
+
+// You may use Backbone, Ractive, or React.js views
+stage.push('task:1', function() {
+  return new Backbone.View({ ... });
 });
 
 // Switch to older panes using .go()
 stage.go('home');
-```
-
-If you prefer, an element can be made for you. Simply make your function accept 
-an argument (`function(el) { ... }`), and an element will be automatically made 
-for you. (This will be deprecated in the future)
-
-``` js
-stage.push('home', function(el) {
-  $(el).html("<div class='full-screen'>This is the home screen</div>");
-});
 ```
 
 ### Transitions
@@ -105,17 +93,12 @@ stage = new Navstack({
   el: '#stage',
   panes: {
     home: function() {
-      return {
-        el: $("<div class='full-screen'>This is the home screen</div>")
-      };
+      return $("<div class='full-screen'>This is the home screen</div>")el: };
     },
-    messages: function(el) {
-      return {
-        el: $("<div class='full-screen'>Messages: ...</div>");
-      };
+    messages: function() {
+      return $("<div class='full-screen'>Messages: ...</div>");
     }
   }
-
 });
 
 // Switch to a pane
@@ -135,7 +118,9 @@ stage = Navstack.extend({
 stage.go('page');
 
 stage.push('pane_id', function () {
-  return { el: $("<div>...</div>") };
+  return $("<div>...</div>";
+  return new Ractive(...);
+  return new ReactComponent(...);
 });
 
 // Access the active pane
