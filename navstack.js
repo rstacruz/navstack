@@ -502,23 +502,73 @@
     flip: Navstack.buildTransition('flip')
   };
 
-  Navstack.adaptors = {
-    /* Generic filter, suitable for Backbone and Ractive */
-    generic: {
+  /**
+   * Adaptors
+   */
+
+  Navstack.adaptors = {};
+
+  /**
+   * (Internal) Helper for building a generic filter
+   */
+
+  function buildAdaptor (options) {
+    return {
       filter: function (obj) {
-        return typeof obj === 'object' && obj.el;
+        return typeof obj === 'object' && options.el(obj) && (!!options.check || options.check(obj));
       },
 
       wrap: function (obj, self) {
         return {
-          el: function () { return obj.el; },
-          remove: function () { return obj.remove.apply(obj); }
+          el: function () { return options.el(obj); },
+          remove: options.remove
         };
       }
-    }
-  };
+    };
+  }
 
-  Navstack.adapt = ['generic'];
+  /*
+   * Backbone adaptor
+   */
+
+  Navstack.adaptors.backbone = buildAdaptor({
+    el: function (obj) { return obj.el; },
+    check: function (obj) { return (typeof obj.remove === 'function'); },
+    remove: function (obj) { return obj.remove(); }
+  });
+
+  /*
+   * Ractive adaptor
+   */
+
+  Navstack.adaptors.ractive = buildAdaptor({
+    el: function (obj) { return obj.el; },
+    check: function (obj) { return (typeof obj.teardown === 'function'); },
+    remove: function (obj) { return obj.teardown(); }
+  });
+
+  /*
+   * React.js adaptor
+   * TODO: not sure if correct
+   */
+
+  Navstack.adaptors.react = buildAdaptor({
+    el: function (obj) { return obj.getDomElement(); },
+    check: function (obj) { return (typeof obj.getDomElement === 'function'); },
+    remove: function (obj) { return obj.remove(); }
+  });
+
+
+  /*
+   * Generic adaptor. Accounts for any object that gives off an `el` property.
+   */
+
+  Navstack.adaptors.generic = buildAdaptor({
+    el: function (obj) { return obj.el; },
+    remove: function (obj) { return $(obj).remove(); }
+  });
+
+  Navstack.adapt = ['backbone', 'ractive', 'react', 'generic'];
 
   /*
    * Helpers
