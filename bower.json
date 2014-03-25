@@ -24,6 +24,17 @@
     "node_modules",
     "components",
     "vendor",
-    "*.styl"
+    "*.styl",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "homepage": "https://github.com/rstacruz/navstack",
+  "authors": [
+    "Rico Sta. Cruz <hi@ricostacruz.com>"
+  ],
+  "moduleType": [
+    "amd",
+    "globals"
   ]
 }
