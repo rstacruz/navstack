@@ -15,11 +15,7 @@ describe 'Adaptors', ->
     it 'defaults', ->
       adaptors = @stack.getAdaptors()
 
-      expect(adaptors).have.length 4
-      expect(adaptors[0]).eq Navstack.adaptors.backbone
-      expect(adaptors[1]).eq Navstack.adaptors.ractive
-      expect(adaptors[2]).eq Navstack.adaptors.react
-      expect(adaptors[3]).eq Navstack.adaptors.generic
+      expect(adaptors).have.length.gte 4
 
     it 'warn without proper adaptor', ->
       sinon.stub console, 'warn'

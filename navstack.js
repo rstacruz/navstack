@@ -414,21 +414,10 @@
       if (typeof fn !== 'function')
         throw new Error("Navstack: pane initializer is not a function");
 
-      if (fn.length === 0) {
-        // Let the initializer create the element, just use it afterwards.
-        this.view = this.initializer.call(this.parent);
-        this.adaptor = this.parent.getAdaptorFor(this.view);
-        this.el = this.adaptor.el();
-      } else {
-        // Create the DOM element as needed.
-        if (!navigator.test)
-          console.warn("Navstack: creating an element on the fly is going to be deprecated.");
-
-        var $pane = $(this.parent.paneEl);
-        this.view = this.initializer.call(this.parent, $pane);
-        this.adaptor = this.parent.getAdaptorFor(this.view);
-        this.el = this.adaptor.el();
-      }
+      // Let the initializer create the element, just use it afterwards.
+      this.view = this.initializer.call(this.parent);
+      this.adaptor = this.parent.getAdaptorFor(this.view);
+      this.el = this.adaptor.el();
 
       $(this.el)
         .attr('data-stack-pane', this.name)
