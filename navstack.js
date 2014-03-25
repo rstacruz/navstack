@@ -460,7 +460,9 @@
         if (direction !== 'first' && current)
           $(current.el).addClass(prefix+'-hide');
 
-        return next();
+        // Do transitions on next browser tick so that any DOM elements that
+        // need rendering will take its time
+        return setTimeout(next, 0);
       },
 
       after: function (direction, current, previous, next) {
