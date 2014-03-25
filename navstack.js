@@ -8,12 +8,14 @@
 
 (function(factory) {
 
-  if (typeof module === 'object')
-    module.exports = factory();
-  else
-    window.Navstack = factory();
+  var $ = this.jQuery || this.require('jquery');
 
-})(function () {
+  if (typeof module === 'object')
+    module.exports = factory($);
+  else
+    this.Navstack = factory($);
+
+})(function ($) {
 
   var Navstack, Pane;
 
@@ -258,11 +260,14 @@
       for (var i=0; i < adaptors.length; ++i) {
         var adaptor = adaptors[i];
 
-        if (adaptor.filter(obj))
-          return adaptor.wrap(obj, this);
+        if (adaptor.filter(obj)) {
+          var wrapped = adaptor.wrap(obj, this);
+          wrapped.adaptor = adaptor;
+          return wrapped;
+        }
       }
 
-      throw new Error("Navstack: no adaptor found. Try returning an object with an 'el' property.");
+      throw new Error("Navstack: no adaptor found");
     },
 
     /**
@@ -418,6 +423,12 @@
       this.view = this.initializer.call(this.parent);
       this.adaptor = this.parent.getAdaptorFor(this.view);
       this.el = this.adaptor.el();
+      if (!this.el) {
+        console.log(this.view);
+        console.log(this.adaptor.el());
+        console.log(this.adaptor.adaptor);
+        throw new Error("Navstack: no element found");
+      }
 
       $(this.el)
         .attr('data-stack-pane', this.name)
@@ -504,10 +515,10 @@
   function buildAdaptor (options) {
     return {
       filter: function (obj) {
-        return typeof obj === 'object' && options.el(obj) && (!!options.check || options.check(obj));
+        return typeof obj === 'object' && options.check(obj);
       },
 
-      wrap: function (obj, self) {
+      wrap: function (obj, nav) {
         return {
           el: function () { return options.el(obj); },
           remove: function () { return options.remove(obj); }
@@ -522,7 +533,9 @@
 
   Navstack.adaptors.backbone = buildAdaptor({
     el: function (obj) { return obj.el; },
-    check: function (obj) { return (typeof obj.remove === 'function'); },
+    check: function (obj) {
+      return (typeof obj.remove === 'function') && (typeof obj.el === 'object');
+    },
     remove: function (obj) { return obj.remove(); }
   });
 

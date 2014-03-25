@@ -12,14 +12,14 @@ describe 'Stack array', ->
     expect(@stack.stack).be.empty
 
   it 'one push', ->
-    @stack.push 'home', -> { el: $("<div>") }
+    @stack.push 'home', -> $("<div>")
 
     expect(@stack.stack).have.length 1
     expect(@stack.stack[0]).eq 'home'
 
   it 'two pushes', ->
-    @stack.push 'home', -> { el: $("<div>") }
-    @stack.push 'timeline', -> { el: $("<div>") }
+    @stack.push 'home', -> $("<div>")
+    @stack.push 'timeline', -> $("<div>")
 
     expect(@stack.stack).have.length 2
     expect(@stack.stack[0]).eq 'home'

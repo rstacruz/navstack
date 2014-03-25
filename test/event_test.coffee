@@ -21,9 +21,9 @@ describe 'Events', ->
     it 'should only trigger once', (done) ->
       @stack.one 'transition', -> done()
 
-      @stack.push 'home', -> { el: $("<div>") }
-      @stack.push 'messages', -> { el: $("<div>") }
-      @stack.push 'whatelse', -> { el: $("<div>") }
+      @stack.push 'home', -> $("<div>")
+      @stack.push 'messages', -> $("<div>")
+      @stack.push 'whatelse', -> $("<div>")
 
   describe '.on(remove)', ->
     it 'on remove', (done) ->
@@ -33,11 +33,11 @@ describe 'Events', ->
   describe 'triggering', ->
     it 'should work', (done) ->
       @stack.on 'transition', (e) -> done()
-      @stack.push 'home', -> { el: $("<div>") }
+      @stack.push 'home', -> $("<div>")
 
     it 'attributes', (done) ->
       @stack.push 'home', ->
-        { id: "Home view", el: $("<div>") }
+        { id: "Home view", el: $("<div>"), remove: -> }
 
       @stack.on 'transition', (e) ->
         expect(e.direction).eq 'forward'
@@ -49,4 +49,4 @@ describe 'Events', ->
         done()
 
       @stack.push 'timeline', ->
-        { id: "Timeline view", el: $("<div>") }
+        { id: "Timeline view", el: $("<div>"), remove: -> }

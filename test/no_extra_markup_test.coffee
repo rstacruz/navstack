@@ -5,8 +5,7 @@ describe 'No extra markup', ->
     @stack = new Navstack()
 
   it 'don\'t create elements', ->
-    @stack.push 'home', ->
-      { el: $("<div>hi</div>") }
+    @stack.push 'home', -> $("<div>hi</div>")
 
     expect(@stack.el.find('> div:first-child:last-child').html()).eq 'hi'
 
