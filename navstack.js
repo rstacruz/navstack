@@ -449,7 +449,7 @@
     return {
       before: function (direction, current, previous, next) {
         if (direction !== 'first' && current)
-          $(current.el).find('>*')
+          $(current.el)
             .addClass(prefix+'-hide');
 
         return next();
@@ -468,22 +468,22 @@
         $parent.addClass(prefix+'-container');
 
         if (previous)
-          $(previous.el).find('>*')
+          $(previous.el)
             .removeClass(prefix+'-hide')
             .addClass(prefix+'-exit-'+direction);
 
-        $(current.el).find('>*')
+        $(current.el)
           .removeClass(prefix+'-hide')
           .addClass(prefix+'-enter-'+direction)
           .one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function() {
             $parent.removeClass(prefix+'-container');
 
             if (previous)
-              $(previous.el).find('>*')
+              $(previous.el)
                 .addClass(prefix+'-hide')
                 .removeClass(prefix+'-exit-'+direction);
 
-            $(current.el).find('>*')
+            $(current.el)
               .removeClass(prefix+'-enter-'+direction);
 
             next();
