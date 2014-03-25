@@ -1,3 +1,4 @@
+/* jshint es3: true */
 /**
  * Navstack
  * https://github.com/rstacruz/navstack
@@ -23,7 +24,13 @@
    */
 
   Navstack = function (options) {
+    /** Registry of pane transitions.
+     *  A local version of `Navstack.transitions`. */
     this.transitions = {};
+
+    /** Registry of suitable adaptors.
+     *  A local version of `Navstack.adaptors`. */
+    this.adaptors = {};
 
     $.extend(this, options);
 
@@ -215,6 +222,48 @@
     },
 
     /**
+     * Returns the adaptors
+     */
+
+    getAdaptors: function () {
+      var adapt = this.adapt || Navstack.adapt;
+      var nav = this;
+
+      return map(adapt, function(name) {
+        var adaptor = (nav.adaptors && nav.adaptors[name]) ||
+          Navstack.adaptors[name];
+
+        if (!adaptor)
+          console.warn("Navstack: unknown adaptor '" + name + "'");
+
+        return adaptor;
+      });
+    },
+
+    /**
+     * Wraps the given `obj` object with a suitable adaptor.
+     *
+     *     view = new Backbone.View({ ... });
+     *     adaptor = nav.getAdaptorFor(view);
+     *
+     *     adaptor.el()
+     *     adaptor.remove()
+     */
+
+    getAdaptorFor: function (obj) {
+      var adaptors = this.getAdaptors();
+
+      for (var i=0; i < adaptors.length; ++i) {
+        var adaptor = adaptors[i];
+
+        if (adaptor.filter(obj))
+          return adaptor.wrap(obj, this);
+      }
+
+      throw new Error("Navstack: no adaptor found. Try returning an 'el' object.");
+    },
+
+    /**
      * (Internal) Uses an initializer (registered with `register()`)
      * to initialize a pane. Returns a view object.
      */
@@ -316,7 +365,7 @@
       if (this.stack.indexOf(name) > -1) return;
 
       this.stack.push(pane.name);
-    },
+    }
 
   };
 
@@ -448,6 +497,33 @@
     modal: Navstack.buildTransition('modal'),
     flip: Navstack.buildTransition('flip')
   };
+
+  Navstack.adaptors = {
+    /* Generic filter, suitable for Backbone and Ractive */
+    generic: {
+      filter: function (obj) {
+        return typeof obj === 'object' && obj.el;
+      },
+
+      wrap: function (obj, self) {
+        return {
+          el: function () { return obj.el; },
+          remove: function () { return obj.remove.apply(obj); }
+        };
+      }
+    }
+  };
+
+  Navstack.adapt = ['generic'];
+
+  /*
+   * Helpers
+   */
+
+  function map (obj, fn) {
+    if (obj.map) return obj.map(fn);
+    else throw new Error("Todo: implement map shim");
+  }
 
   return Navstack;
 

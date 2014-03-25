@@ -4,6 +4,7 @@ describe 'To do: v0.2', ->
     it 'zindex', ->
     it 'purging', ->
     it 'update CSS for "no extra markup" mode', ->
+    it 'adaptors', ->
 
   describe 'done', ->
     it '"no extra markup" mode', ->

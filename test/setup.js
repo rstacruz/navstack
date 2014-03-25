@@ -41,6 +41,14 @@ function myEnv(jq) {
 before(myEnv('jq-2.0'));
 global.testSuite = describe;
 
+beforeEach(function () {
+  global.sinon = require('sinon').sandbox.create();
+});
+
+afterEach(function () {
+  global.sinon.restore();
+});
+
 // Reset when needed
 beforeEach(function () {
   $('body').html('');

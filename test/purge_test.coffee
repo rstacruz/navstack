@@ -4,7 +4,7 @@ xdescribe 'Purging', ->
   beforeEach ->
     @stack = new Navstack()
 
-  it 'ok', ->
+  it 'purge forward panes', ->
     @stack.push 'a', -> { el: $("<div>") }
     @stack.push 'b', -> { el: $("<div>") }
     @stack.push 'c', -> { el: $("<div>") }
