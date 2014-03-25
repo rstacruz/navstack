@@ -542,9 +542,9 @@
    */
 
   Navstack.adaptors.react = buildAdaptor({
-    el: function (obj) { return obj.getDomElement(); },
-    check: function (obj) { return (typeof obj.getDomElement === 'function'); },
-    remove: function (obj) { return obj.remove(); }
+    el: function (obj) { return obj.getDOMNode(); },
+    check: function (obj) { return (typeof obj.getDOMNode === 'function'); },
+    remove: function (obj) { return window.React.unmountComponentAtNode(obj.getDOMNode()); }
   });
 
 
@@ -552,12 +552,13 @@
    * Generic adaptor. Accounts for any object that gives off an `el` property.
    */
 
-  Navstack.adaptors.generic = buildAdaptor({
-    el: function (obj) { return obj.el; },
+  Navstack.adaptors.jquery = buildAdaptor({
+    el: function (obj) { return $(obj); },
+    check: function (obj) { return $(obj)[0].nodeType === 1; },
     remove: function (obj) { return $(obj).remove(); }
   });
 
-  Navstack.adapt = ['backbone', 'ractive', 'react', 'generic'];
+  Navstack.adapt = ['backbone', 'ractive', 'react', 'jquery'];
 
   /*
    * Helpers
