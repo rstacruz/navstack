@@ -1,5 +1,6 @@
 $speed ?= 500ms
 $shadow ?= 0 0 20px rgba(black, 0.3), 0 0 10px rgba(black, 0.1)
+$noshadow ?= 0 0 20px rgba(black, 0.0), 0 0 10px rgba(black, 0.0)
 $zip ?= cubic-bezier(.3, .5, 0, 1)
 
 /* ----------------------------------------------------------------------------------
@@ -27,7 +28,7 @@ $zip ?= cubic-bezier(.3, .5, 0, 1)
 
 .slide-enter-backward
   z-index: 1
-  animation: slide-enter-backward $speed $zip
+  animation: slide-enter-backward ($speed * 0.7) $zip
 
 .slide-exit-forward
   z-index: 1
@@ -35,7 +36,7 @@ $zip ?= cubic-bezier(.3, .5, 0, 1)
 
 .slide-exit-backward
   z-index: 2
-  animation: slide-exit-backward $speed $zip
+  animation: slide-exit-backward ($speed * 0.7) $zip
   &.-navstack-no-filter
     box-shadow: $shadow
 
@@ -44,7 +45,8 @@ $zip ?= cubic-bezier(.3, .5, 0, 1)
 
 @keyframes slide-enter-forward
   0%
-    transform: translate3d(110%, 0, 0)
+    transform: translate3d(100%, 0, 0)
+    box-shadow: $noshadow
   100%
     transform: translate3d(0, 0, 0)
 
@@ -66,7 +68,8 @@ $zip ?= cubic-bezier(.3, .5, 0, 1)
   0%
     transform: translate3d(0%, 0, 0)
   100%
-    transform: translate3d(110%, 0, 0)
+    transform: translate3d(100%, 0, 0)
+    box-shadow: $noshadow
 
 /* ----------------------------------------------------------------------------------
  * Animations: vertical slide
