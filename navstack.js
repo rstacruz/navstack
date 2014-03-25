@@ -63,7 +63,10 @@
     // on the given tag
     this.el = (options && options.el) ? $(options.el) : $('<div>');
 
-    $(this.el).attr('data-stack', true);
+    $(this.el)
+      .attr('data-stack', true)
+      .addClass('-navstack');
+
     this.init(options);
   };
 
@@ -138,9 +141,8 @@
       var previous = this.active;
 
       // Spawn the pane if it hasn't been spawned before
-      if (!this.panes[name].el) {
+      if (!this.panes[name].el)
         this._spawnPane(name);
-      }
 
       var current = this.panes[name];
 
@@ -308,15 +310,10 @@
      */
 
     _spawnPane: function (name) {
-      // Create the element.
-      // var $pane = $(this.paneEl);
-      // $pane.attr('data-stack-pane', name);
-      // $(this.el).append($pane);
-
       // Get the pane (previously .register()'ed) and initialize it.
       var current = this.panes[name];
       if (!current) throw new Error("Navstack: Unknown pane: "+name);
-      current.init();//$pane[0]);
+      current.init();
 
       return current;
     },
@@ -403,15 +400,15 @@
      * Initializes the pane's view if needed.
      */
 
-    init: function (el) {
-      if (!this.isInitialized()) this.forceInit(el);
+    init: function () {
+      if (!this.isInitialized()) this.forceInit();
     },
 
     /**
      * Forces initialization even if it hasn't been yet.
      */
 
-    forceInit: function (el) {
+    forceInit: function () {
       var fn = this.initializer;
 
       if (typeof fn !== 'function')
@@ -420,7 +417,8 @@
       if (fn.length === 0) {
         // Let the initializer create the element, just use it afterwards.
         this.view = this.initializer.call(this.parent);
-        this.el = this.view.el;
+        this.adaptor = this.parent.getAdaptorFor(this.view);
+        this.el = this.adaptor.el();
       } else {
         // Create the DOM element as needed.
         if (!navigator.test)
@@ -432,8 +430,10 @@
         this.el = this.adaptor.el();
       }
 
-      $(this.parent.el).append(this.el);
-      this.el.attr('data-stack-pane', this.name);
+      $(this.el)
+        .attr('data-stack-pane', this.name)
+        .addClass('-navstack-pane')
+        .appendTo(this.parent.el);
     },
 
     isInitialized: function () {
