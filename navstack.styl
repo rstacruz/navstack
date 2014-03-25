@@ -7,7 +7,7 @@ $zip ?= cubic-bezier(.3, .5, 0, 1)
  * Screen
  */
 
-.-navstack-pane
+.-navstack-pane, .full-screen
   position: absolute
   top: 0
   left: 0
@@ -82,7 +82,7 @@ $zip ?= cubic-bezier(.3, .5, 0, 1)
 
 .modal-enter-backward
   z-index: 1
-  animation: nil $speed $zip
+  animation: nil ($speed * 0.7) $zip
 
 .modal-exit-forward
   z-index: 1
@@ -90,7 +90,7 @@ $zip ?= cubic-bezier(.3, .5, 0, 1)
 
 .modal-exit-backward
   z-index: 2
-  animation: modal-exit-backward $speed $zip
+  animation: modal-exit-backward ($speed * 0.7) $zip
   box-shadow: $shadow
 
 .modal-hide
