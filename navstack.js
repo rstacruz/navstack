@@ -260,7 +260,7 @@
           return adaptor.wrap(obj, this);
       }
 
-      throw new Error("Navstack: no adaptor found. Try returning an 'el' object.");
+      throw new Error("Navstack: no adaptor found. Try returning an object with an 'el' property.");
     },
 
     /**
@@ -393,6 +393,9 @@
 
     /** View instance as created by initializer. Created on `init()`. */
     this.view = null;
+
+    /** A wrapped version of the `view` */
+    this.adaptor = null;
   };
 
   Pane.prototype = {
@@ -424,8 +427,9 @@
           console.warn("Navstack: creating an element on the fly is going to be deprecated.");
 
         var $pane = $(this.parent.paneEl);
-        this.el = $pane;
         this.view = this.initializer.call(this.parent, $pane);
+        this.adaptor = this.parent.getAdaptorFor(this.view);
+        this.el = this.adaptor.el();
       }
 
       $(this.parent.el).append(this.el);

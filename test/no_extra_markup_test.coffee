@@ -7,6 +7,7 @@ describe 'No extra markup', ->
   it 'create elements when needed (old behavior)', ->
     @stack.push 'home', (el) ->
       $(el).html('hi')
+      { el: el }
 
     expect(@stack.el.find('> div:first-child:last-child').html()).eq 'hi'
 
