@@ -1,8 +1,7 @@
 /* ----------------------------------------------------------------------------------
  * Screen
  */
-.-navstack > *,
-.full-screen {
+.-navstack-pane {
   position: absolute;
   top: 0;
   left: 0;
