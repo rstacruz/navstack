@@ -5,7 +5,7 @@ Manage a stack of multiple views. Perfect for tabs, navigation stacks, and
 similar.  Inspired by iOS's UINavigationController.
 
  * __Framework-agnostic__: made to play fair with [Backbone], [Ractive], 
- [React.js ] and more. Can even work with plain old jQuery.
+ [React.js] and more. Can even work with plain old jQuery.
 
  * __Router-friendly__: made to be able to work with pushstate routers (like 
      [page.js]).
