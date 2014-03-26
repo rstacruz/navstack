@@ -337,7 +337,7 @@
 
     runTransition: function (transition, direction, current, previous) {
       transition.before(direction, current, previous, function () {
-        $(document).queue(function (next) {
+        Navstack.queue(function (next) {
           transition.run(direction, current, previous, function () {
             transition.after(direction, current, previous, next);
           });
@@ -446,7 +446,7 @@
         $(current && current.el)
           .add(previous && previous.el)
           .toggleClass('-navstack-with-filter', filterSupported)
-          .toggleClass('-navstack-no-filter', filterSupported);
+          .toggleClass('-navstack-no-filter', !filterSupported);
 
         if (direction !== 'first' && current)
           $(current.el).addClass(prefix+'-hide');
@@ -588,6 +588,14 @@
     if (obj.map) return obj.map(fn);
     else throw new Error("Todo: implement map shim");
   }
+
+  /**
+   * (Internal) Queues animations.
+   */
+
+  Navstack.queue = function (fn) {
+    $(document).queue(fn);
+  };
 
   return Navstack;
 

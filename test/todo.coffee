@@ -10,9 +10,6 @@ describe 'To do: v0.2', ->
     it 'purging', ->
       # going back then .push()ing should purge the later panes.
 
-    it 'update CSS for "no extra markup" mode', ->
-      # don't use .full-screen and >* anymore.
-
   describe 'done', ->
     it 'adaptors', ->
       expect(Navstack.adaptors).be.an 'object'
@@ -35,3 +32,7 @@ describe 'To do: v0.2', ->
       expect(Navstack.prototype.on).be.a 'function'
       expect(Navstack.prototype.off).be.a 'function'
       expect(Navstack.prototype.one).be.a 'function'
+
+    it 'update CSS for "no extra markup" mode', ->
+      # don't use .full-screen and >* anymore.
+
