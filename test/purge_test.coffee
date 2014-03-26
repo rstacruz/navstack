@@ -5,11 +5,6 @@ testSuite 'Purging', ->
     @stack = new Navstack()
 
   describe '.purgePane()', ->
-    it 'throw an error', ->
-      expect(=>
-        @stack.purgePane('xxx')
-      ).throw /No such pane/
-
     beforeEach ->
       @stack.push 'a', -> $("<div>")
       @stack.push 'b', -> $("<div>")
@@ -36,19 +31,21 @@ testSuite 'Purging', ->
         done()
       @stack.purgePane('a')
 
+  describe 'purgeObsolete', ->
+    it 'purge forward panes', ->
+      @stack.push 'a', -> $("<div>")
+      @stack.push 'b', -> $("<div>")
+      @stack.push 'c1', -> $("<div>")
+      @stack.push 'c2', -> $("<div>")
+      @stack.go('b')
+      @stack.push 'd', -> $("<div>")
+
+      expect(@stack.stack).eql ['a', 'b', 'd']
+      expect(@stack.panes['c']).be.undefined
+
 xdescribe 'Purging', ->
   beforeEach ->
     @stack = new Navstack()
-
-  it 'purge forward panes', ->
-    @stack.push 'a', -> $("<div>")
-    @stack.push 'b', -> $("<div>")
-    @stack.push 'c', -> $("<div>")
-    @stack.go('c')
-    @stack.push 'd', -> $("<div>")
-
-    expect(@stack.stack).eq ['a', 'b', 'd']
-    expect(@stack.panes['c']).be.undefined
 
   it 'account for zIndex', ->
     @stack.push 'item:1', -> $("<div>")
