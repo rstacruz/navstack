@@ -20,6 +20,26 @@ Requires jQuery 1.7+.
 (__Status:__ *very usable, but lacking documentation and examples. API is not 
  fully stable yet. Will get to that eventually!*)
 
+Install
+-------
+
+Navstack is a JS + CSS bundle.
+
+ * [navstack.js](https://raw.githubusercontent.com/rstacruz/navstack/master/navstack.js)
+ * [navstack.css](https://raw.githubusercontent.com/rstacruz/navstack/master/navstack.css)
+
+Or get it via Bower:
+
+    bower install navstack
+
+Then use it:
+
+``` html
+<script src="jquery.js"></script>
+<script src="navstack.js"></script>
+<link rel="stylesheet" href="navstack.css">
+```
+
 Usage
 -----
 
