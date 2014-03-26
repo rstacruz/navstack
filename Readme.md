@@ -45,29 +45,39 @@ Usage
 
 ### Basic usage
 
-Use `.push()` to create your panes. Pass a callback that will return a 
-[Backbone] view, [Ractive] or [React.js] instance, or a DOM element.
+Create your stack.
 
 ``` js
 stage = new Navstack({ el: '#stage' });
+```
 
+Use `.push()` to create your panes. Pass a callback that will return what you
+want the pane to be.
+
+``` js
 // Navigate to new pages using push.
 stage.push('home', function() {
   return $("<div class='full-screen'>This is the home screen</div>");
 });
 
-// The first parameter is an ID for the pane to be pushed
+// The first parameter is an ID for the pane to be pushed.
 stage.push('task:1', function() {
   return $("<div class='full-screen'>Task #1 details: ...</div>");
 });
 
-// You may use Backbone, Ractive, or React.js views
+You may use [Backbone] views, [Ractive] instances, or [React.js] components as
+well.
+
+``` js
 stage.push('task:1', function() {
   return new Backbone.View({ ... });
 });
+```
 
-// Switch to older panes using .go()
-stage.go('home');
+To switch to older panes, use `.push(name)`.
+
+``` js
+stage.push('home');
 ```
 
 ### Transitions
@@ -99,31 +109,6 @@ Stage = Navstack.extend({
 
 stage = new Stage({ el: '#stage' });
 stage.go('home');
-```
-
-### Tabs
-
-You can also use it for tabs by creating your tab panes --
-this tells Navstack how to construct a tab as they're needed. This allows you to 
-`.go()` to any tab at any time.
-
-``` js
-// Define your panes under the `panes` key
-stage = new Navstack({
-  el: '#stage',
-  panes: {
-    home: function() {
-      return $("<div class='full-screen'>This is the home screen</div>")el: };
-    },
-    messages: function() {
-      return $("<div class='full-screen'>Messages: ...</div>");
-    }
-  }
-});
-
-// Switch to a pane
-stage.go('home');
-stage.go('messages');
 ```
 
 Cheat sheet

@@ -1,10 +1,16 @@
 require './setup'
 
 describe 'Push errors', ->
-  it 'invalid pane initializer', ->
+  it 'unknown pane', ->
     expect(->
       @stack = new Navstack()
       @stack.push 'hi', undefined
+    ).throw /unknown pane 'hi'/
+
+  it 'invalid pane initializer', ->
+    expect(->
+      @stack = new Navstack()
+      @stack.push 'hi', 323423
     ).throw /pane initializer is not a function/
 
   it 'no element found', ->

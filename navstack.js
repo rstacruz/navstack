@@ -135,7 +135,20 @@
     },
 
     /**
-     * Switches to a given pane `name`.
+     * Registers a pane.
+     */
+
+    push: function (name, fn) {
+      if (!this.panes[name]) {
+        if (!fn) throw new Error("Navstack: unknown pane '" + name + "'");
+        this.register(name, fn);
+      }
+
+      return this.go(name);
+    },
+
+    /**
+     * (Internal) Switches to a given pane `name`.
      */
 
     go: function (name) {
@@ -174,17 +187,6 @@
       }));
 
       return (current && current.view);
-    },
-
-    /**
-     * Registers a pane.
-     */
-
-    push: function (name, fn) {
-      if (!this.panes[name])
-        this.register(name, fn);
-
-      return this.go(name);
     },
 
     /**
