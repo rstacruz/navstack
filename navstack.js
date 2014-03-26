@@ -128,7 +128,7 @@
       return this;
     },
 
-    /*** off: .off(event, function)
+    /*** off: (event, callback)
      * Removes an event handler.
      *
      *     nav.off('remove', myfunction);
@@ -139,7 +139,7 @@
       return this;
     },
 
-    /*** one: .one(event, function)
+    /*** one: (event, callback)
      * Works like `.on`, except it unbinds itself right after.
      */
 
@@ -165,7 +165,7 @@
       return this.go(name);
     },
 
-    /** go: .go(name)
+    /*** go: (name)
      * (Internal) Switches to a given pane `name`.
      */
 
@@ -230,16 +230,17 @@
       }
     },
 
-    /*** remove: .remove()
-     * Removes and destroys
+    /*** remove:
+     * Removes and destroys the Navstack.
      */
 
     remove: function () {
+      // TODO: destroy each pane
       this.emitter.trigger('remove');
       $(this.el).remove();
     },
 
-    /**
+    /*** teardown:
      * Alias for `remove` (to make Navstack behave a bit more like Ractive
      * components).
      */
@@ -248,7 +249,7 @@
       return this.remove.apply(this, arguments);
     },
 
-    /**
+    /*** getAdaptors:
      * Returns the adaptors
      */
 
@@ -267,7 +268,7 @@
       });
     },
 
-    /**
+    /*** getAdaptorFor: (obj)
      * Wraps the given `obj` object with a suitable adaptor.
      *
      *     view = new Backbone.View({ ... });
@@ -293,7 +294,7 @@
       throw new Error("Navstack: no adaptor found");
     },
 
-    /**
+    /*
      * (Internal) Purges a given pane.
      *
      *     this.purgePane('home');
@@ -322,7 +323,7 @@
       if (idx > -1) this.stack.splice(idx, 1);
     },
 
-    /**
+    /*
      * (Internal) Purges any panes that are not needed.
      */
 
@@ -336,7 +337,7 @@
       }
     },
 
-    /**
+    /*** getDirection: (from, to)
      * (Internal) Returns the direction of animation based on the
      * indices of panes `from` and `to`.
      *
@@ -366,7 +367,7 @@
         return 'forward';
     },
 
-    /**
+    /*** spawnPane: .spawnPane(name)
      * (Internal) Spawns the pane of a given `name`.
      * Returns the pane instance.
      */
@@ -380,8 +381,8 @@
       return current;
     },
 
-    /**
-     * (Internal) get the transition object for the given string `trans`.
+    /*** getTransition: .getTransition(transition)
+     * (Internal) get the transition object for the given string `transition`.
      * Throws an error if it's invalid.
      */
 
