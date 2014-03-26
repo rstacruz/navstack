@@ -15,7 +15,7 @@
     "test": "./node_modules/.bin/mocha",
     "todo": "./node_modules/.bin/mocha test/todo.coffee",
     "autotest": "./node_modules/.bin/mocha -R min --watch",
-    "coverage": "./node_modules/.bin/jscoverage navstack.js; env COVERAGE=true ./node_modules/.bin/mocha -R html-cov > coverage.html",
+    "coverage": "./node_modules/.bin/jscoverage navstack.js && env COVERAGE=true ./node_modules/.bin/mocha -R html-cov > coverage.html",
     "prepublish": "make"
   },
   "devDependencies": {

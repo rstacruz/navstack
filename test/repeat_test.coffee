@@ -32,9 +32,17 @@ testSuite 'Repeat', ->
 
   describe '.register, .go', ->
     beforeEach ->
+      sinon.spy @stack, 'spawnPane'
+
       @stack.register 'home', ->
         { el: $("<div>"), title: "Home view", remove: -> }
 
     it 'should work', ->
       view = @stack.go 'home'
       expect(view.title).eq "Home view"
+
+    it 'double .go', ->
+      view = @stack.go 'home'
+      expect(view.title).eq "Home view"
+      expect(@stack.spawnPane).calledOnce
+

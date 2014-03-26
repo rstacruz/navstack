@@ -43,18 +43,21 @@ function myEnv(jq) {
   };
 }
 
-global.testSuite = function(name, fn) {
-  if (!cov) {
+if (!cov) {
+  global.testSuite = function(name, fn) {
     describe("jq-1.7: "+name, function () {
       before(myEnv('jq-1.7'));
       fn();
     });
-  }
-  describe("jq-2.0: "+name, function () {
-    before(myEnv('jq-2.0'));
-    fn();
-  });
-};
+    describe("jq-2.0: "+name, function () {
+      before(myEnv('jq-2.0'));
+      fn();
+    });
+  };
+} else {
+  before(myEnv('jq-2.0'));
+  global.testSuite = describe;
+}
 
 beforeEach(function () {
   global.sinon = require('sinon').sandbox.create();
