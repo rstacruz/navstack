@@ -272,6 +272,32 @@
     },
 
     /**
+     * Purges a given pane.
+     */
+
+    purgePane: function (pane) {
+      pane = typeof pane === 'string' ?
+        this.panes[pane] : pane;
+
+      if (!pane)
+        throw new Error("No such pane");
+
+      var name = pane.name;
+
+      var idx = this.stack.indexOf(name);
+      if (idx === -1)
+        throw new Error("Huh");
+
+      // Emit events
+      this.emitter.trigger('purge', pane);
+      this.emitter.trigger('purge:'+name, pane);
+
+      this.panes[name].adaptor.remove();
+      delete this.panes[name];
+      this.stack.splice(idx, 1);
+    },
+
+    /**
      * (Internal) Returns the direction of animation based on the
      * indices of panes `from` and `to`.
      *
