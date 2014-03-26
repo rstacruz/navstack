@@ -6,8 +6,6 @@ testSuite 'Invalid pane', ->
     @stack.push 'a', -> $("<div>")
 
   it 'should error', ->
-    try
+    expect(=>
       @stack.go('b')
-      expect(2).eq 3
-    catch e
-      expect(e.message).match /unknown pane 'b'/
+    ).throw /unknown pane 'b'/

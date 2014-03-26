@@ -25,11 +25,9 @@ testSuite 'Adaptors', ->
       expect(console.warn.calledOnce).be.true
 
     it 'no adaptor found error', ->
-      try
+      expect(=>
         @stack.getAdaptorFor(31337)
-        expect(2).eq 3
-      catch e
-        expect(e.message).match /no adaptor found/
+      ).throw /no adaptor found/
 
     it 'custom adaptors in instance', ->
       @stack.adaptors.custom =
