@@ -15,6 +15,7 @@
     "test": "./node_modules/.bin/mocha",
     "todo": "./node_modules/.bin/mocha test/todo.coffee",
     "autotest": "./node_modules/.bin/mocha -R min --watch",
+    "coverage": "./node_modules/.bin/jscoverage navstack.js; env COVERAGE=true ./node_modules/.bin/mocha -R html-cov > coverage.html",
     "prepublish": "make"
   },
   "devDependencies": {
@@ -25,7 +26,8 @@
     "chai-jquery": "^1.2.1",
     "jsdom": "^0.10.1",
     "stylus": "^0.42.3",
-    "autoprefixer": "^1.1.20140302"
+    "autoprefixer": "^1.1.20140302",
+    "jscoverage": "^0.3.8"
   },
   "license": "MIT"
 }
