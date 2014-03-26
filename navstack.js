@@ -6,16 +6,23 @@
  * Manages a stack of multiple views.
  */
 
-(function(factory) {
+(function(root, factory) {
 
-  var $ = this.jQuery || this.require('jquery');
+  if (typeof define === 'function' && define.amd) {
+    define(['jquery'], factory); /* AMD */
+  } else if (typeof exports === 'object') {
+    factory(jquery()); /* CommonJS */
+  } else {
+    root.Navstack = factory(jquery()); /* Globals */
+  }
 
-  if (typeof module === 'object')
-    module.exports = factory($);
-  else
-    this.Navstack = factory($);
+  function jquery() {
+    var $ = (typeof require === 'function' && require('jquery')) || root.jQuery || root.$ || null;
+    if (!$) throw new Error("Navstack: jQuery not found.");
+    return $;
+  }
 
-})(function ($) {
+})(this, function ($) {
 
   var Navstack, Pane;
 
