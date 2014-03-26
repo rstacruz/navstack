@@ -163,13 +163,17 @@
       var previous = this.active;
 
       // Spawn the pane if it hasn't been spawned before
-      if (!this.panes[name].el)
+      if (!this.panes[name].el) {
         this.spawnPane(name);
+      }
 
       var current = this.panes[name];
 
       // Insert into stack
-      this.insertIntoStack(current);
+      if (this.stack.indexOf(name) === -1) {
+        this.purgeObsolete();
+        this.insertIntoStack(current);
+      }
 
       // Register a new 'active' pane
       this.active = current;
@@ -269,6 +273,49 @@
       }
 
       throw new Error("Navstack: no adaptor found");
+    },
+
+    /**
+     * (Internal) Purges a given pane.
+     *
+     *     this.purgePane('home');
+     *     this.purgePane(this.panes['home']);
+     */
+
+    purgePane: function (name, options) {
+      var pane = typeof name === 'string' ?
+        this.panes[name] : name;
+
+      // if pane doesn't exist: act like it was removed
+      if (!pane) return;
+
+      name = pane.name;
+
+      // emit events
+      this.emitter.trigger('purge', pane);
+      this.emitter.trigger('purge:'+name, pane);
+
+      // remove from DOM
+      this.panes[name].adaptor.remove();
+      delete this.panes[name];
+
+      // remove from stack
+      var idx = this.stack.indexOf(name);
+      if (idx > -1) this.stack.splice(idx, 1);
+    },
+
+    /**
+     * (Internal) Purges any panes that are not needed.
+     */
+
+    purgeObsolete: function () {
+      if (!this.active) return;
+
+      var idx = this.stack.indexOf(this.active.name);
+
+      for (var i = this.stack.length; i>idx; i--) {
+        this.purgePane(this.stack[i]);
+      }
     },
 
     /**

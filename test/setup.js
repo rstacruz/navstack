@@ -1,5 +1,6 @@
 // Coverage mode
 var cov = (!! process.env.COVERAGE);
+var fast = (!! process.env.fast);
 
 // Deps
 global.chai = require('chai');
@@ -43,7 +44,7 @@ function myEnv(jq) {
   };
 }
 
-if (!cov) {
+if (!cov && !fast) {
   global.testSuite = function(name, fn) {
     describe("jq-1.7: "+name, function () {
       before(myEnv('jq-1.7'));

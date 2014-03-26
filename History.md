@@ -3,6 +3,8 @@
  * Allow `.push(name)` without a function to switch to previously-defined panes.  
  This makes `.go()` deprecated.
 
+ * Purge obsolete panes.
+
 ## v0.1.1 - March 26, 2014
 
 First official release.
