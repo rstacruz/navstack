@@ -26,25 +26,28 @@
 
   var Navstack, Pane;
 
-  /**
-   * A stack.
+  /** Navstack:
+   *  A stack.
    *
    *     nav = new Navstack();
    */
 
   Navstack = function (options) {
-    /** Registry of pane transitions.
-     *  A local version of `Navstack.transitions`. */
+    /*** transitions:
+     * Registry of pane transitions.
+     * A local version of `Navstack.transitions`. */
     this.transitions = {};
 
-    /** Registry of suitable adaptors.
-     *  A local version of `Navstack.adaptors`. */
+    /*** adaptors:
+     * Registry of suitable adaptors.
+     * A local version of `Navstack.adaptors`. */
     this.adaptors = {};
 
     $.extend(this, options);
 
-    /** Index of panes that have been registered with this Navstack.
-     *  Object with pane names as keys and `Pane` instances as values.
+    /*** panes:
+     * Index of panes that have been registered with this Navstack.
+     * Object with pane names as keys and `Pane` instances as values.
      *
      *      nav.push('home', function () { ... });
      *
@@ -55,21 +58,24 @@
      */
     this.panes = {};
 
-    /** Alias for the active pane. Same as `nav.pane[nav.activeName]`. This is
-     *  a `Pane` instance. */
+    /*** active:
+     * Alias for the active pane. This is
+     * a `Pane` instance. */
     this.active = null;
 
-    /** Name of the active pane. */
-    this.activeName = null;
-
-    /** Ordered array of pane names of what are the actively. */
+    /*** stack:
+     * Ordered array of pane names of what are the actively. */
     this.stack = [];
 
-    /** (Internal) event emitter. */
+    /*** emitter:
+     * (Internal) event emitter. */
     this.emitter = $({});
 
-    // Create the element, or use the given element, or create it based
-    // on the given tag
+    /*** el:
+     * The DOM element.
+     *
+     *       $(nav.el).show()
+     */
     this.el = (options && options.el) ? $(options.el) : $('<div>');
 
     $(this.el)
@@ -79,20 +85,8 @@
     this.init(options);
   };
 
-  /**
-   * Subclasses Navstack to create your new Navstack class.
-   */
-
-  Navstack.extend = function (proto) {
-    var klass = function() { Navstack.apply(this, arguments); };
-    $.extend(klass.prototype, Navstack.prototype, proto);
-    return klass;
-  };
-
   Navstack.prototype = {
-    paneEl: "<div>",
-
-    /**
+    /*** init:
      * Constructor. Override me.
      *
      *     var MyStack = Navstack.extend({
@@ -104,7 +98,7 @@
 
     init: function () {},
 
-    /**
+    /*** register:
      * Registers a pane `name` with initializer function `fn`, allowing you to
      * use `.go()` on the registered pane later.
      *
@@ -409,6 +403,17 @@
     }
 
   };
+
+  /*** extend
+   *   Subclasses Navstack to create your new Navstack class.
+   */
+
+  Navstack.extend = function (proto) {
+    var klass = function() { Navstack.apply(this, arguments); };
+    $.extend(klass.prototype, Navstack.prototype, proto);
+    return klass;
+  };
+
 
   /**
    * Pane.
