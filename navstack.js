@@ -291,20 +291,17 @@
 
       name = pane.name;
 
-      var idx = this.stack.indexOf(name);
-      if (idx === -1)
-        throw new Error("Huh");
-
-      // Emit events
+      // emit events
       this.emitter.trigger('purge', pane);
       this.emitter.trigger('purge:'+name, pane);
 
-      // Remove from DOM
+      // remove from DOM
       this.panes[name].adaptor.remove();
       delete this.panes[name];
 
-      // Remove from stack
-      this.stack.splice(idx, 1);
+      // remove from stack
+      var idx = this.stack.indexOf(name);
+      if (idx > -1) this.stack.splice(idx, 1);
     },
 
     /**
@@ -638,12 +635,6 @@
   function map (obj, fn) {
     if (obj.map) return obj.map(fn);
     else throw new Error("Todo: implement map shim");
-  }
-
-  function each (arr, fn) {
-    for (var i=0, len=arr.length; i<len; ++i) {
-      fn(arr[i]);
-    }
   }
 
   /**
