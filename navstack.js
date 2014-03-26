@@ -597,6 +597,8 @@
     $(document).queue(fn);
   };
 
+  Navstack.version = '0.1.1';
+
   return Navstack;
 
 });

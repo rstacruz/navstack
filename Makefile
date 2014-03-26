@@ -9,3 +9,6 @@ size:
 	@echo "  .css       " `cat navstack.css | wc -c` bytes
 	@echo "  .min.css   " `cat navstack.css | stylus -c | wc -c` bytes
 	@echo "  .min.css.gz" `cat navstack.css | stylus -c | gzip | wc -c` bytes
+
+bump:
+	bump navstack.js package.json bower.json
