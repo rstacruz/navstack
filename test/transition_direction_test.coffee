@@ -1,6 +1,6 @@
 require './setup'
 
-describe 'Transition direction', ->
+testSuite 'Transition direction', ->
   noop = (a, b, c, next) -> next()
 
   beforeEach ->

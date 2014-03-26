@@ -7,6 +7,7 @@ var fs = require('fs');
 var multisuite = require('./support/multisuite');
 
 var scripts = {
+  'jq-1.7': fs.readFileSync('vendor/jquery-1.7b2.js'),
   'jq-2.0': fs.readFileSync('vendor/jquery-2.0.2.js'),
   'navstack': fs.readFileSync('navstack.js')
 };
@@ -38,8 +39,16 @@ function myEnv(jq) {
   };
 }
 
-before(myEnv('jq-2.0'));
-global.testSuite = describe;
+global.testSuite = function(name, fn) {
+  describe("jq-1.7: "+name, function () {
+    before(myEnv('jq-1.7'));
+    fn();
+  });
+  describe("jq-2.0: "+name, function () {
+    before(myEnv('jq-2.0'));
+    fn();
+  });
+};
 
 beforeEach(function () {
   global.sinon = require('sinon').sandbox.create();

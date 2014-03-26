@@ -1,6 +1,6 @@
 require './setup'
 
-describe 'Events', ->
+testSuite 'Events', ->
   beforeEach ->
     @stack = new Navstack()
 

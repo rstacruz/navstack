@@ -1,6 +1,6 @@
 require './setup'
 
-describe 'No extra markup', ->
+testSuite 'No extra markup', ->
   beforeEach ->
     @stack = new Navstack()
 

@@ -1,6 +1,6 @@
 require './setup'
 
-describe 'Stack array', ->
+testSuite 'Stack array', ->
   beforeEach ->
     @stack = new Navstack()
 

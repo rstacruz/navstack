@@ -1,6 +1,6 @@
 require './setup'
 
-describe 'Adaptors', ->
+testSuite 'Adaptors', ->
   it 'should be present', ->
     expect(Navstack.adaptors).be.a 'object'
     expect(Navstack.adapt).be.an 'array'

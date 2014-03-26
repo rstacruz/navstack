@@ -1,6 +1,7 @@
 require './setup'
 
-testSuite 'Transitions', ->
+# For some reason, it randomly fails in jQuery 1.7
+describe 'Transitions', ->
   className = (what) -> $("#{what}").attr('class')
 
   # Stub the queueing mechanism

@@ -1,6 +1,6 @@
 require './setup'
 
-describe 'Individual adaptors', ->
+testSuite 'Individual adaptors', ->
   beforeEach ->
     @stack = new Navstack(el: $("<div>").appendTo('body'))
 
