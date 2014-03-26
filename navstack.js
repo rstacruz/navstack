@@ -109,8 +109,18 @@
       this.panes[name] = new Pane(name, fn, this);
     },
 
-    /**
-     * Events
+    /*** Events:
+     * Available events are:
+     *
+     *   - 'remove'
+     */
+
+    /*** on: .on(event, function)
+     * Binds an event handler.
+     *
+     *     nav.on('remove', function() {
+     *       // do things
+     *     });
      */
 
     on: function (event, handler) {
@@ -118,18 +128,32 @@
       return this;
     },
 
+    /*** off: .off(event, function)
+     * Removes an event handler.
+     *
+     *     nav.off('remove', myfunction);
+     */
+
     off: function (event, handler) {
       this.emitter.off(event, $.proxy(handler, this));
       return this;
     },
+
+    /*** one: .one(event, function)
+     * Works like `.on`, except it unbinds itself right after.
+     */
 
     one: function (event, handler) {
       this.emitter.one(event, $.proxy(handler, this));
       return this;
     },
 
-    /**
+    /*** push: .push(name, [fn])
      * Registers a pane.
+     *
+     *     nav.push('home', function() {
+     *       return $("<div>...</div>");
+     *     });
      */
 
     push: function (name, fn) {
@@ -141,7 +165,7 @@
       return this.go(name);
     },
 
-    /**
+    /** go: .go(name)
      * (Internal) Switches to a given pane `name`.
      */
 
@@ -187,8 +211,8 @@
       return (current && current.view);
     },
 
-    /**
-     * Pane transition
+    /*** transition:
+     * Pane transition.
      */
 
     transition: {
@@ -206,7 +230,7 @@
       }
     },
 
-    /**
+    /*** remove: .remove()
      * Removes and destroys
      */
 
