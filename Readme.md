@@ -71,11 +71,19 @@ well.
 
 ``` js
 stage.push('task:1', function() {
+  /* Backbone: */
   return new Backbone.View({ ... });
+
+  /* Ractive: */
+  return new Ractive({ template: '...' });
+
+  /* React.js: */
+  var MyComponent = React.createClass({ ... });
+  return new MyComponent({ name: "John" });
 });
 ```
 
-To switch to older panes, use `.push(name)`:
+To switch back to previously-defined panes, use `.push(name)`.
 
 ``` js
 stage.push('home');
