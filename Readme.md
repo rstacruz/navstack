@@ -64,6 +64,7 @@ stage.push('home', function() {
 stage.push('task:1', function() {
   return $("<div class='full-screen'>Task #1 details: ...</div>");
 });
+```
 
 You may use [Backbone] views, [Ractive] instances, or [React.js] components as
 well.
@@ -74,7 +75,7 @@ stage.push('task:1', function() {
 });
 ```
 
-To switch to older panes, use `.push(name)`.
+To switch to older panes, use `.push(name)`:
 
 ``` js
 stage.push('home');
