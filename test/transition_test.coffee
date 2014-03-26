@@ -35,14 +35,20 @@ testSuite 'Transitions', ->
 
     it 'filter support detection on previous', ->
       expect(className "#previous").match /-navstack-(with|no)-filter/
-    
+
     it 'hide at first', ->
       expect(className "#current").match /slide-hide/
+
+    it 'run queue', ->
+      expect(Navstack.queue.calledOnce).be.true
 
   # While animations are running
   describe 'run', ->
     beforeEach (done) ->
       setTimeout done, 10
+
+    it 'run queue', ->
+      expect(Navstack.queue.calledTwice).be.true
 
     it 'parent container', ->
       expect(className "#parent").match /slide-container/
@@ -70,3 +76,6 @@ testSuite 'Transitions', ->
 
     it 'remove classes from previous', ->
       expect(className "#previous").eq '-navstack-pane slide-hide'
+
+    it 'run queue', ->
+      expect(Navstack.queue.calledTwice).be.true
