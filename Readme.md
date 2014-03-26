@@ -11,9 +11,9 @@ similar.  Inspired by iOS's UINavigationController.
      [page.js]).
 
  * __Mobile-like transitions__: buttery-smooth transitions are available out of 
- the box.
+ the box, modeled after iOS7.
 
-Requires nothing but jQuery.
+Requires jQuery 1.7+.
 
 [![Status](https://travis-ci.org/rstacruz/navstack.png?branch=master)](https://travis-ci.org/rstacruz/navstack)
 
