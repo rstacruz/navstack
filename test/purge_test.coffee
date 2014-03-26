@@ -31,8 +31,16 @@ testSuite 'Purging', ->
         done()
       @stack.purgePane('a')
 
+    it 'remove from dom', ->
+      adaptor = @stack.panes.a.adaptor
+      sinon.spy adaptor, 'remove'
+
+      @stack.purgePane('a')
+
+      expect(adaptor.remove.calledOnce).be.true
+
   describe 'purgeObsolete', ->
-    it 'purge forward panes', ->
+    beforeEach ->
       @stack.push 'a', -> $("<div>")
       @stack.push 'b', -> $("<div>")
       @stack.push 'c1', -> $("<div>")
@@ -40,8 +48,12 @@ testSuite 'Purging', ->
       @stack.go('b')
       @stack.push 'd', -> $("<div>")
 
+    it 'purge forward panes from stack', ->
       expect(@stack.stack).eql ['a', 'b', 'd']
-      expect(@stack.panes['c']).be.undefined
+
+    it 'remove', ->
+      expect(@stack.panes['c1']).be.undefined
+      expect(@stack.panes['c2']).be.undefined
 
 xdescribe 'Purging', ->
   beforeEach ->
