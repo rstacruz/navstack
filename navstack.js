@@ -207,14 +207,6 @@
     },
 
     /**
-     * Returns the names of the things in the stack.
-     */
-
-    stackKeys: function () {
-      return Object.keys(this.stack);
-    },
-
-    /**
      * Removes and destroys
      */
 

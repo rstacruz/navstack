@@ -30,6 +30,10 @@ testSuite 'Events', ->
       @stack.one 'remove', -> done()
       @stack.remove()
 
+    it 'on teardown', (done) ->
+      @stack.one 'remove', -> done()
+      @stack.teardown()
+
   describe 'triggering', ->
     it 'should work', (done) ->
       @stack.on 'transition', (e) -> done()

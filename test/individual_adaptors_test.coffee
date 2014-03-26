@@ -54,3 +54,29 @@ testSuite 'Individual adaptors', ->
     it 'remove', ->
       @stack.panes.home.adaptor.remove()
       expect($('.xyz')[0]).be.undefined
+
+  describe 'adaptors.react', ->
+    beforeEach ->
+      @stack.adapt = ['react']
+
+      @stack.push 'home', ->
+        div = $("<div class='xyz'>hello</div>")[0]
+        getDOMNode: -> div
+
+    beforeEach ->
+      window.React =
+        unmountComponentAtNode: (el) -> $(el).remove()
+
+    afterEach ->
+      delete window.React
+
+    it 'push', ->
+      expect($('body > div > .xyz')[0]).not.be.undefined
+
+    it 'el', ->
+      expect($(@stack.panes.home.el).html()).eq "hello"
+
+    it 'remove', ->
+      @stack.panes.home.adaptor.remove()
+      expect($('.xyz')[0]).be.undefined
+
