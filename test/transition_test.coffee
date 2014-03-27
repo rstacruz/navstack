@@ -41,7 +41,7 @@ describe 'Transitions', ->
       expect(className "#current").match /slide-hide/
 
     it 'run queue', ->
-      expect(Navstack.queue.calledOnce).be.true
+      expect(Navstack.queue.callCount).gte 1
 
   # While animations are running
   describe 'run', ->
