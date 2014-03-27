@@ -1,5 +1,5 @@
 /* jshint es3: true */
-/**
+/*
  * Navstack
  * https://github.com/rstacruz/navstack
  *
@@ -45,7 +45,8 @@
 
     $.extend(this, options);
 
-    /*** panes:
+    /***
+     * panes:
      * Index of panes that have been registered with this Navstack.
      * Object with pane names as keys and `Pane` instances as values.
      *
@@ -86,7 +87,8 @@
   };
 
   Navstack.prototype = {
-    /*** init:
+    /***
+     * init:
      * Constructor. Override me.
      *
      *     var MyStack = Navstack.extend({
@@ -98,7 +100,8 @@
 
     init: function () {},
 
-    /*** register:
+    /***
+     * register:
      * Registers a pane `name` with initializer function `fn`, allowing you to
      * use `.go()` on the registered pane later.
      *
@@ -109,13 +112,15 @@
       this.panes[name] = new Pane(name, fn, this);
     },
 
-    /*** Events:
-     * Available events are:
+    /***
+     * Events:
+     * There's events. Available events are:
      *
      *   - 'remove'
      */
 
-    /*** on: .on(event, function)
+    /***
+     * on: .on(event, function)
      * Binds an event handler.
      *
      *     nav.on('remove', function() {
@@ -128,7 +133,8 @@
       return this;
     },
 
-    /*** off: (event, callback)
+    /***
+     * off: (event, callback)
      * Removes an event handler.
      *
      *     nav.off('remove', myfunction);
@@ -139,7 +145,8 @@
       return this;
     },
 
-    /*** one: (event, callback)
+    /***
+     * one: (event, callback)
      * Works like `.on`, except it unbinds itself right after.
      */
 
@@ -148,7 +155,8 @@
       return this;
     },
 
-    /*** push: .push(name, [fn])
+    /***
+     * push: .push(name, [fn])
      * Registers a pane.
      *
      *     nav.push('home', function() {
@@ -165,7 +173,8 @@
       return this.go(name);
     },
 
-    /*** go: (name)
+    /***
+     * go: (name)
      * (Internal) Switches to a given pane `name`.
      */
 
@@ -211,7 +220,8 @@
       return (current && current.view);
     },
 
-    /*** transition:
+    /***
+     * transition: Object
      * Pane transition.
      */
 
@@ -230,7 +240,8 @@
       }
     },
 
-    /*** remove:
+    /***
+     * remove:
      * Removes and destroys the Navstack.
      */
 
@@ -240,7 +251,8 @@
       $(this.el).remove();
     },
 
-    /*** teardown:
+    /***
+     * teardown:
      * Alias for `remove` (to make Navstack behave a bit more like Ractive
      * components).
      */
@@ -249,8 +261,9 @@
       return this.remove.apply(this, arguments);
     },
 
-    /*** getAdaptors:
-     * Returns the adaptors
+    /***
+     * getAdaptors:
+     * Returns the adaptors available.
      */
 
     getAdaptors: function () {
@@ -268,7 +281,8 @@
       });
     },
 
-    /*** getAdaptorFor: (obj)
+    /***
+     * getAdaptorFor: .getAdaptorFor(obj)
      * Wraps the given `obj` object with a suitable adaptor.
      *
      *     view = new Backbone.View({ ... });
@@ -294,7 +308,8 @@
       throw new Error("Navstack: no adaptor found");
     },
 
-    /*
+    /***
+     * purgePane:
      * (Internal) Purges a given pane.
      *
      *     this.purgePane('home');
