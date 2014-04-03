@@ -1,4 +1,5 @@
-describe 'To do: v0.2', ->
+testSuite 'Todo: v0.2', ->
+
   xdescribe 'todo', ->
     it 'push(name, object, fn)', ->
       # passing an options object (.push('name', {}, function() {}))
@@ -11,8 +12,9 @@ describe 'To do: v0.2', ->
       # going back then .push()ing should purge the later panes.
 
   describe 'done', ->
+
     it 'adaptors', ->
-      expect(Navstack.adaptors).be.an 'object'
+      # Navstack.adaptors
 
     it '"no extra markup" mode', ->
       # no extra <div>s.
@@ -21,17 +23,13 @@ describe 'To do: v0.2', ->
       # two consecutive .push()es should be handled.
 
     it 'custom transitions', ->
-      expect(Navstack.transitions).be.object
+      # Navstack.transitions
 
     it '.stack', ->
-      @stack = new Navstack()
-      expect(@stack.stack).be.array
-      expect(@stack.stack).be.empty
+      # Navstack#stack
 
     it '.events', ->
-      expect(Navstack.prototype.on).be.a 'function'
-      expect(Navstack.prototype.off).be.a 'function'
-      expect(Navstack.prototype.one).be.a 'function'
+      # .on, .off, .one
 
     it 'update CSS for "no extra markup" mode', ->
       # don't use .full-screen and >* anymore.
