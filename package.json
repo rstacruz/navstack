@@ -10,12 +10,12 @@
     "type": "git",
     "url": "https://github.com/rstacruz/navstack.git"
   },
-  "main": "index",
+  "main": "navstack",
   "scripts": {
     "test": "./node_modules/.bin/mocha",
     "todo": "./node_modules/.bin/mocha test/todo.coffee",
     "autotest": "env fast=1 ./node_modules/.bin/mocha -R progress --watch",
-    "coverage": "./node_modules/.bin/jscoverage navstack.js && env COVERAGE=true ./node_modules/.bin/mocha -R html-cov > coverage.html; rm navstack-cov.js",
+    "coverage": "(cp navstack.js navstack.js~; ./node_modules/.bin/jscoverage navstack.js; mv navstack-cov.js navstack.js; env cov=1 ./node_modules/.bin/mocha -R html-cov > coverage.html); mv navstack.js~ navstack.js",
     "prepublish": "make"
   },
   "devDependencies": {

@@ -1,5 +1,4 @@
-// Coverage mode
-var cov = (!! process.env.COVERAGE);
+var cov = (!! process.env.cov);
 var fast = (!! process.env.fast);
 
 // Deps
@@ -13,7 +12,7 @@ var multisuite = require('./support/multisuite');
 var scripts = {
   'jq-1.7': fs.readFileSync('vendor/jquery-1.7b2.js'),
   'jq-2.0': fs.readFileSync('vendor/jquery-2.0.2.js'),
-  'navstack': fs.readFileSync(cov ? 'navstack-cov.js' : 'navstack.js')
+  'navstack': fs.readFileSync('navstack.js')
 };
 
 function myEnv(jq) {
@@ -35,6 +34,7 @@ function myEnv(jq) {
         global.jQuery  = window.jQuery;
         global.Ractive = window.Ractive;
         global.Navstack = window.Navstack;
+        // window._$jscoverage = global._$jscoverage;
         global._$jscoverage = window._$jscoverage;
 
         chai.use(require('chai-jquery'));
