@@ -533,6 +533,9 @@
    */
 
   Navstack.buildTransition = function (prefix) {
+    // scroll-stopper
+    var noscroll = function (e) { e.preventDefault(); };
+
     return {
       before: function (direction, current, previous, next) {
 
@@ -550,6 +553,8 @@
       },
 
       after: function (direction, current, previous, next) {
+        $(document).off('touchmove', noscroll);
+
         $(current && current.el)
           .add(previous && previous.el)
           .removeClass('-navstack-with-filter -navstack-no-filter');
@@ -559,6 +564,9 @@
 
       run: function (direction, current, previous, next) {
         if (direction === 'first') return next();
+
+        // prevent scrolling while transitions are working
+        $(document).on('touchmove', noscroll);
 
         var $parent =
           current ? $(current.el).parent() :
