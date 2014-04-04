@@ -698,7 +698,7 @@
     $(document).queue(fn);
   };
 
-  Navstack.version = '0.1.1';
+  Navstack.version = '0.1.2';
 
   return Navstack;
 
