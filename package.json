@@ -12,10 +12,10 @@
   },
   "main": "navstack",
   "scripts": {
-    "test": "./node_modules/.bin/mocha",
-    "todo": "./node_modules/.bin/mocha test/todo.coffee",
-    "autotest": "env fast=1 ./node_modules/.bin/mocha -R progress --watch",
-    "coverage": "(cp navstack.js navstack.js~; ./node_modules/.bin/jscoverage navstack.js; mv navstack-cov.js navstack.js; env cov=1 ./node_modules/.bin/mocha -R html-cov > coverage.html); mv navstack.js~ navstack.js",
+    "test": ".mocha",
+    "todo": "mocha test/todo.coffee",
+    "autotest": "env fast=1 mocha -R progress --watch",
+    "coverage": "(cp navstack.js navstack.js~; jscoverage navstack.js; mv navstack-cov.js navstack.js; env cov=1 mocha -R html-cov > coverage.html); mv navstack.js~ navstack.js",
     "prepublish": "make"
   },
   "devDependencies": {
