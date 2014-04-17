@@ -18,20 +18,43 @@
   </div>
 
   <script>
+    /*
+     * simple template solution:
+     * store the templates for this page as <script> tags, Ember-style.
+     * this function will return the template as a string.
+     */
+    
+    function template (name) {
+      return $("#"+name).html();
+    }
+
+    /* start with a stack
+     */
+
     var stack = new Navstack({ el: '#stack', transition: 'slide' });
 
-    $(document)
-      .on('nav:#', function() {
-        stack.push('home', function () {
-          return $($('#home').html());
-        });
-      })
+    /* use stack.push()
+     */
 
-      .on('nav:#features', function() {
-        stack.push('features', function () {
-          return $($('#features').html());
+    $(document).on('nav:#', function() {
+      stack.push('home', function () {
+        return $(template('home'));
+      });
+    });
+
+    /* lets dynamically make some sections
+     */
+
+    add('how');
+    add('features');
+
+    function add (section) {
+      $(document).on('nav:#'+section, function () {
+        stack.push(section, function() {
+          return $(template(section));
         });
-      })
+      });
+    }
   </script>
 
   <script type='text/x-template' id='home'>
@@ -63,9 +86,20 @@
       </section>
 
       <section class='content-area'>
+        <h3 class='list-heading'>Explore</h3>
+        <ul class="feature-list">
+          <li>
+            <a href='#how'>How it works</a>
+          </li>
+        </ul>
+
+        <h3 class='list-heading'>Features</h3>
         <ul class="feature-list">
           <li>
             <a href='#'>Slide transitions</a>
+          </li>
+          <li>
+            <a href='#'>Back button support</a>
           </li>
           <li>
             <a href='#'>Modal transitions</a>
@@ -73,6 +107,20 @@
         </ul>
       </section>
 
+    </div>
+  </script>
+
+  <script type='text/x-template' id='how'>
+    <div>
+      <section class='top-bar'>
+        <div class='back'>
+          <a class='back-button' href='#features'>&lsaquo;</a>
+        </div>
+
+        <div class='center'>
+          How it works
+        </div>
+      </section>
     </div>
   </script>
 
