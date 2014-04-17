@@ -33,8 +33,7 @@ $noshadow ?= 0 0 20px rgba(black, 0.0), 0 0 10px rgba(black, 0.0)
 .slide-enter-forward
   z-index: 2
   animation: slide-enter-forward navstack-speed navstack-ease
-  &.-navstack-no-filter
-    box-shadow: navstack-shadow
+  box-shadow: navstack-shadow
 
 .slide-enter-backward
   z-index: 1
@@ -47,8 +46,7 @@ $noshadow ?= 0 0 20px rgba(black, 0.0), 0 0 10px rgba(black, 0.0)
 .slide-exit-backward
   z-index: 2
   animation: slide-exit-backward (navstack-speed * 0.7) navstack-ease
-  &.-navstack-no-filter
-    box-shadow: navstack-shadow
+  box-shadow: navstack-shadow
 
 .slide-hide
   transform: translate(-9999px, 0)

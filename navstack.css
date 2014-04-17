@@ -25,8 +25,6 @@
   z-index: 2;
   -webkit-animation: slide-enter-forward 500ms cubic-bezier(0.3, 0.5, 0, 1);
   animation: slide-enter-forward 500ms cubic-bezier(0.3, 0.5, 0, 1);
-}
-.slide-enter-forward.-navstack-no-filter {
   -webkit-box-shadow: 0 0 20px rgba(0,0,0,0.3), 0 0 10px rgba(0,0,0,0.1);
   box-shadow: 0 0 20px rgba(0,0,0,0.3), 0 0 10px rgba(0,0,0,0.1);
 }
@@ -44,8 +42,6 @@
   z-index: 2;
   -webkit-animation: slide-exit-backward 350ms cubic-bezier(0.3, 0.5, 0, 1);
   animation: slide-exit-backward 350ms cubic-bezier(0.3, 0.5, 0, 1);
-}
-.slide-exit-backward.-navstack-no-filter {
   -webkit-box-shadow: 0 0 20px rgba(0,0,0,0.3), 0 0 10px rgba(0,0,0,0.1);
   box-shadow: 0 0 20px rgba(0,0,0,0.3), 0 0 10px rgba(0,0,0,0.1);
 }
