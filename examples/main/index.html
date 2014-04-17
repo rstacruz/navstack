@@ -4,6 +4,7 @@
   <meta charset="utf-8" />
   <script src="../_/jquery-2.0.2.js"></script>
   <script src="../_/navstack.js"></script>
+  <script src="../_/hashchange.js"></script>
   <link href="../_/navstack.css" rel="stylesheet" />
   <link href="../_/base.css" rel="stylesheet" />
 
@@ -13,43 +14,63 @@
 
   <div class="phone">
     <div id="stack">
-      <div class="top-bar">
-        My demo
-      </div>
-
-      <div class="content-area">
-        <a href="#messages">messages</a>
-        <a href="#timeline">timeline</a>
-      </div>
     </div>
   </div>
 
   <script>
-    // simple hashchange router
-    $(window).on('hashchange', function () {
-      var hash = window.location.hash;
-      if (hash.length > 0) hash = hash.substr(1);
-      $(document).trigger('nav:' + hash);
-    });
+    var stack = new Navstack({ el: '#stack', transition: 'slide' });
 
     $(document)
-      .on('nav:', function() {
-        $(".top-bar").html("Home");
+      .on('nav:#', function() {
+        stack.push('home', function () {
+          return $($('#home').html());
+        });
       })
 
-      .on('nav:messages', function() {
-        $(".top-bar").html("Messages");
+      .on('nav:#messages', function() {
+        stack.push('messages', function () {
+          return $($('#messages').html());
+        });
       })
-
-      .on('nav:timeline', function() {
-        $(".top-bar").html("Timeline");
-      });
-
-    $(function () {
-      window.location.hash = '';
-      $(window).trigger('hashchange');
-    });
   </script>
+
+  <script type='text/x-template' id='home'>
+    <div>
+      <section class='top-bar'>
+        <div class='center'>
+          Navstack demo
+        </div>
+      </section>
+
+      <section class='content-area'>
+        <h3>Hello!</h3>
+        <p>Welcome to the demo.</p>
+        <a href='#messages'>Next</a>
+      </section>
+
+    </div>
+  </script>
+
+  <script type='text/x-template' id='messages'>
+    <div>
+      <section class='top-bar'>
+        <div class='back'>
+          <a class='back-button' href='#'>&lsaquo;</a>
+        </div>
+
+        <div class='center'>
+          Messages
+        </div>
+      </section>
+
+      <section class='content-area'>
+        Messages go here
+      </section>
+
+    </div>
+  </script>
+
+
 
 </body>
 </html>

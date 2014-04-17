@@ -4,7 +4,18 @@
 
 html {
   font-family: helvetica neue, open sans, sans-serif;
+  color: #505050;
   font-size: 14px;
+}
+
+h1, h2, h3, p {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: #384;
+  text-decoration: none;
 }
 
 /*
@@ -55,6 +66,10 @@ html, body {
   }
 }
 
+/*
+ * Mobile: remove the phone outline
+ */
+
 @media (min-width: 480px) {
   .phone {
     border-radius: 40px;
@@ -73,5 +88,52 @@ html, body {
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     border-radius: 3px;
   }
+}
+
+/*
+ * Top bar
+ */
+
+.top-bar {
+  background: #fff;
+  color: #404040;
+  border-bottom: solid 1px #ddd;
+
+  height: 50px;
+  line-height: 50px;
+
+  position: relative;
+}
+
+.top-bar .center {
+  position: absolute;
+  left: 60px;
+  right: 60px;
+  text-align: center;
+}
+
+.top-bar .back {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 50px;
+}
+
+.content-area {
+  padding: 20px;
+}
+
+/*
+ * lol
+ */
+
+.back-button {
+  display: inline-block;
+  height: 50px;
+  width: 50px;
+  line-height: 50px;
+  text-align: center;
+  font-size: 24pt;
 }
 
