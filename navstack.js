@@ -57,12 +57,12 @@
      * Index of panes that have been registered with this Navstack.
      * Object with pane names as keys and `Pane` instances as values.
      *
-     *      nav.push('home', function () { ... });
+     *     nav.push('home', function () { ... });
      *
-     *      nav.panes['home']
-     *      nav.panes['home'].name
-     *      nav.panes['home'].el
-     *      nav.panes['home'].view
+     *     nav.panes['home']
+     *     nav.panes['home'].name
+     *     nav.panes['home'].el
+     *     nav.panes['home'].view
      */
     this.panes = {};
 
@@ -287,7 +287,7 @@
     },
 
     /**
-     * getAdaptorFor: .getAdaptorFor(obj)
+     * getAdaptorFor : .getAdaptorFor(obj)
      * Wraps the given `obj` object with a suitable adaptor.
      *
      *     view = new Backbone.View({ ... });
@@ -315,7 +315,7 @@
 
     /**
      * purgePane:
-     * (Internal) Purges a given pane.
+     * (internal) Purges a given pane.
      *
      *     this.purgePane('home');
      *     this.purgePane(this.panes['home']);
@@ -388,8 +388,9 @@
         return 'forward';
     },
 
-    /** spawnPane: .spawnPane(name)
-     * (Internal) Spawns the pane of a given `name`.
+    /**
+     * spawnPane : .spawnPane(name)
+     * (internal) Spawns the pane of a given `name`.
      * Returns the pane instance.
      */
 
@@ -402,8 +403,9 @@
       return current;
     },
 
-    /** getTransition: .getTransition(transition)
-     * (Internal) get the transition object for the given string `transition`.
+    /**
+     * getTransition : .getTransition(transition)
+     * (internal) get the transition object for the given string `transition`.
      * Throws an error if it's invalid.
      */
 
@@ -420,7 +422,8 @@
     },
 
     /**
-     * (Internal) performs a transition with the given `transition` object.
+     * runTransition : .runTransition(...)
+     * (internal) performs a transition with the given `transition` object.
      */
 
     runTransition: function (transition, direction, current, previous) {
@@ -434,7 +437,8 @@
     },
 
     /**
-     * (Internal) updates `this.stack` to include `pane`, taking into
+     * insertIntoStack : .insertIntoStack(pane)
+     * (internal) updates `this.stack` to include `pane`, taking into
      * account Z indices.
      *
      *     pane = this.pane['home'];

@@ -26,12 +26,12 @@ Index of panes that have been registered with this Navstack.
 Object with pane names as keys and `Pane` instances as values.
 
 ```js
- nav.push('home', function () { ... });
+nav.push('home', function () { ... });
 
- nav.panes['home']
- nav.panes['home'].name
- nav.panes['home'].el
- nav.panes['home'].view
+nav.panes['home']
+nav.panes['home'].name
+nav.panes['home'].el
+nav.panes['home'].view
 ```
 
 <a name="active"></a>
@@ -156,9 +156,8 @@ components).
 Returns the adaptors available.
 
 <a name="getAdaptorFor"></a>
-### getAdaptorFor
+### getAdaptorFor `.getAdaptorFor(obj)`
 
-.getAdaptorFor(obj)
 Wraps the given `obj` object with a suitable adaptor.
 
 ```js
@@ -172,7 +171,7 @@ adaptor.remove()
 <a name="purgePane"></a>
 ### purgePane
 
-(Internal) Purges a given pane.
+(internal) Purges a given pane.
 
 ```js
 this.purgePane('home');
@@ -199,18 +198,32 @@ this.getDirection(this.pane['home'], this.pane['timeline']);
 ```
 
 <a name="spawnPane"></a>
-### spawnPane
+### spawnPane `.spawnPane(name)`
 
-.spawnPane(name)
-(Internal) Spawns the pane of a given `name`.
+(internal) Spawns the pane of a given `name`.
 Returns the pane instance.
 
 <a name="getTransition"></a>
-### getTransition
+### getTransition `.getTransition(transition)`
 
-.getTransition(transition)
-(Internal) get the transition object for the given string `transition`.
+(internal) get the transition object for the given string `transition`.
 Throws an error if it's invalid.
+
+<a name="runTransition"></a>
+### runTransition `.runTransition(...)`
+
+(internal) performs a transition with the given `transition` object.
+
+<a name="insertIntoStack"></a>
+### insertIntoStack `.insertIntoStack(pane)`
+
+(internal) updates `this.stack` to include `pane`, taking into
+account Z indices.
+
+```js
+pane = this.pane['home'];
+this.insertIntoStack(pane);
+```
 
 <a name="extend"></a>
 ### extend
