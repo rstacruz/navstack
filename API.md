@@ -75,14 +75,6 @@ init: function() {
 });
 ```
 
-<a name="register"></a>
-### register
-
-(internal) Registers a pane `name` with initializer function `fn`,
-allowing you to use `.go()` on the registered pane later.
-
-This is called on `.push`.
-
 <a name="Events"></a>
 ### Events
 
@@ -102,9 +94,8 @@ nav.on('remove', function() {
 ```
 
 <a name="off"></a>
-### off
+### off `.off(event, callback)`
 
-(event, callback)
 Removes an event handler.
 
 ```js
@@ -112,9 +103,8 @@ nav.off('remove', myfunction);
 ```
 
 <a name="one"></a>
-### one
+### one `.one(event, callback)`
 
-.one(event, callback)
 Works like `.on`, except it unbinds itself right after.
 
 <a name="push"></a>
@@ -225,7 +215,73 @@ pane = this.pane['home'];
 this.insertIntoStack(pane);
 ```
 
+<a name="register"></a>
+### register `.register(name, fn)`
+
+(internal) Registers a pane `name` with initializer function `fn`,
+allowing you to use `.go()` on the registered pane later.
+
+This is called on `.push`.
+
 <a name="extend"></a>
 ### extend
 
 Subclasses Navstack to create your new Navstack class.
+
+```js
+ var Mystack = Navstack.extend({
+ });
+```
+
+<a name="Navstack_Pane"></a>
+## Navstack.Pane
+
+A pane. Panes are accessible via `navstack.panes['name']` or
+`navstack.active`. You'll find these properties:
+
+```js
+pane.name
+pane.initializer  // function
+pane.el
+pane.view
+```
+
+<a name="name"></a>
+### name
+
+The identification `name` of this pane, as passed to `register()`.
+
+<a name="initializer"></a>
+### initializer
+
+Function to create the view.
+
+<a name="parent"></a>
+### parent
+
+Reference to `Navstack`.
+
+<a name="el"></a>
+### el
+
+DOM element. Created on `init()`.
+
+<a name="view"></a>
+### view
+
+View instance as created by initializer. Created on `init()`.
+
+<a name="adaptor"></a>
+### adaptor
+
+A wrapped version of the `view`
+
+<a name="init"></a>
+### init
+
+(internal) Initializes the pane's view if needed.
+
+<a name="forceInit"></a>
+### forceInit
+
+(internal) Forces initialization even if it hasn't been yet.

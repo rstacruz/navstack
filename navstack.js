@@ -106,18 +106,6 @@
     init: function () {},
 
     /**
-     * register:
-     * (internal) Registers a pane `name` with initializer function `fn`,
-     * allowing you to use `.go()` on the registered pane later.
-     *
-     * This is called on `.push`.
-     */
-
-    register: function (name, fn) {
-      this.panes[name] = new Pane(name, fn, this);
-    },
-
-    /**
      * Events:
      * There's events. Available events are:
      *
@@ -450,6 +438,18 @@
       if (this.stack.indexOf(name) > -1) return;
 
       this.stack.push(pane.name);
+    },
+
+    /**
+     * register : .register(name, fn)
+     * (internal) Registers a pane `name` with initializer function `fn`,
+     * allowing you to use `.go()` on the registered pane later.
+     *
+     * This is called on `.push`.
+     */
+
+    register: function (name, fn) {
+      this.panes[name] = new Pane(name, fn, this);
     }
 
   };
@@ -457,6 +457,9 @@
   /**
    * extend:
    * Subclasses Navstack to create your new Navstack class.
+   *
+   *     var Mystack = Navstack.extend({
+   *     });
    */
 
   Navstack.extend = function (proto) {
@@ -466,8 +469,10 @@
   };
 
 
-  /**
-   * Pane.
+  /***
+   * Navstack.Pane:
+   * A pane. Panes are accessible via `navstack.panes['name']` or
+   * `navstack.active`. You'll find these properties:
    *
    *     pane.name
    *     pane.initializer  // function
@@ -476,28 +481,29 @@
    */
 
   Pane = Navstack.Pane = function (name, initializer, parent) {
-    /** The identification `name` of this pane, as passed to `register()`. */
+    /** name: The identification `name` of this pane, as passed to `register()`. */
     this.name = name;
 
-    /** Function to create the view. */
+    /** initializer: Function to create the view. */
     this.initializer = initializer;
 
-    /** Reference to `Navstack`. */
+    /** parent: Reference to `Navstack`. */
     this.parent = parent;
 
-    /** DOM element. Created on `init()`. */
+    /** el: DOM element. Created on `init()`. */
     this.el = null;
 
-    /** View instance as created by initializer. Created on `init()`. */
+    /** view: View instance as created by initializer. Created on `init()`. */
     this.view = null;
 
-    /** A wrapped version of the `view` */
+    /** adaptor: A wrapped version of the `view` */
     this.adaptor = null;
   };
 
   Pane.prototype = {
     /**
-     * Initializes the pane's view if needed.
+     * init:
+     * (internal) Initializes the pane's view if needed.
      */
 
     init: function () {
@@ -505,7 +511,8 @@
     },
 
     /**
-     * Forces initialization even if it hasn't been yet.
+     * forceInit:
+     * (internal) Forces initialization even if it hasn't been yet.
      */
 
     forceInit: function () {
