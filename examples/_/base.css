@@ -4,7 +4,7 @@
 
 html {
   font-family: helvetica neue, open sans, sans-serif;
-  color: #707090;
+  color: #90909a;
   line-height: 1.5;
   font-size: 14px;
 }
@@ -21,6 +21,7 @@ ul, li {
 
 a, a:visited {
   color: #f54;
+  color: #e74c3c;
   text-decoration: none;
 }
 
@@ -73,7 +74,7 @@ html, body {
 }
 
 /*
- * Mobile: remove the phone outline
+ * Desktop: show a phone outline
  */
 
 @media (min-width: 480px) {
@@ -81,18 +82,22 @@ html, body {
     border-radius: 40px;
     border: solid 2px #fff;
 
-    width: 320px;
-    height: 540px;
+    width: 310px;
+    height: 550px;
 
     margin: 40px auto;
   }
 
   #stack {
-    margin: 75px auto;
+    margin: 80px auto;
     width: 280px;
     height: 390px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-    border-radius: 3px;
+  }
+
+  #stack,
+  #stack > .-navstack-pane {
+    border-radius: 2px;
   }
 }
 
@@ -115,6 +120,7 @@ html, body {
   left: 60px;
   right: 60px;
   text-align: center;
+  font-weight: bold;
   color: #222;
 }
 
@@ -143,20 +149,26 @@ html, body {
  * button
  */
 
-.button {
+.button,
+.button:visited {
   display: inline-block;
 
-  color: #f54;
-  border: solid 2px #f54;
+  color: #1a8;
+  border: solid 2px #1a8;
   padding: 8px 20px;
   border-radius: 4px;
 
   font-weight: bold;
+
+  font-size: 0.8em;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-family: montserrat, sans-serif;
 }
 
 .button:hover {
-  color: #f65;
-  border-color: #f65;
+  color: #1d9;
+  border-color: #1d9;
 }
 
 .button:active {
@@ -169,15 +181,21 @@ html, body {
 
 .hello {
   text-align: center;
-  margin-top: 70px;
+  margin-top: 110px;
   padding: 0 30px;
 }
 
+.hello h1,
 .hello h3 {
   color: #222;
   font-size: 1.5em;
   font-weight: 300;
   margin-bottom: 6px;
+}
+
+.hello h1 {
+  font-size: 2.4em;
+  font-weight: 100;
 }
 
 .hello p + a {
