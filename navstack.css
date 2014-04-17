@@ -1,6 +1,10 @@
 /* ----------------------------------------------------------------------------------
  * Screen
  */
+.-navstack {
+  position: relative;
+  overflow: hidden;
+}
 .-navstack-pane,
 .full-screen {
   position: absolute;
