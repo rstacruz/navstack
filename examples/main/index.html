@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <script src="../_/jquery-2.0.2.js"></script>
+  <script src="../_/navstack.js"></script>
+  <link href="../_/navstack.css" rel="stylesheet" />
+  <link href="../_/base.css" rel="stylesheet" />
+
+  <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+
+  <div class="phone">
+    <div id="stack"></div>
+  </div>
+
+  <script>
+    /*
+     * initialize your stack using `new Navstack()`.
+     */
+
+    var stack = new Navstack({ el: '#stack', transition: 'slide' });
+
+    /*
+     * use `stack.push()` to create your new pages.
+     *
+     * this snippet retrieves content from the <script> templates (`html`), and
+     * pushes it via stack.push().
+     */
+
+    $(window).on('hashchange', function () {
+      var hash = window.location.hash || '#home';
+      var html = $(hash).html();
+      if (!html) return;
+
+      $('html').attr('class', hash.substr(1));
+      stack.push(hash, function() { return $(html); });
+    });
+
+    /*
+     * navigate to the home page on refresh
+     */
+
+    $(function () {
+      window.location.hash = '';
+      $(window).trigger('hashchange');
+    });
+  </script>
+
+  <!-- simple template solution: -->
+  <!-- store the templates for this page as <script> tags, Ember-style. -->
+
+  <script type='text/x-template' id='home'>
+    <div class='title-pane'>
+      <section class='content-area'>
+
+        <div class="hello">
+          <h1>Navstack.js</h1>
+          <p>Navstack manages multiple screens with mobile-friendly transitions.</p>
+
+          <a class='button' href='#features'>Try it</a>
+        </div>
+
+      </section>
+
+    </div>
+  </script>
+
+  <script type='text/x-template' id='features'>
+    <div>
+      <section class='top-bar'>
+        <div class='back'>
+          <a class='back-button' href='#'>&lsaquo;</a>
+        </div>
+
+        <div class='center'>
+          Features
+        </div>
+      </section>
+
+      <section class='content-area scrollable'>
+        <div>
+          <div class='explanation'>
+            <h3>Navigation controller</h3>
+            <p>Allows you to manage views. Works with Backbone, Ractive, React, or plain jQuery.</p>
+          </div>
+
+          <ul class="feature-list">
+            <li>
+              <a href='#how'>Basic API example</a>
+            </li>
+            <li>
+              <a href='#'>Slide transitions</a>
+            </li>
+            <li>
+              <a href='#'>Back button support</a>
+            </li>
+            <li>
+              <a href='#'>Modal transitions</a>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+    </div>
+  </script>
+
+  <script type='text/x-template' id='how'>
+    <div>
+      <section class='top-bar'>
+        <div class='back'>
+          <a class='back-button' href='#features'>&lsaquo;</a>
+        </div>
+
+        <div class='center'>
+          How it works
+        </div>
+      </section>
+    </div>
+  </script>
+
+
+
+</body>
+</html>

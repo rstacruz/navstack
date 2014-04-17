@@ -1,11 +1,18 @@
-$speed ?= 500ms
-$shadow ?= 0 0 20px rgba(black, 0.3), 0 0 10px rgba(black, 0.1)
+navstack-speed ?= 500ms
+navstack-shadow ?= 0 0 20px rgba(black, 0.3), 0 0 10px rgba(black, 0.1)
+navstack-ease ?= cubic-bezier(.3, .5, 0, 1)
+navstack-tint ?= #345
+navstack-tint-strength ?= 0.05
+
 $noshadow ?= 0 0 20px rgba(black, 0.0), 0 0 10px rgba(black, 0.0)
-$zip ?= cubic-bezier(.3, .5, 0, 1)
 
 /* ----------------------------------------------------------------------------------
  * Screen
  */
+
+.-navstack
+  position: relative
+  overflow: hidden
 
 .-navstack-pane, .full-screen
   position: absolute
@@ -20,25 +27,27 @@ $zip ?= cubic-bezier(.3, .5, 0, 1)
  * Animations: slide
  */
 
+.slide-container
+  background: navstack-tint
+  transform: translate3d(0, 0, 0)
+
 .slide-enter-forward
   z-index: 2
-  animation: slide-enter-forward $speed $zip
-  &.-navstack-no-filter
-    box-shadow: $shadow
+  animation: slide-enter-forward navstack-speed navstack-ease
+  box-shadow: navstack-shadow
 
 .slide-enter-backward
   z-index: 1
-  animation: slide-enter-backward ($speed * 0.7) $zip
+  animation: slide-enter-backward (navstack-speed * 0.7) navstack-ease
 
 .slide-exit-forward
   z-index: 1
-  animation: slide-exit-forward $speed $zip
+  animation: slide-exit-forward navstack-speed navstack-ease
 
 .slide-exit-backward
   z-index: 2
-  animation: slide-exit-backward ($speed * 0.7) $zip
-  &.-navstack-no-filter
-    box-shadow: $shadow
+  animation: slide-exit-backward (navstack-speed * 0.7) navstack-ease
+  box-shadow: navstack-shadow
 
 .slide-hide
   transform: translate(-9999px, 0)
@@ -53,7 +62,7 @@ $zip ?= cubic-bezier(.3, .5, 0, 1)
 @keyframes slide-enter-backward
   0%
     transform: translate3d(-40%, 0, 0)
-    filter: brightness(0.8)
+    opacity: (1.0 - navstack-tint-strength)
   100%
     transform: translate3d(0, 0, 0)
 
@@ -62,7 +71,7 @@ $zip ?= cubic-bezier(.3, .5, 0, 1)
     transform: translate3d(0%, 0, 0)
   100%
     transform: translate3d(-40%, 0, 0)
-    filter: brightness(0.8)
+    opacity: (1.0 - navstack-tint-strength)
 
 @keyframes slide-exit-backward
   0%
@@ -77,21 +86,21 @@ $zip ?= cubic-bezier(.3, .5, 0, 1)
 
 .modal-enter-forward
   z-index: 2
-  animation: modal-enter-forward $speed $zip
-  box-shadow: $shadow
+  animation: modal-enter-forward navstack-speed navstack-ease
+  box-shadow: navstack-shadow
 
 .modal-enter-backward
   z-index: 1
-  animation: nil ($speed * 0.7) $zip
+  animation: nil (navstack-speed * 0.7) navstack-ease
 
 .modal-exit-forward
   z-index: 1
-  animation: nil $speed $zip
+  animation: nil navstack-speed navstack-ease
 
 .modal-exit-backward
   z-index: 2
-  animation: modal-exit-backward ($speed * 0.7) $zip
-  box-shadow: $shadow
+  animation: modal-exit-backward (navstack-speed * 0.7) navstack-ease
+  box-shadow: navstack-shadow
 
 .modal-hide
   transform: translate(-9999px, 0)
