@@ -3,7 +3,7 @@
  */
 
 html {
-  font-family: helvetica neue, open sans, sans-serif;
+  font-family: proxima nova, helvetica neue, open sans, sans-serif;
   color: #9090aa;
   line-height: 1.46;
   font-size: 14px;
@@ -21,8 +21,8 @@ ul, li {
 }
 
 a, a:visited {
-  color: #f54;
-  color: #e74c3c;
+  /* color: #e74c3c; */
+  color: #8090aa;
   text-decoration: none;
 }
 
@@ -53,12 +53,39 @@ a, a:visited {
 html, body {
   margin: 0;
   padding: 0;
-  background: #f2f3f8;
 }
 
-#stack > .-navstack-pane {
-  background: #fefefe;
+/*
+ * background for desktop
+ */
+
+@media (min-width: 481px) {
+  html {
+    background: #e2e3f0;
+    -webkit-transition: all 500ms linear;
+    -moz-transition: all 500ms linear;
+    transition: all 500ms linear;
+  }
+
+  html.home {
+    background: #f3f5fa;
+    -webkit-transition: none;
+    -moz-transition: none;
+    transition: none;
+  }
+
+  html.home #stack {
+    box-shadow: none;
+  }
+
+  #stack > .-navstack-pane {
+    background: #fefefe;
+  }
 }
+
+/*
+ * mobile: remove crap
+ */
 
 @media (max-width: 480px) {
   html, body {
@@ -78,7 +105,7 @@ html, body {
  * Desktop: show a phone outline
  */
 
-@media (min-width: 480px) {
+@media (min-width: 481px) {
   .phone {
     border-radius: 40px;
     border: solid 2px #fff;
@@ -159,13 +186,19 @@ html, body {
  * lol
  */
 
-.back-button {
+.back-button,
+.back-button:visited {
   display: inline-block;
   height: 40px;
   width: 40px;
-  line-height: 40px;
+  line-height: 36px;
   text-align: center;
   font-size: 24pt;
+  color: #111;
+}
+
+.back-button:hover {
+  color: #1d9;
 }
 
 /*
@@ -176,9 +209,8 @@ html, body {
 .button:visited {
   display: inline-block;
 
-  color: #1a8;
-  border: solid 2px #1a8;
-  background: white;
+  color: #1d9;
+  border: solid 2px #1d9;
   padding: 8px 20px;
   border-radius: 4px;
 
@@ -190,8 +222,8 @@ html, body {
 }
 
 .button:hover {
-  color: #1d9;
-  border-color: #1d9;
+  color: #1ea;
+  border-color: #1ea;
 }
 
 .button:active {
@@ -204,7 +236,7 @@ html, body {
 
 .lite-button,
 .lite-button:visited {
-  color: #1a8;
+  color: #1d9;
 
   font-weight: bold;
   font-size: 0.8em;
@@ -238,6 +270,7 @@ html, body {
 
 .hello h1 {
   font-size: 2.7em;
+  font-family: helvetica neue, sans-serif;
   font-weight: 100;
 }
 
@@ -252,22 +285,46 @@ html, body {
 }
 
 /*
- * featurelist
+ * lol list
  */
 
 .feature-list {
+}
+
+.feature-list a {
+  display: block;
+  font-weight: bold;
+  font-size: 0.9em;
+  padding: 5px 20px;
+  color: #1d9;
+}
+
+.feature-list a:hover {
+  color: #8090a0;
+}
+.feature-list a:after {
+  content: '>';
+  margin-left: 6px;
+}
+
+
+/*
+ * ios-like list
+ */
+
+.nav-list {
   background: #fff;
   border-top: solid 1px #eee;
   border-bottom: solid 1px #eee;
 }
 
-.feature-list li>* {
+.nav-list li>* {
   display: block;
   padding: 15px 20px;
   position: relative;
 }
 
-.feature-list li>*:after {
+.nav-list li>*:after {
   content: '';
   display: block;
   position: absolute;
@@ -278,7 +335,7 @@ html, body {
   border-bottom: solid 1px #eee;
 }
 
-.feature-list li:last-child >*:after {
+.nav-list li:last-child >*:after {
   display: none;
 }
 
@@ -309,4 +366,16 @@ html, body {
 
 .explanation .actions {
   margin-top: 20px;
+}
+
+/*
+ * title
+ */
+
+#stack .title-pane {
+  background: #1c8;
+}
+
+#stack .title-pane * {
+  color: white;
 }

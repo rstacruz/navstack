@@ -34,6 +34,7 @@
       var html = $(hash).html();
       if (!html) return;
 
+      $('html').attr('class', hash.substr(1));
       stack.push(hash, function() { return $(html); });
     });
 
@@ -51,7 +52,7 @@
   <!-- store the templates for this page as <script> tags, Ember-style. -->
 
   <script type='text/x-template' id='home'>
-    <div>
+    <div class='title-pane'>
       <section class='content-area'>
 
         <div class="hello">
@@ -83,13 +84,12 @@
           <div class='explanation'>
             <h3>Navigation controller</h3>
             <p>Allows you to manage views. Works with Backbone, Ractive, React, or plain jQuery.</p>
-            <p class='actions'>
-              <a class='lite-button' href='#how'>View code</a>
-            </p>
           </div>
 
-          <h3 class='list-heading'>Features</h3>
           <ul class="feature-list">
+            <li>
+              <a href='#how'>Basic API example</a>
+            </li>
             <li>
               <a href='#'>Slide transitions</a>
             </li>
