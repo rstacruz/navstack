@@ -4,7 +4,6 @@
   <meta charset="utf-8" />
   <script src="../_/jquery-2.0.2.js"></script>
   <script src="../_/navstack.js"></script>
-  <script src="../_/hashchange.js"></script>
   <link href="../_/navstack.css" rel="stylesheet" />
   <link href="../_/base.css" rel="stylesheet" />
 
@@ -13,49 +12,43 @@
 <body>
 
   <div class="phone">
-    <div id="stack">
-    </div>
+    <div id="stack"></div>
   </div>
 
   <script>
     /*
-     * simple template solution:
-     * store the templates for this page as <script> tags, Ember-style.
-     * this function will return the template as a string.
-     */
-    
-    function template (name) {
-      return $("#"+name).html();
-    }
-
-    /* start with a stack
+     * initialize your stack using `new Navstack()`.
      */
 
     var stack = new Navstack({ el: '#stack', transition: 'slide' });
 
-    /* use stack.push()
+    /*
+     * use `stack.push()` to create your new pages.
+     *
+     * this snippet retrieves content from the <script> templates (`html`), and
+     * pushes it via stack.push().
      */
 
-    $(document).on('nav:#', function() {
-      stack.push('home', function () {
-        return $(template('home'));
-      });
+    $(window).on('hashchange', function () {
+      var hash = window.location.hash || '#home';
+      var html = $(hash).html();
+      if (!html) return;
+
+      stack.push(hash, function() { return $(html); });
     });
 
-    /* lets dynamically make some sections
+    /*
+     * navigate to the home page on refresh
      */
 
-    add('how');
-    add('features');
-
-    function add (section) {
-      $(document).on('nav:#'+section, function () {
-        stack.push(section, function() {
-          return $(template(section));
-        });
-      });
-    }
+    $(function () {
+      window.location.hash = '';
+      $(window).trigger('hashchange');
+    });
   </script>
+
+  <!-- simple template solution: -->
+  <!-- store the templates for this page as <script> tags, Ember-style. -->
 
   <script type='text/x-template' id='home'>
     <div>
