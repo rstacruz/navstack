@@ -1,7 +1,8 @@
 navstack-speed ?= 500ms
 navstack-shadow ?= 0 0 20px rgba(black, 0.3), 0 0 10px rgba(black, 0.1)
 navstack-ease ?= cubic-bezier(.3, .5, 0, 1)
-navstack-tint ?= 0.96
+navstack-tint ?= #345
+navstack-tint-strength ?= 0.05
 
 $noshadow ?= 0 0 20px rgba(black, 0.0), 0 0 10px rgba(black, 0.0)
 
@@ -25,6 +26,9 @@ $noshadow ?= 0 0 20px rgba(black, 0.0), 0 0 10px rgba(black, 0.0)
 /* ----------------------------------------------------------------------------------
  * Animations: slide
  */
+
+.slide-container
+  background: navstack-tint
 
 .slide-enter-forward
   z-index: 2
@@ -59,7 +63,7 @@ $noshadow ?= 0 0 20px rgba(black, 0.0), 0 0 10px rgba(black, 0.0)
 @keyframes slide-enter-backward
   0%
     transform: translate3d(-40%, 0, 0)
-    filter: brightness(navstack-tint)
+    opacity: (1.0 - navstack-tint-strength)
   100%
     transform: translate3d(0, 0, 0)
 
@@ -68,7 +72,7 @@ $noshadow ?= 0 0 20px rgba(black, 0.0), 0 0 10px rgba(black, 0.0)
     transform: translate3d(0%, 0, 0)
   100%
     transform: translate3d(-40%, 0, 0)
-    filter: brightness(navstack-tint)
+    opacity: (1.0 - navstack-tint-strength)
 
 @keyframes slide-exit-backward
   0%
