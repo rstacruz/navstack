@@ -12,3 +12,11 @@ size:
 
 bump:
 	bump navstack.js package.json bower.json
+
+site:
+	@if [ ! -d site ]; then echo "  !  err: clone the site repo into ./site"; exit 1; fi
+	cp navstack.js site
+	cp navstack.css site
+	cp vendor/jquery-2.0.2.js site/vendor/jquery-2.0.2.js
+
+.PHONY: site
