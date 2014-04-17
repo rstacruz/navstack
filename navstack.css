@@ -130,8 +130,8 @@
   0% {
     -webkit-transform: translate3d(-40%, 0, 0);
     transform: translate3d(-40%, 0, 0);
-    -webkit-filter: brightness(0.8);
-    filter: brightness(0.8);
+    -webkit-filter: brightness(0.96);
+    filter: brightness(0.96);
   }
 
   100% {
@@ -143,7 +143,7 @@
   0% {
     -ms-transform: translate3d(-40%, 0, 0);
     transform: translate3d(-40%, 0, 0);
-    filter: brightness(0.8);
+    filter: brightness(0.96);
   }
 
   100% {
@@ -156,8 +156,8 @@
     -webkit-transform: translate3d(-40%, 0, 0);
     -ms-transform: translate3d(-40%, 0, 0);
     transform: translate3d(-40%, 0, 0);
-    -webkit-filter: brightness(0.8);
-    filter: brightness(0.8);
+    -webkit-filter: brightness(0.96);
+    filter: brightness(0.96);
   }
 
   100% {
@@ -175,8 +175,8 @@
   100% {
     -webkit-transform: translate3d(-40%, 0, 0);
     transform: translate3d(-40%, 0, 0);
-    -webkit-filter: brightness(0.8);
-    filter: brightness(0.8);
+    -webkit-filter: brightness(0.96);
+    filter: brightness(0.96);
   }
 }
 @-ms-keyframes slide-exit-forward {
@@ -188,7 +188,7 @@
   100% {
     -ms-transform: translate3d(-40%, 0, 0);
     transform: translate3d(-40%, 0, 0);
-    filter: brightness(0.8);
+    filter: brightness(0.96);
   }
 }
 @keyframes slide-exit-forward {
@@ -202,8 +202,8 @@
     -webkit-transform: translate3d(-40%, 0, 0);
     -ms-transform: translate3d(-40%, 0, 0);
     transform: translate3d(-40%, 0, 0);
-    -webkit-filter: brightness(0.8);
-    filter: brightness(0.8);
+    -webkit-filter: brightness(0.96);
+    filter: brightness(0.96);
   }
 }
 @-webkit-keyframes slide-exit-backward {
