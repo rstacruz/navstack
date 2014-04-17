@@ -4,8 +4,8 @@
 
 html {
   font-family: helvetica neue, open sans, sans-serif;
-  color: #90909a;
-  line-height: 1.5;
+  color: #9090aa;
+  line-height: 1.46;
   font-size: 14px;
 }
 
@@ -13,6 +13,7 @@ h1, h2, h3, p, ul, li {
   font-size: 1em;
   margin: 0;
   padding: 0;
+  font-weight: 400;
 }
 
 ul, li {
@@ -102,6 +103,30 @@ html, body {
 }
 
 /*
+ * pane positioning
+ */
+
+.top-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.content-area {
+  position: absolute;
+  top: 41px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.content-area.scrollable {
+  right: -15px;
+  overflow-y: scroll;
+}
+
+/*
  * Top bar
  */
 
@@ -111,8 +136,6 @@ html, body {
 
   height: 40px;
   line-height: 40px;
-
-  position: relative;
 }
 
 .top-bar .center {
@@ -160,7 +183,6 @@ html, body {
   border-radius: 4px;
 
   font-weight: bold;
-
   font-size: 0.8em;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -177,12 +199,32 @@ html, body {
 }
 
 /*
+ * litebuttno
+ */
+
+.lite-button,
+.lite-button:visited {
+  color: #1a8;
+
+  font-weight: bold;
+  font-size: 0.8em;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-family: montserrat, sans-serif;
+}
+
+.lite-button:after {
+  content: '>';
+  margin-left: 8px;
+}
+
+/*
  * welcome message
  */
 
 .hello {
   text-align: center;
-  margin-top: 100px;
+  margin-top: 60px;
   padding: 0 30px;
 }
 
@@ -248,4 +290,23 @@ html, body {
   font-weight: bold;
   font-family: montserrat, sans-serif;
   padding: 0 20px;
+}
+
+/*
+ * Explanations
+ */
+
+.explanation {
+  padding: 20px;
+}
+
+.explanation h3 {
+  color: #222;
+  font-size: 1.3em;
+  font-weight: 300;
+  margin-bottom: 0.3em;
+}
+
+.explanation .actions {
+  margin-top: 20px;
 }
