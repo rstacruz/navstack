@@ -31,12 +31,6 @@ describe 'Transitions', ->
     it 'leave parent alone', ->
       expect(className "#parent").eq '-navstack'
 
-    it 'filter support detection', ->
-      expect(className "#current").match /-navstack-(with|no)-filter/
-
-    it 'filter support detection on previous', ->
-      expect(className "#previous").match /-navstack-(with|no)-filter/
-
     it 'hide at first', ->
       expect(className "#current").match /slide-hide/
 

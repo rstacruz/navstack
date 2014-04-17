@@ -139,7 +139,7 @@
     },
 
     /**
-     * off: (event, callback)
+     * off : .off(event, callback)
      * Removes an event handler.
      *
      *     nav.off('remove', myfunction);
@@ -151,7 +151,7 @@
     },
 
     /**
-     * one: .one(event, callback)
+     * one : .one(event, callback)
      * Works like `.on`, except it unbinds itself right after.
      */
 
