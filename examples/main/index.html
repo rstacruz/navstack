@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <script src="../_/jquery-2.0.2.js"></script>
+  <script src="../_/navstack.js"></script>
+  <link href="../_/navstack.css" rel="stylesheet" />
+  <link href="../_/base.css" rel="stylesheet" />
+
+  <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+
+  <div class="phone">
+    <div id="stack">
+      <div class="top-bar">
+        My demo
+      </div>
+
+      <div class="content-area">
+        <a href="#messages">messages</a>
+        <a href="#timeline">timeline</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // simple hashchange router
+    $(window).on('hashchange', function () {
+      var hash = window.location.hash;
+      if (hash.length > 0) hash = hash.substr(1);
+      $(document).trigger('nav:' + hash);
+    });
+
+    $(document)
+      .on('nav:', function() {
+        $(".top-bar").html("Home");
+      })
+
+      .on('nav:messages', function() {
+        $(".top-bar").html("Messages");
+      })
+
+      .on('nav:timeline', function() {
+        $(".top-bar").html("Timeline");
+      });
+
+    $(function () {
+      window.location.hash = '';
+      $(window).trigger('hashchange');
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,10 @@
+.top-bar {
+  background: #fff;
+  color: #404040;
+  border-bottom: solid 1px #ddd;
+
+  height: 50px;
+  line-height: 50px;
+
+  text-align: center;
+}

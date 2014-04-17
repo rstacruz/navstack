@@ -1,0 +1,77 @@
+/*
+ * reset
+ */
+
+html {
+  font-family: helvetica neue, open sans, sans-serif;
+  font-size: 14px;
+}
+
+/*
+ * antialiasing
+ */
+
+* {
+  text-rendering: optimizeLegibility !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/*
+ * momentum scrolling
+ */
+
+.scrollable,
+.scrollable > div {
+  -webkit-overflow-scrolling: touch;
+  overflow-y: auto;
+}
+
+/*
+ * template
+ */
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #f2f3f8;
+}
+
+#stack {
+  background: white;
+}
+
+@media (max-width: 480px) {
+  html, body {
+    overflow: hidden;
+  }
+
+  #stack {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+  }
+}
+
+@media (min-width: 480px) {
+  .phone {
+    border-radius: 40px;
+    border: solid 2px #fff;
+
+    width: 320px;
+    height: 540px;
+
+    margin: 40px auto;
+  }
+
+  #stack {
+    margin: 75px auto;
+    width: 280px;
+    height: 390px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+  }
+}
+
