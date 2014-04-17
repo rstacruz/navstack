@@ -20,6 +20,9 @@
  */
 .slide-container {
   background: #345;
+  -webkit-transform: translate3d(0, 0, 0);
+  -ms-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
 }
 .slide-enter-forward {
   z-index: 2;
