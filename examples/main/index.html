@@ -27,9 +27,9 @@
         });
       })
 
-      .on('nav:#messages', function() {
-        stack.push('messages', function () {
-          return $($('#messages').html());
+      .on('nav:#features', function() {
+        stack.push('features', function () {
+          return $($('#features').html());
         });
       })
   </script>
@@ -43,15 +43,20 @@
       </section>
 
       <section class='content-area'>
-        <h3>Hello!</h3>
-        <p>Welcome to the demo.</p>
-        <a href='#messages'>Next</a>
+
+        <div class="hello">
+          <h3>Hello there!</h3>
+          <p>Navstack manages multiple screens with mobile-friendly transitions.</p>
+
+          <a class='button' href='#features'>Features</a>
+        </div>
+
       </section>
 
     </div>
   </script>
 
-  <script type='text/x-template' id='messages'>
+  <script type='text/x-template' id='features'>
     <div>
       <section class='top-bar'>
         <div class='back'>
@@ -59,12 +64,19 @@
         </div>
 
         <div class='center'>
-          Messages
+          Features
         </div>
       </section>
 
       <section class='content-area'>
-        Messages go here
+        <ul class="feature-list">
+          <li>
+            <a href='#'>Slide transitions</a>
+          </li>
+          <li>
+            <a href='#'>Modal transitions</a>
+          </li>
+        </ul>
       </section>
 
     </div>

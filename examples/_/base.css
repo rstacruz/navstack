@@ -4,17 +4,23 @@
 
 html {
   font-family: helvetica neue, open sans, sans-serif;
-  color: #505050;
+  color: #707090;
+  line-height: 1.5;
   font-size: 14px;
 }
 
-h1, h2, h3, p {
+h1, h2, h3, p, ul, li {
+  font-size: 1em;
   margin: 0;
   padding: 0;
 }
 
-a {
-  color: #384;
+ul, li {
+  list-style-type: none;
+}
+
+a, a:visited {
+  color: #f54;
   text-decoration: none;
 }
 
@@ -48,8 +54,8 @@ html, body {
   background: #f2f3f8;
 }
 
-#stack {
-  background: white;
+#stack > .-navstack-pane {
+  background: #fefefe;
 }
 
 @media (max-width: 480px) {
@@ -96,8 +102,7 @@ html, body {
 
 .top-bar {
   background: #fff;
-  color: #404040;
-  border-bottom: solid 1px #ddd;
+  border-bottom: solid 1px #eee;
 
   height: 50px;
   line-height: 50px;
@@ -110,6 +115,7 @@ html, body {
   left: 60px;
   right: 60px;
   text-align: center;
+  color: #222;
 }
 
 .top-bar .back {
@@ -118,10 +124,6 @@ html, body {
   top: 0;
   height: 100%;
   width: 50px;
-}
-
-.content-area {
-  padding: 20px;
 }
 
 /*
@@ -137,3 +139,79 @@ html, body {
   font-size: 24pt;
 }
 
+/*
+ * button
+ */
+
+.button {
+  display: inline-block;
+
+  color: #f54;
+  border: solid 2px #f54;
+  padding: 8px 20px;
+  border-radius: 4px;
+
+  font-weight: bold;
+}
+
+.button:hover {
+  color: #f65;
+  border-color: #f65;
+}
+
+.button:active {
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/*
+ * welcome message
+ */
+
+.hello {
+  text-align: center;
+  margin-top: 70px;
+  padding: 0 30px;
+}
+
+.hello h3 {
+  color: #222;
+  font-size: 1.5em;
+  font-weight: 300;
+  margin-bottom: 6px;
+}
+
+.hello p + a {
+  margin-top: 30px;
+}
+
+/*
+ * featurelist
+ */
+
+.feature-list {
+  background: #fff;
+  border-top: solid 1px #eee;
+  border-bottom: solid 1px #eee;
+  margin: 30px 0;
+}
+
+.feature-list a {
+  display: block;
+  padding: 15px 20px;
+  position: relative;
+}
+
+.feature-list a:after {
+  content: '';
+  display: block;
+  position: absolute;
+  right: 0;
+  left: 20px;
+  bottom: 0;
+  height: 0;
+  border-bottom: solid 1px #eee;
+}
+
+.feature-list li:last-child a:after {
+  display: none;
+}
