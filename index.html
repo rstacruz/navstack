@@ -48,6 +48,19 @@
       window.location.hash = '';
       $(window).trigger('hashchange');
     });
+
+    /*
+     * back button
+     */
+    $(document).on('click', '[role~="back"]', function (e) {
+      e.preventDefault();
+
+      if (history.length)
+        history.back();
+      else
+        window.location.hash = '#features';
+    });
+
   </script>
 
   <!-- simple template solution: -->
@@ -73,7 +86,7 @@
     <div>
       <section class='top-bar'>
         <div class='back'>
-          <a class='back-button' href='#'></a>
+          <a class='back-button' href='#' role='back'></a>
         </div>
 
         <div class='center'>
@@ -93,13 +106,10 @@
               <a href='#how'>Basic API example</a>
             </li>
             <li>
-              <a href='#'>Slide transitions</a>
-            </li>
-            <li>
-              <a href='#'>Back button support</a>
-            </li>
-            <li>
               <a href='#modal'>Modal transitions</a>
+            </li>
+            <li>
+              <a href='#back'>Back button support</a>
             </li>
           </ul>
         </div>
@@ -112,11 +122,11 @@
     <div>
       <section class='top-bar'>
         <div class='back'>
-          <a class='back-button' href='#features'></a>
+          <a class='back-button' role='back' href='#features'></a>
         </div>
 
         <div class='center'>
-          How it works
+          Example
         </div>
       </section>
     </div>
@@ -126,7 +136,7 @@
     <div>
       <section class='top-bar'>
         <div class='back'>
-          <a class='back-button close' href='#features'></a>
+          <a class='back-button close' role='back' href='#features'></a>
         </div>
 
         <div class='center'>
@@ -136,6 +146,19 @@
     </div>
   </script>
 
+  <script type='text/x-template' id='back'>
+    <div>
+      <section class='top-bar'>
+        <div class='back'>
+          <a class='back-button' role='back' href='#features'></a>
+        </div>
+
+        <div class='center'>
+          Back button support
+        </div>
+      </section>
+    </div>
+  </script>
 
 
 </body>
