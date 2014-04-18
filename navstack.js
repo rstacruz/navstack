@@ -27,10 +27,14 @@
   var Navstack, Pane;
 
   /***
-   * Navstack:
-   * A stack.
+   * Navstack : new Navstack(options)
+   * A stack. Instanciate a new stack:
    *
    *     nav = new Navstack();
+   *
+   * You may pass these options:
+   *
+   * ~ el: a selector, a jQuery object, or a DOM element.
    */
 
   Navstack = function (options) {
@@ -157,10 +161,15 @@
      *     });
      */
 
-    push: function (name, fn) {
+    push: function (name, options, fn) {
+      if (arguments.length === 2) {
+        fn = options;
+        options = undefined;
+      }
+
       if (!this.panes[name]) {
         if (!fn) throw new Error("Navstack: unknown pane '" + name + "'");
-        this.register(name, fn);
+        this.register(name, options, fn);
       }
 
       return this.go(name);
@@ -441,15 +450,20 @@
     },
 
     /**
-     * register : .register(name, fn)
+     * register : .register(name, options, fn)
      * (internal) Registers a pane `name` with initializer function `fn`,
      * allowing you to use `.go()` on the registered pane later.
      *
      * This is called on `.push`.
      */
 
-    register: function (name, fn) {
-      this.panes[name] = new Pane(name, fn, this);
+    register: function (name, options, fn) {
+      if (arguments.length === 2) {
+        fn = options;
+        options = undefined;
+      }
+
+      this.panes[name] = new Pane(name, options, fn, this);
     }
 
   };
@@ -480,9 +494,22 @@
    *     pane.view
    */
 
-  Pane = Navstack.Pane = function (name, initializer, parent) {
-    /** name: The identification `name` of this pane, as passed to `register()`. */
+  Pane = Navstack.Pane = function (name, options, initializer, parent) {
+    /**
+     * name: The identification `name` of this pane, as passed to [push()] and
+     * [register()].
+     */
+
     this.name = name;
+
+    /**
+     * options: the options.
+     *
+     * ~ transition (String): the transition to use for this pane.
+     * ~ zIndex (Number): determines the position in the stack.
+     */
+
+    this.options = options;
 
     /** initializer: Function to create the view. */
     this.initializer = initializer;
