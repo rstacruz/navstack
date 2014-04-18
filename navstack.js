@@ -209,7 +209,15 @@
 
       // Perform the transition
       var direction = this.getDirection(previous, current);
-      var transition = this.getTransition(this.transition);
+
+      // determine transition
+      var transName;
+      if (direction === 'forward') transName = current.transition;
+      else if (direction === 'backward') transName = previous.transition;
+      if (!transName) transName = this.transition;
+
+      // use transition
+      var transition = this.getTransition(transName);
       this.runTransition(transition, direction, current, previous);
 
       // Event
@@ -503,13 +511,16 @@
     this.name = name;
 
     /**
-     * options: the options.
-     *
-     * ~ transition (String): the transition to use for this pane.
-     * ~ zIndex (Number): determines the position in the stack.
+     * transition: the transition to use for this pane. (String)
      */
 
-    this.options = options;
+    this.transition = (options && options.transition);
+
+    /**
+     * zIndex: determines the position in the stack. (Number)
+     */
+
+    this.zIndex = (options && options.zIndex);
 
     /** initializer: Function to create the view. */
     this.initializer = initializer;
