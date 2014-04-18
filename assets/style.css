@@ -61,14 +61,14 @@ html, body {
 
 @media (min-width: 481px) {
   html {
-    background: #e2e3f0;
+    background: #d5d9e3;
     -webkit-transition: all 500ms linear;
     -moz-transition: all 500ms linear;
     transition: all 500ms linear;
   }
 
   html.home {
-    background: #f3f5fa;
+    background: #e2e3f0;
     -webkit-transition: none;
     -moz-transition: none;
     transition: none;
@@ -201,6 +201,16 @@ html, body {
   color: #1d9;
 }
 
+.back-button:before {
+  content: '\2039';
+}
+
+.back-button.close:before {
+  content: '\d7';
+  position: relative;
+  top: 3px;
+}
+
 /*
  * button
  */
@@ -269,7 +279,7 @@ html, body {
 }
 
 .hello h1 {
-  font-size: 2.7em;
+  font-size: 3.1em;
   font-family: helvetica neue, sans-serif;
   font-weight: 100;
 }

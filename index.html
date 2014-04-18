@@ -32,8 +32,12 @@
       var html = $(hash).html();
       if (!html) return;
 
+      // custom options for certain screens
+      var options = {};
+      if (hash === '#modal') options.transition = 'modal';
+
       $('html').attr('class', hash.substr(1));
-      stack.push(hash, function() { return $(html); });
+      stack.push(hash, options, function() { return $(html); });
     });
 
     /*
@@ -69,7 +73,7 @@
     <div>
       <section class='top-bar'>
         <div class='back'>
-          <a class='back-button' href='#'>&lsaquo;</a>
+          <a class='back-button' href='#'></a>
         </div>
 
         <div class='center'>
@@ -95,7 +99,7 @@
               <a href='#'>Back button support</a>
             </li>
             <li>
-              <a href='#'>Modal transitions</a>
+              <a href='#modal'>Modal transitions</a>
             </li>
           </ul>
         </div>
@@ -108,11 +112,25 @@
     <div>
       <section class='top-bar'>
         <div class='back'>
-          <a class='back-button' href='#features'>&lsaquo;</a>
+          <a class='back-button' href='#features'></a>
         </div>
 
         <div class='center'>
           How it works
+        </div>
+      </section>
+    </div>
+  </script>
+
+  <script type='text/x-template' id='modal'>
+    <div>
+      <section class='top-bar'>
+        <div class='back'>
+          <a class='back-button close' href='#features'></a>
+        </div>
+
+        <div class='center'>
+          Modal transitions
         </div>
       </section>
     </div>

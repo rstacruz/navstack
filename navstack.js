@@ -26,53 +26,62 @@
 
   var Navstack, Pane;
 
-  /** Navstack:
-   *  A stack.
+  /***
+   * Navstack : new Navstack(options)
+   * A stack. Instanciate a new stack:
    *
    *     nav = new Navstack();
+   *
+   * You may pass these options:
+   *
+   * ~ el: a selector, a jQuery object, or a DOM element.
    */
 
   Navstack = function (options) {
-    /*** transitions:
+    /**
+     * transitions:
      * Registry of pane transitions.
-     * A local version of `Navstack.transitions`. */
+     * A local version of `Navstack.transitions`.
+     */
+
     this.transitions = {};
 
-    /*** adaptors:
+    /**
+     * adaptors:
      * Registry of suitable adaptors.
-     * A local version of `Navstack.adaptors`. */
+     * A local version of `Navstack.adaptors`.
+     */
+
     this.adaptors = {};
 
     $.extend(this, options);
 
-    /***
+    /**
      * panes:
      * Index of panes that have been registered with this Navstack.
      * Object with pane names as keys and `Pane` instances as values.
      *
-     *      nav.push('home', function () { ... });
+     *     nav.push('home', function () { ... });
      *
-     *      nav.panes['home']
-     *      nav.panes['home'].name
-     *      nav.panes['home'].el
-     *      nav.panes['home'].view
+     *     nav.panes['home']
+     *     nav.panes['home'].name
+     *     nav.panes['home'].el
+     *     nav.panes['home'].view
      */
     this.panes = {};
 
-    /*** active:
-     * Alias for the active pane. This is
-     * a `Pane` instance. */
+    /** active: Alias for the active pane. This is a `Pane` instance. */
     this.active = null;
 
-    /*** stack:
+    /** stack:
      * Ordered array of pane names of what are the actively. */
     this.stack = [];
 
-    /*** emitter:
+    /** emitter:
      * (Internal) event emitter. */
     this.emitter = $({});
 
-    /*** el:
+    /** el:
      * The DOM element.
      *
      *       $(nav.el).show()
@@ -87,40 +96,28 @@
   };
 
   Navstack.prototype = {
-    /***
+    /**
      * init:
      * Constructor. Override me.
      *
-     *     var MyStack = Navstack.extend({
-     *       init: function() {
-     *         // initialize here
-     *       }
-     *     });
+     *   var MyStack = Navstack.extend({
+     *     init: function() {
+     *       // initialize here
+     *     }
+     *   });
      */
 
     init: function () {},
 
-    /***
-     * register:
-     * Registers a pane `name` with initializer function `fn`, allowing you to
-     * use `.go()` on the registered pane later.
-     *
-     * This is called on `.push`.
-     */
-
-    register: function (name, fn) {
-      this.panes[name] = new Pane(name, fn, this);
-    },
-
-    /***
+    /**
      * Events:
      * There's events. Available events are:
      *
-     *   - 'remove'
+     * ~ remove: called when removing
      */
 
-    /***
-     * on: .on(event, function)
+    /**
+     * on : .on(event, function)
      * Binds an event handler.
      *
      *     nav.on('remove', function() {
@@ -133,8 +130,8 @@
       return this;
     },
 
-    /***
-     * off: (event, callback)
+    /**
+     * off : .off(event, callback)
      * Removes an event handler.
      *
      *     nav.off('remove', myfunction);
@@ -145,8 +142,8 @@
       return this;
     },
 
-    /***
-     * one: (event, callback)
+    /**
+     * one : .one(event, callback)
      * Works like `.on`, except it unbinds itself right after.
      */
 
@@ -155,8 +152,8 @@
       return this;
     },
 
-    /***
-     * push: .push(name, [fn])
+    /**
+     * push : .push(name, [fn])
      * Registers a pane.
      *
      *     nav.push('home', function() {
@@ -164,18 +161,23 @@
      *     });
      */
 
-    push: function (name, fn) {
+    push: function (name, options, fn) {
+      if (arguments.length === 2) {
+        fn = options;
+        options = undefined;
+      }
+
       if (!this.panes[name]) {
         if (!fn) throw new Error("Navstack: unknown pane '" + name + "'");
-        this.register(name, fn);
+        this.register(name, options, fn);
       }
 
       return this.go(name);
     },
 
-    /***
-     * go: (name)
-     * (Internal) Switches to a given pane `name`.
+    /**
+     * go : .go(name)
+     * (internal) Switches to a given pane `name`.
      */
 
     go: function (name) {
@@ -207,7 +209,15 @@
 
       // Perform the transition
       var direction = this.getDirection(previous, current);
-      var transition = this.getTransition(this.transition);
+
+      // determine transition
+      var transName;
+      if (direction === 'forward') transName = current.transition;
+      else if (direction === 'backward') transName = previous.transition;
+      if (!transName) transName = this.transition;
+
+      // use transition
+      var transition = this.getTransition(transName);
       this.runTransition(transition, direction, current, previous);
 
       // Event
@@ -220,7 +230,7 @@
       return (current && current.view);
     },
 
-    /***
+    /**
      * transition: Object
      * Pane transition.
      */
@@ -240,7 +250,7 @@
       }
     },
 
-    /***
+    /**
      * remove:
      * Removes and destroys the Navstack.
      */
@@ -251,7 +261,7 @@
       $(this.el).remove();
     },
 
-    /***
+    /**
      * teardown:
      * Alias for `remove` (to make Navstack behave a bit more like Ractive
      * components).
@@ -261,7 +271,7 @@
       return this.remove.apply(this, arguments);
     },
 
-    /***
+    /**
      * getAdaptors:
      * Returns the adaptors available.
      */
@@ -281,8 +291,8 @@
       });
     },
 
-    /***
-     * getAdaptorFor: .getAdaptorFor(obj)
+    /**
+     * getAdaptorFor : .getAdaptorFor(obj)
      * Wraps the given `obj` object with a suitable adaptor.
      *
      *     view = new Backbone.View({ ... });
@@ -308,9 +318,9 @@
       throw new Error("Navstack: no adaptor found");
     },
 
-    /***
+    /**
      * purgePane:
-     * (Internal) Purges a given pane.
+     * (internal) Purges a given pane.
      *
      *     this.purgePane('home');
      *     this.purgePane(this.panes['home']);
@@ -352,8 +362,9 @@
       }
     },
 
-    /*** getDirection: (from, to)
-     * (Internal) Returns the direction of animation based on the
+    /**
+     * getDirection : .getDirection(from, to)
+     * (internal) Returns the direction of animation based on the
      * indices of panes `from` and `to`.
      *
      *     // Going to a pane
@@ -382,8 +393,9 @@
         return 'forward';
     },
 
-    /*** spawnPane: .spawnPane(name)
-     * (Internal) Spawns the pane of a given `name`.
+    /**
+     * spawnPane : .spawnPane(name)
+     * (internal) Spawns the pane of a given `name`.
      * Returns the pane instance.
      */
 
@@ -396,8 +408,9 @@
       return current;
     },
 
-    /*** getTransition: .getTransition(transition)
-     * (Internal) get the transition object for the given string `transition`.
+    /**
+     * getTransition : .getTransition(transition)
+     * (internal) get the transition object for the given string `transition`.
      * Throws an error if it's invalid.
      */
 
@@ -414,7 +427,8 @@
     },
 
     /**
-     * (Internal) performs a transition with the given `transition` object.
+     * runTransition : .runTransition(...)
+     * (internal) performs a transition with the given `transition` object.
      */
 
     runTransition: function (transition, direction, current, previous) {
@@ -428,7 +442,8 @@
     },
 
     /**
-     * (Internal) updates `this.stack` to include `pane`, taking into
+     * insertIntoStack : .insertIntoStack(pane)
+     * (internal) updates `this.stack` to include `pane`, taking into
      * account Z indices.
      *
      *     pane = this.pane['home'];
@@ -440,12 +455,33 @@
       if (this.stack.indexOf(name) > -1) return;
 
       this.stack.push(pane.name);
+    },
+
+    /**
+     * register : .register(name, options, fn)
+     * (internal) Registers a pane `name` with initializer function `fn`,
+     * allowing you to use `.go()` on the registered pane later.
+     *
+     * This is called on `.push`.
+     */
+
+    register: function (name, options, fn) {
+      if (arguments.length === 2) {
+        fn = options;
+        options = undefined;
+      }
+
+      this.panes[name] = new Pane(name, options, fn, this);
     }
 
   };
 
-  /*** extend
-   *   Subclasses Navstack to create your new Navstack class.
+  /**
+   * extend:
+   * Subclasses Navstack to create your new Navstack class.
+   *
+   *     var Mystack = Navstack.extend({
+   *     });
    */
 
   Navstack.extend = function (proto) {
@@ -455,8 +491,10 @@
   };
 
 
-  /**
-   * Pane.
+  /***
+   * Navstack.Pane:
+   * A pane. Panes are accessible via `navstack.panes['name']` or
+   * `navstack.active`. You'll find these properties:
    *
    *     pane.name
    *     pane.initializer  // function
@@ -464,29 +502,46 @@
    *     pane.view
    */
 
-  Pane = Navstack.Pane = function (name, initializer, parent) {
-    /** The identification `name` of this pane, as passed to `register()`. */
+  Pane = Navstack.Pane = function (name, options, initializer, parent) {
+    /**
+     * name: The identification `name` of this pane, as passed to [push()] and
+     * [register()].
+     */
+
     this.name = name;
 
-    /** Function to create the view. */
+    /**
+     * transition: the transition to use for this pane. (String)
+     */
+
+    this.transition = (options && options.transition);
+
+    /**
+     * zIndex: determines the position in the stack. (Number)
+     */
+
+    this.zIndex = (options && options.zIndex);
+
+    /** initializer: Function to create the view. */
     this.initializer = initializer;
 
-    /** Reference to `Navstack`. */
+    /** parent: Reference to `Navstack`. */
     this.parent = parent;
 
-    /** DOM element. Created on `init()`. */
+    /** el: DOM element. Created on `init()`. */
     this.el = null;
 
-    /** View instance as created by initializer. Created on `init()`. */
+    /** view: View instance as created by initializer. Created on `init()`. */
     this.view = null;
 
-    /** A wrapped version of the `view` */
+    /** adaptor: A wrapped version of the `view` */
     this.adaptor = null;
   };
 
   Pane.prototype = {
     /**
-     * Initializes the pane's view if needed.
+     * init:
+     * (internal) Initializes the pane's view if needed.
      */
 
     init: function () {
@@ -494,7 +549,8 @@
     },
 
     /**
-     * Forces initialization even if it hasn't been yet.
+     * forceInit:
+     * (internal) Forces initialization even if it hasn't been yet.
      */
 
     forceInit: function () {
