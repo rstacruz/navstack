@@ -61,14 +61,14 @@ html, body {
 
 @media (min-width: 481px) {
   html {
-    background: #d5d9e3;
+    background: #1a8;
     -webkit-transition: all 500ms linear;
     -moz-transition: all 500ms linear;
     transition: all 500ms linear;
   }
 
   html.home {
-    background: #e2e3f0;
+    background: #e3e8f3;
     -webkit-transition: none;
     -moz-transition: none;
     transition: none;
@@ -76,6 +76,11 @@ html, body {
 
   html.home #stack {
     box-shadow: none;
+  }
+
+  html:not(.home) .phone {
+    border-color: #1d8;
+    transition: all 500ms linear;
   }
 
   #stack > .-navstack-pane {
@@ -369,9 +374,16 @@ html, body {
 
 .explanation h3 {
   color: #222;
+  font-size: 0.8em;
+  font-weight: 700;
+  margin-bottom: 0.3em;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.explanation p {
   font-size: 1.3em;
   font-weight: 300;
-  margin-bottom: 0.3em;
 }
 
 .explanation .actions {
