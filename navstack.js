@@ -596,10 +596,16 @@
         current ? $(current.el).parent() :
         previous ? $(previous.el).parent() : null;
 
+      var hide    = prefix + '-hide',
+        container = prefix + '-container',
+        enter     = prefix + '-enter-' + direction,
+        exit      = prefix + '-exit-' + direction,
+        animationend = 'webkitAnimationEnd oanimationend msAnimationEnd animationend';
+
       return {
         before: function (next) {
           if (direction !== 'first')
-            $current.addClass(prefix+'-hide');
+            $current.addClass(hide);
 
           // Do transitions on next browser tick so that any DOM elements that
           // need rendering will take its time
@@ -617,30 +623,24 @@
           // prevent scrolling while transitions are working
           $(document).on('touchmove', noscroll);
 
-          $parent.addClass(prefix+'-container');
+          $parent.addClass(container);
 
           var after = once(function() {
-            $parent.removeClass(prefix+'-container');
-
-            $previous
-              .addClass(prefix+'-hide')
-              .removeClass(prefix+'-exit-'+direction);
-
-            $current
-              .removeClass(prefix+'-enter-'+direction);
-
+            $parent.removeClass(container);
+            $previous.addClass(hide).removeClass(exit);
+            $current.removeClass(enter);
             setTimeout(next, 0);
           });
 
           $previous
-            .removeClass(prefix+'-hide')
-            .addClass(prefix+'-exit-'+direction)
-            .one('webkitAnimationEnd oanimationend msAnimationEnd animationend', after);
+            .removeClass(hide)
+            .addClass(exit)
+            .one(animationend, after);
 
           $current
-            .removeClass(prefix+'-hide')
-            .addClass(prefix+'-enter-'+direction)
-            .one('webkitAnimationEnd oanimationend msAnimationEnd animationend', after);
+            .removeClass(hide)
+            .addClass(enter)
+            .one(animationend, after);
         }
       };
     };
