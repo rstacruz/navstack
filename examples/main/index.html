@@ -34,8 +34,10 @@
       var html = $(hash).html();
       if (!html) return;
 
-      $('html').attr('class', hash.substr(1));
-      stack.push(hash, function() { return $(html); });
+      var options = {};
+      if (hash === '#modal') options.transition = 'modal';
+
+      stack.push(hash, options, function() { return $(html); });
     });
 
     /*
@@ -46,28 +48,16 @@
       window.location.hash = '';
       $(window).trigger('hashchange');
     });
+
+    $(document).on('click', '.back-button', function () {
+      history.back();
+    });
   </script>
 
   <!-- simple template solution: -->
   <!-- store the templates for this page as <script> tags, Ember-style. -->
 
   <script type='text/x-template' id='home'>
-    <div class='title-pane'>
-      <section class='content-area'>
-
-        <div class="hello">
-          <h1>Navstack.js</h1>
-          <p>Navstack manages multiple screens with mobile-friendly transitions.</p>
-
-          <a class='button' href='#features'>Try it</a>
-        </div>
-
-      </section>
-
-    </div>
-  </script>
-
-  <script type='text/x-template' id='features'>
     <div>
       <section class='top-bar'>
         <div class='back'>
@@ -88,16 +78,10 @@
 
           <ul class="feature-list">
             <li>
-              <a href='#how'>Basic API example</a>
+              <a href='#slide'>Slide transitions</a>
             </li>
             <li>
-              <a href='#'>Slide transitions</a>
-            </li>
-            <li>
-              <a href='#'>Back button support</a>
-            </li>
-            <li>
-              <a href='#'>Modal transitions</a>
+              <a href='#modal'>Modal transitions</a>
             </li>
           </ul>
         </div>
@@ -106,7 +90,7 @@
     </div>
   </script>
 
-  <script type='text/x-template' id='how'>
+  <script type='text/x-template' id='slide'>
     <div>
       <section class='top-bar'>
         <div class='back'>
@@ -114,11 +98,26 @@
         </div>
 
         <div class='center'>
-          How it works
+          Slide transitions
         </div>
       </section>
     </div>
   </script>
+
+  <script type='text/x-template' id='modal'>
+    <div>
+      <section class='top-bar'>
+        <div class='back'>
+          <a class='back-button' href='#features'>&lsaquo;</a>
+        </div>
+
+        <div class='center'>
+          Modal transitions
+        </div>
+      </section>
+    </div>
+  </script>
+
 
 
 
