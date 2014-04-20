@@ -48,11 +48,6 @@ Alias for the active pane. This is a `Pane` instance.
 
 Ordered array of pane names of what are the actively.
 
-<a name="emitter"></a>
-### emitter
-
-(Internal) event emitter.
-
 <a name="el"></a>
 ### el
 
@@ -117,11 +112,6 @@ nav.push('home', function() {
   return $("<div>...</div>");
 });
 ```
-
-<a name="go"></a>
-### go `.go(name)`
-
-(internal) Switches to a given pane `name`.
 
 <a name="transition"></a>
 ### transition
@@ -198,11 +188,6 @@ Returns the pane instance.
 
 (internal) get the transition object for the given string `transition`.
 Throws an error if it's invalid.
-
-<a name="runTransition"></a>
-### runTransition `.runTransition(...)`
-
-(internal) performs a transition with the given `transition` object.
 
 <a name="insertIntoStack"></a>
 ### insertIntoStack `.insertIntoStack(pane)`
@@ -287,16 +272,6 @@ View instance as created by initializer. Created on `init()`.
 
 A wrapped version of the `view`
 
-<a name="init"></a>
-### init
-
-(internal) Initializes the pane's view if needed.
-
-<a name="forceInit"></a>
-### forceInit
-
-(internal) Forces initialization even if it hasn't been yet.
-
 <a name="Static_members"></a>
 ## Static members
 
@@ -362,20 +337,10 @@ Navstack.transitions.foo = function (direction, previous, current) {
 };
 ```
 
-<a name="Navstack_queue"></a>
-### Navstack.queue
-
-(internal) Queues animations.
-
 <a name="Navstack_adaptors"></a>
 ### Navstack.adaptors
 
 Adaptors registry.
-
-<a name="buildAdaptor"></a>
-### buildAdaptor
-
-(internal) Helper for building a generic filter
 
 <a name="Navstack_version"></a>
 ### Navstack.version
