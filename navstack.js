@@ -587,7 +587,7 @@
    */
 
   /**
-   * Navstack.buildTransition: buildTransition(prefix)
+   * Navstack.buildTransition : buildTransition(prefix)
    * (internal) builds a transition for the given `prefix`.
    */
 

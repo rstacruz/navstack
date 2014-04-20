@@ -148,66 +148,6 @@ adaptor.el()
 adaptor.remove()
 ```
 
-<a name="purgePane"></a>
-### purgePane
-
-(internal) Purges a given pane.
-
-```js
-this.purgePane('home');
-this.purgePane(this.panes['home']);
-```
-
-<a name="getDirection"></a>
-### getDirection `.getDirection(from, to)`
-
-(internal) Returns the direction of animation based on the
-indices of panes `from` and `to`.
-
-```js
-// Going to a pane
-this.getDirection('home', 'timeline')
-=> 'forward'
-
-// Going from a pane
-this.getDirection('timeline', 'home')
-=> 'backward'
-
-// Pane objects are ok too
-this.getDirection(this.pane['home'], this.pane['timeline']);
-```
-
-<a name="spawnPane"></a>
-### spawnPane `.spawnPane(name)`
-
-(internal) Spawns the pane of a given `name`.
-Returns the pane instance.
-
-<a name="getTransition"></a>
-### getTransition `.getTransition(transition)`
-
-(internal) get the transition object for the given string `transition`.
-Throws an error if it's invalid.
-
-<a name="insertIntoStack"></a>
-### insertIntoStack `.insertIntoStack(pane)`
-
-(internal) updates `this.stack` to include `pane`, taking into
-account Z indices.
-
-```js
-pane = this.pane['home'];
-this.insertIntoStack(pane);
-```
-
-<a name="register"></a>
-### register `.register(name, options, fn)`
-
-(internal) Registers a pane `name` with initializer function `fn`,
-allowing you to use `.go()` on the registered pane later.
-
-This is called on `.push`.
-
 <a name="extend"></a>
 ### extend
 
@@ -276,12 +216,6 @@ A wrapped version of the `view`
 ## Static members
 
 These are static members you can access from the global `Navstack` object.
-
-<a name="Navstack_buildTransition"></a>
-### Navstack.buildTransition
-
-buildTransition(prefix)
-(internal) builds a transition for the given `prefix`.
 
 <a name="Navstack_transitions"></a>
 ### Navstack.transitions
