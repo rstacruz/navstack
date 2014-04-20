@@ -69,13 +69,9 @@ Constructor. Override me.
 
 ```js
 var MyStack = Navstack.extend({
-
-init: function() {
-
-
-// initialize here
-
-}
+  init: function() {
+    // initialize here
+  }
 });
 ```
 
@@ -339,48 +335,29 @@ Navstack.transitions.foo = function (direction, previous, current) {
   //   current   - the pane to transition to.
 
   return {
+    before: function (next) {
+      // things to perform in preparation of a transition,
+      // such as hide the current pane.
+      // invoke next() after it's done.
 
-before: function (next) {
+      if (current) $(current.el).hide();
+      next();
+    },
 
-  // things to perform in preparation of a transition,
+    run: function (next) {
+      // run the actual transition.
+      // invoke next() after it's done.
 
-  // such as hide the current pane.
+      if (current)  $(current.el).show();
+      if (previous) $(previous.el).hide();
+      next();
+    },
 
-  // invoke next() after it's done.
-
-
-  if (current) $(current.el).hide();
-
-  next();
-
-},
-
-
-run: function (next) {
-
-  // run the actual transition.
-
-  // invoke next() after it's done.
-
-
-  if (current)  $(current.el).show();
-
-  if (previous) $(previous.el).hide();
-
-  next();
-
-},
-
-
-after: function (next) {
-
-  // things to perform after running the transition.
-
-  // invoke next() after it's done.
-
-  next();
-
-}
+    after: function (next) {
+      // things to perform after running the transition.
+      // invoke next() after it's done.
+      next();
+    }
   }
 };
 ```
