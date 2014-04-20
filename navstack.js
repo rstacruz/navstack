@@ -590,10 +590,16 @@
     var noscroll = function (e) { e.preventDefault(); };
 
     return function (direction, current, previous) {
+      var $current = $(current && current.el);
+      var $previous = $(previous && previous.el);
+      var $parent =
+        current ? $(current.el).parent() :
+        previous ? $(previous.el).parent() : null;
+
       return {
         before: function (next) {
-          if (direction !== 'first' && current)
-            $(current.el).addClass(prefix+'-hide');
+          if (direction !== 'first')
+            $current.addClass(prefix+'-hide');
 
           // Do transitions on next browser tick so that any DOM elements that
           // need rendering will take its time
@@ -602,10 +608,6 @@
 
         after: function (next) {
           $(document).off('touchmove', noscroll);
-
-          $(current && current.el)
-            .add(previous && previous.el);
-
           return next();
         },
 
@@ -615,33 +617,27 @@
           // prevent scrolling while transitions are working
           $(document).on('touchmove', noscroll);
 
-          var $parent =
-            current ? $(current.el).parent() :
-            previous ? $(previous.el).parent() : null;
-
           $parent.addClass(prefix+'-container');
 
           var after = once(function() {
             $parent.removeClass(prefix+'-container');
 
-            if (previous)
-              $(previous.el)
-                .addClass(prefix+'-hide')
-                .removeClass(prefix+'-exit-'+direction);
+            $previous
+              .addClass(prefix+'-hide')
+              .removeClass(prefix+'-exit-'+direction);
 
-            $(current.el)
+            $current
               .removeClass(prefix+'-enter-'+direction);
 
             setTimeout(next, 0);
           });
 
-          if (previous)
-            $(previous.el)
-              .removeClass(prefix+'-hide')
-              .addClass(prefix+'-exit-'+direction)
-              .one('webkitAnimationEnd oanimationend msAnimationEnd animationend', after);
+          $previous
+            .removeClass(prefix+'-hide')
+            .addClass(prefix+'-exit-'+direction)
+            .one('webkitAnimationEnd oanimationend msAnimationEnd animationend', after);
 
-          $(current.el)
+          $current
             .removeClass(prefix+'-hide')
             .addClass(prefix+'-enter-'+direction)
             .one('webkitAnimationEnd oanimationend msAnimationEnd animationend', after);
