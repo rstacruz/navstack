@@ -582,7 +582,8 @@
   };
 
   /***
-   * Static methods
+   * Static members:
+   * These are static members you can access from the global `Navstack` object.
    */
 
   /**

@@ -1,11 +1,15 @@
 <a name="Navstack"></a>
-## Navstack
+## Navstack `new Navstack(options)`
 
-A stack.
+A stack. Instanciate a new stack:
 
 ```js
 nav = new Navstack();
 ```
+
+You may pass these options:
+
+* `el` <span class='dash'>&mdash;</span> a selector, a jQuery object, or a DOM element.
 
 <a name="transitions"></a>
 ### transitions
@@ -216,7 +220,7 @@ this.insertIntoStack(pane);
 ```
 
 <a name="register"></a>
-### register `.register(name, fn)`
+### register `.register(name, options, fn)`
 
 (internal) Registers a pane `name` with initializer function `fn`,
 allowing you to use `.go()` on the registered pane later.
@@ -229,8 +233,8 @@ This is called on `.push`.
 Subclasses Navstack to create your new Navstack class.
 
 ```js
- var Mystack = Navstack.extend({
- });
+var Mystack = Navstack.extend({
+});
 ```
 
 <a name="Navstack_Pane"></a>
@@ -249,7 +253,18 @@ pane.view
 <a name="name"></a>
 ### name
 
-The identification `name` of this pane, as passed to `register()`.
+The identification `name` of this pane, as passed to [push()] and
+[register()].
+
+<a name="transition"></a>
+### transition
+
+the transition to use for this pane. (String)
+
+<a name="zIndex"></a>
+### zIndex
+
+determines the position in the stack. (Number)
 
 <a name="initializer"></a>
 ### initializer
@@ -285,3 +300,107 @@ A wrapped version of the `view`
 ### forceInit
 
 (internal) Forces initialization even if it hasn't been yet.
+
+<a name="Static_members"></a>
+## Static members
+
+These are static members you can access from the global `Navstack` object.
+
+<a name="Navstack_buildTransition"></a>
+### Navstack.buildTransition
+
+buildTransition(prefix)
+(internal) builds a transition for the given `prefix`.
+
+<a name="Navstack_transitions"></a>
+### Navstack.transitions
+
+The global transitions registry. It's an Object where transition functions are
+stored.
+
+Whenever a transition is used on a Navstack (eg, with `new Navstack({
+transition: 'foo' })`), it is first looked up in the stack's own registry
+([transitions]). If it's not found there, it's then looked up in the
+global transitions registry, `Navstack.transitions`.
+
+You can define your own transitions via:
+
+```js
+Navstack.transitions.foo = function (direction, previous, current) {
+
+  // this function should return an object with 3 keys: `before`,
+  // `run`, and `after`. Each of them are asynchronous functions
+  // that will perform different phases of the transition.
+  //
+  // you can use the arguments:
+  //
+  //   direction - this is either "first", "forward", or "backward".
+  //   previous  - the previous pane. This an instance of [Pane].
+  //   current   - the pane to transition to.
+
+  return {
+
+before: function (next) {
+
+  // things to perform in preparation of a transition,
+
+  // such as hide the current pane.
+
+  // invoke next() after it's done.
+
+
+  if (current) $(current.el).hide();
+
+  next();
+
+},
+
+
+run: function (next) {
+
+  // run the actual transition.
+
+  // invoke next() after it's done.
+
+
+  if (current)  $(current.el).show();
+
+  if (previous) $(previous.el).hide();
+
+  next();
+
+},
+
+
+after: function (next) {
+
+  // things to perform after running the transition.
+
+  // invoke next() after it's done.
+
+  next();
+
+}
+  }
+};
+```
+
+<a name="Navstack_queue"></a>
+### Navstack.queue
+
+(internal) Queues animations.
+
+<a name="Navstack_adaptors"></a>
+### Navstack.adaptors
+
+Adaptors registry.
+
+<a name="buildAdaptor"></a>
+### buildAdaptor
+
+(internal) Helper for building a generic filter
+
+<a name="Navstack_version"></a>
+### Navstack.version
+
+A string of the version of Navstack.
