@@ -581,8 +581,13 @@
     }
   };
 
+  /***
+   * Static methods
+   */
+
   /**
-   * For transitions
+   * Navstack.buildTransition: buildTransition(prefix)
+   * (internal) builds a transition for the given `prefix`.
    */
 
   Navstack.buildTransition = function (prefix) {
@@ -644,7 +649,55 @@
   };
 
   /**
-   * Transitions
+   * Navstack.transitions:
+   * The global transitions registry. It's an Object where transition functions are
+   * stored.
+   *
+   * Whenever a transition is used on a Navstack (eg, with `new Navstack({
+   * transition: 'foo' })`), it is first looked up in the stack's own registry
+   * ([transitions]). If it's not found there, it's then looked up in the
+   * global transitions registry, `Navstack.transitions`.
+   *
+   * You can define your own transitions via:
+   *
+   *     Navstack.transitions.foo = function (direction, previous, current) {
+   *
+   *       // this function should return an object with 3 keys: `before`,
+   *       // `run`, and `after`. Each of them are asynchronous functions
+   *       // that will perform different phases of the transition.
+   *       //
+   *       // you can use the arguments:
+   *       //
+   *       //   direction - this is either "first", "forward", or "backward".
+   *       //   previous  - the previous pane. This an instance of [Pane].
+   *       //   current   - the pane to transition to.
+   *
+   *       return {
+   *         before: function (next) {
+   *           // things to perform in preparation of a transition,
+   *           // such as hide the current pane.
+   *           // invoke next() after it's done.
+   *
+   *           if (current) $(current.el).hide();
+   *           next();
+   *         },
+   *
+   *         run: function (next) {
+   *           // run the actual transition.
+   *           // invoke next() after it's done.
+   *
+   *           if (current)  $(current.el).show();
+   *           if (previous) $(previous.el).hide();
+   *           next();
+   *         },
+   *
+   *         after: function (next) {
+   *           // things to perform after running the transition.
+   *           // invoke next() after it's done.
+   *           next();
+   *         }
+   *       }
+   *     };
    */
 
   Navstack.transitions = {
@@ -654,13 +707,24 @@
   };
 
   /**
-   * Adaptors
+   * Navstack.queue:
+   * (internal) Queues animations.
+   */
+
+  Navstack.queue = function (fn) {
+    $(document).queue(fn);
+  };
+
+  /**
+   * Navstack.adaptors:
+   * Adaptors registry.
    */
 
   Navstack.adaptors = {};
 
   /**
-   * (Internal) Helper for building a generic filter
+   * buildAdaptor:
+   * (internal) Helper for building a generic filter
    */
 
   function buildAdaptor (options) {
@@ -745,12 +809,9 @@
   }
 
   /**
-   * (Internal) Queues animations.
+   * Navstack.version:
+   * A string of the version of Navstack.
    */
-
-  Navstack.queue = function (fn) {
-    $(document).queue(fn);
-  };
 
   Navstack.version = '0.1.2';
 
