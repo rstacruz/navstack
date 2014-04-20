@@ -235,19 +235,21 @@
      * Pane transition.
      */
 
-    transition: {
-      before: function (direction, current, previous, next) {
-        if (current)  $(current.el).hide();
-        return next();
-      },
-      run: function (direction, current, previous, next) {
-        if (current)  $(current.el).show();
-        if (previous) $(previous.el).hide();
-        return next();
-      },
-      after: function (direction, current, previous, next) {
-        return next();
-      }
+    transition: function (direction, current, previous) {
+      return {
+        before: function(next) {
+          if (current)  $(current.el).hide();
+          return next();
+        },
+        run: function(next) {
+          if (current)  $(current.el).show();
+          if (previous) $(previous.el).hide();
+          return next();
+        },
+        after: function (next) {
+          return next();
+        }
+      };
     },
 
     /**
@@ -420,7 +422,7 @@
           Navstack.transitions[transition];
       }
 
-      if (typeof transition !== 'object')
+      if (typeof transition !== 'function')
         throw new Error("Navstack: invalid 'transition' value");
 
       return transition;
@@ -431,11 +433,12 @@
      * (internal) performs a transition with the given `transition` object.
      */
 
-    runTransition: function (transition, direction, current, previous) {
-      transition.before(direction, current, previous, function () {
+    runTransition: function (transitionFn, direction, current, previous) {
+      var transition = transitionFn(direction, current, previous);
+      transition.before(function () {
         Navstack.queue(function (next) {
-          transition.run(direction, current, previous, function () {
-            transition.after(direction, current, previous, next);
+          transition.run(function () {
+            transition.after(next);
           });
         });
       });
@@ -586,60 +589,60 @@
     // scroll-stopper
     var noscroll = function (e) { e.preventDefault(); };
 
-    return {
-      before: function (direction, current, previous, next) {
+    return function (direction, current, previous) {
+      var $current = $(current && current.el);
+      var $previous = $(previous && previous.el);
+      var $parent =
+        current ? $(current.el).parent() :
+        previous ? $(previous.el).parent() : null;
 
-        if (direction !== 'first' && current)
-          $(current.el).addClass(prefix+'-hide');
+      var hide    = prefix + '-hide',
+        container = prefix + '-container',
+        enter     = prefix + '-enter-' + direction,
+        exit      = prefix + '-exit-' + direction,
+        animationend = 'webkitAnimationEnd oanimationend msAnimationEnd animationend';
 
-        // Do transitions on next browser tick so that any DOM elements that
-        // need rendering will take its time
-        return setTimeout(next, 0);
-      },
+      return {
+        before: function (next) {
+          if (direction !== 'first')
+            $current.addClass(hide);
 
-      after: function (direction, current, previous, next) {
-        $(document).off('touchmove', noscroll);
+          // Do transitions on next browser tick so that any DOM elements that
+          // need rendering will take its time
+          return setTimeout(next, 0);
+        },
 
-        $(current && current.el)
-          .add(previous && previous.el);
+        after: function (next) {
+          $(document).off('touchmove', noscroll);
+          return next();
+        },
 
-        return next();
-      },
+        run: function (next) {
+          if (direction === 'first') return next();
 
-      run: function (direction, current, previous, next) {
-        if (direction === 'first') return next();
+          // prevent scrolling while transitions are working
+          $(document).on('touchmove', noscroll);
 
-        // prevent scrolling while transitions are working
-        $(document).on('touchmove', noscroll);
+          $parent.addClass(container);
 
-        var $parent =
-          current ? $(current.el).parent() :
-          previous ? $(previous.el).parent() : null;
-
-        $parent.addClass(prefix+'-container');
-
-        if (previous)
-          $(previous.el)
-            .removeClass(prefix+'-hide')
-            .addClass(prefix+'-exit-'+direction);
-
-        $(current.el)
-          .removeClass(prefix+'-hide')
-          .addClass(prefix+'-enter-'+direction)
-          .one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function() {
-            $parent.removeClass(prefix+'-container');
-
-            if (previous)
-              $(previous.el)
-                .addClass(prefix+'-hide')
-                .removeClass(prefix+'-exit-'+direction);
-
-            $(current.el)
-              .removeClass(prefix+'-enter-'+direction);
-
-            next();
+          var after = once(function() {
+            $parent.removeClass(container);
+            $previous.addClass(hide).removeClass(exit);
+            $current.removeClass(enter);
+            setTimeout(next, 0);
           });
-      }
+
+          $previous
+            .removeClass(hide)
+            .addClass(exit)
+            .one(animationend, after);
+
+          $current
+            .removeClass(hide)
+            .addClass(enter)
+            .one(animationend, after);
+        }
+      };
     };
   };
 
@@ -732,6 +735,16 @@
   function map (obj, fn) {
     if (obj.map) return obj.map(fn);
     else throw new Error("Todo: implement map shim");
+  }
+
+  function once (fn) {
+    var ran, value;
+    return function () {
+      if (ran) return value;
+      ran = true;
+      value = fn.apply(this, arguments);
+      return value;
+    };
   }
 
   /**

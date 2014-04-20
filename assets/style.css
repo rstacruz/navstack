@@ -6,7 +6,13 @@ html {
   font-family: proxima nova, helvetica neue, open sans, sans-serif;
   color: #9090aa;
   line-height: 1.46;
-  font-size: 14px;
+  font-size: 13px;
+}
+
+@media (min-width: 481px) {
+  html {
+    font-size: 15px;
+  }
 }
 
 h1, h2, h3, p, ul, li {
@@ -382,7 +388,7 @@ html, body {
 }
 
 .explanation p {
-  font-size: 1.3em;
+  font-size: 1.2em;
   font-weight: 300;
 }
 
