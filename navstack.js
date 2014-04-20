@@ -235,19 +235,21 @@
      * Pane transition.
      */
 
-    transition: {
-      before: function (direction, current, previous, next) {
-        if (current)  $(current.el).hide();
-        return next();
-      },
-      run: function (direction, current, previous, next) {
-        if (current)  $(current.el).show();
-        if (previous) $(previous.el).hide();
-        return next();
-      },
-      after: function (direction, current, previous, next) {
-        return next();
-      }
+    transition: function (direction, current, previous) {
+      return {
+        before: function(next) {
+          if (current)  $(current.el).hide();
+          return next();
+        },
+        run: function(next) {
+          if (current)  $(current.el).show();
+          if (previous) $(previous.el).hide();
+          return next();
+        },
+        after: function (next) {
+          return next();
+        }
+      };
     },
 
     /**
@@ -420,7 +422,7 @@
           Navstack.transitions[transition];
       }
 
-      if (typeof transition !== 'object')
+      if (typeof transition !== 'function')
         throw new Error("Navstack: invalid 'transition' value");
 
       return transition;
@@ -431,11 +433,12 @@
      * (internal) performs a transition with the given `transition` object.
      */
 
-    runTransition: function (transition, direction, current, previous) {
-      transition.before(direction, current, previous, function () {
+    runTransition: function (transitionFn, direction, current, previous) {
+      var transition = transitionFn(direction, current, previous);
+      transition.before(function () {
         Navstack.queue(function (next) {
-          transition.run(direction, current, previous, function () {
-            transition.after(direction, current, previous, next);
+          transition.run(function () {
+            transition.after(next);
           });
         });
       });
@@ -586,62 +589,64 @@
     // scroll-stopper
     var noscroll = function (e) { e.preventDefault(); };
 
-    return {
-      before: function (direction, current, previous, next) {
-        if (direction !== 'first' && current)
-          $(current.el).addClass(prefix+'-hide');
+    return function (direction, current, previous) {
+      return {
+        before: function (next) {
+          if (direction !== 'first' && current)
+            $(current.el).addClass(prefix+'-hide');
 
-        // Do transitions on next browser tick so that any DOM elements that
-        // need rendering will take its time
-        return setTimeout(next, 0);
-      },
+          // Do transitions on next browser tick so that any DOM elements that
+          // need rendering will take its time
+          return setTimeout(next, 0);
+        },
 
-      after: function (direction, current, previous, next) {
-        $(document).off('touchmove', noscroll);
+        after: function (next) {
+          $(document).off('touchmove', noscroll);
 
-        $(current && current.el)
-          .add(previous && previous.el);
+          $(current && current.el)
+            .add(previous && previous.el);
 
-        return next();
-      },
+          return next();
+        },
 
-      run: function (direction, current, previous, next) {
-        if (direction === 'first') return next();
+        run: function (next) {
+          if (direction === 'first') return next();
 
-        // prevent scrolling while transitions are working
-        $(document).on('touchmove', noscroll);
+          // prevent scrolling while transitions are working
+          $(document).on('touchmove', noscroll);
 
-        var $parent =
-          current ? $(current.el).parent() :
-          previous ? $(previous.el).parent() : null;
+          var $parent =
+            current ? $(current.el).parent() :
+            previous ? $(previous.el).parent() : null;
 
-        $parent.addClass(prefix+'-container');
+          $parent.addClass(prefix+'-container');
 
-        var after = once(function() {
-          $parent.removeClass(prefix+'-container');
+          var after = once(function() {
+            $parent.removeClass(prefix+'-container');
+
+            if (previous)
+              $(previous.el)
+                .addClass(prefix+'-hide')
+                .removeClass(prefix+'-exit-'+direction);
+
+            $(current.el)
+              .removeClass(prefix+'-enter-'+direction);
+
+            setTimeout(next, 0);
+          });
 
           if (previous)
             $(previous.el)
-              .addClass(prefix+'-hide')
-              .removeClass(prefix+'-exit-'+direction);
+              .removeClass(prefix+'-hide')
+              .addClass(prefix+'-exit-'+direction)
+              .one('webkitAnimationEnd oanimationend msAnimationEnd animationend', after);
 
           $(current.el)
-            .removeClass(prefix+'-enter-'+direction);
-
-          setTimeout(next, 0);
-        });
-
-        if (previous)
-          $(previous.el)
             .removeClass(prefix+'-hide')
-            .addClass(prefix+'-exit-'+direction)
+            .addClass(prefix+'-enter-'+direction)
             .one('webkitAnimationEnd oanimationend msAnimationEnd animationend', after);
-
-        $(current.el)
-          .removeClass(prefix+'-hide')
-          .addClass(prefix+'-enter-'+direction)
-          .one('webkitAnimationEnd oanimationend msAnimationEnd animationend', after);
-      }
+        }
+      };
     };
   };
 

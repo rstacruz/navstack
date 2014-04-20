@@ -25,14 +25,14 @@ testSuite 'Transition basic', ->
   describe 'run transitions', ->
     it 'run transitions', (done) ->
       order = ""
-      Navstack.transitions.moo =
-        before: (d, cur, prev, next) ->
+      Navstack.transitions.moo = (d, cur, prev) ->
+        before: (next) ->
           order += "1"
           next()
-        run: (d, cur, prev, next) ->
+        run: (next) ->
           order += "2"
           next()
-        after: (d, cur, prev, next) ->
+        after: (next) ->
           order += "3"
           expect(order).eq "123"
           done()

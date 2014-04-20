@@ -29,29 +29,29 @@ describe 'Go delegates', ->
       delete Navstack.transitions.aoeu
 
     it 'get from global', ->
-      Navstack.transitions.aoeu = { hello: 'world' }
+      Navstack.transitions.aoeu = -> { hello: 'world' }
 
       trans = @stack.getTransition('aoeu')
-      expect(trans).be.object
-      expect(trans.hello).eq 'world'
+      expect(trans).be.function
+      expect(trans().hello).eq 'world'
 
     it 'get from class', ->
-      @stack.transitions.aoeu = { hello: 'world' }
+      @stack.transitions.aoeu = -> { hello: 'world' }
 
       trans = @stack.getTransition('aoeu')
-      expect(trans).be.object
-      expect(trans.hello).eq 'world'
+      expect(trans).be.function
+      expect(trans().hello).eq 'world'
 
     it 'get from class constructor', ->
       @newstack = new Navstack
         transitions:
-          aoeu: { hello: 'world' }
+          aoeu: -> { hello: 'world' }
 
       trans = @newstack.getTransition('aoeu')
-      expect(trans).be.object
-      expect(trans.hello).eq 'world'
+      expect(trans).be.function
+      expect(trans().hello).eq 'world'
 
     it 'get from params', ->
-      trans = @stack.getTransition(hello: 'world')
-      expect(trans).be.object
-      expect(trans.hello).eq 'world'
+      trans = @stack.getTransition(-> {hello: 'world'})
+      expect(trans).be.function
+      expect(trans().hello).eq 'world'
