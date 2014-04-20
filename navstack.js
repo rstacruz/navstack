@@ -588,7 +588,6 @@
 
     return {
       before: function (direction, current, previous, next) {
-
         if (direction !== 'first' && current)
           $(current.el).addClass(prefix+'-hide');
 
@@ -618,27 +617,30 @@
 
         $parent.addClass(prefix+'-container');
 
+        var after = once(function() {
+          $parent.removeClass(prefix+'-container');
+
+          if (previous)
+            $(previous.el)
+              .addClass(prefix+'-hide')
+              .removeClass(prefix+'-exit-'+direction);
+
+          $(current.el)
+            .removeClass(prefix+'-enter-'+direction);
+
+          setTimeout(next, 0);
+        });
+
         if (previous)
           $(previous.el)
             .removeClass(prefix+'-hide')
-            .addClass(prefix+'-exit-'+direction);
+            .addClass(prefix+'-exit-'+direction)
+            .one('webkitAnimationEnd oanimationend msAnimationEnd animationend', after);
 
         $(current.el)
           .removeClass(prefix+'-hide')
           .addClass(prefix+'-enter-'+direction)
-          .one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function() {
-            $parent.removeClass(prefix+'-container');
-
-            if (previous)
-              $(previous.el)
-                .addClass(prefix+'-hide')
-                .removeClass(prefix+'-exit-'+direction);
-
-            $(current.el)
-              .removeClass(prefix+'-enter-'+direction);
-
-            next();
-          });
+          .one('webkitAnimationEnd oanimationend msAnimationEnd animationend', after);
       }
     };
   };
@@ -732,6 +734,16 @@
   function map (obj, fn) {
     if (obj.map) return obj.map(fn);
     else throw new Error("Todo: implement map shim");
+  }
+
+  function once (fn) {
+    var ran, value;
+    return function () {
+      if (ran) return value;
+      ran = true;
+      value = fn.apply(this, arguments);
+      return value;
+    };
   }
 
   /**
