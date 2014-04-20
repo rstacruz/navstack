@@ -30,14 +30,21 @@
    * Navstack : new Navstack(options)
    * A stack. Instanciate a new stack:
    *
-   *     nav = new Navstack();
+   *     stage = new Navstack({
+   *       el: '#stack'
+   *     });
    *
-   * You may pass these options:
+   * You may pass these options (all of them are optional):
    *
    * ~ el: a selector, a jQuery object, or a DOM element.
+   * ~ transition: a string of the transition name to use.
+   *
+   * You'll then use [push()].
    */
 
   Navstack = function (options) {
+    /** Attributes: */
+
     /**
      * transitions:
      * Registry of pane transitions.
@@ -73,18 +80,30 @@
     /** active: Alias for the active pane. This is a `Pane` instance. */
     this.active = null;
 
-    /** stack:
-     * Ordered array of pane names of what are the actively. */
+    /**
+     * stack : Array
+     * Ordered array of pane names of what are the panes present in the stack.
+     * When doing [push()], you are adding an item to the stack.
+     *
+     *     stage.push('home', function() { ... });
+     *     stage.stack == ['home'];
+     *
+     *     stage.push('timeline', function() { ... });
+     *     stage.stack == ['home', 'timeline'];
+     *
+     *     stage.push('home');
+     *     stage.stack == ['home'];
+     * */
     this.stack = [];
 
     /** emitter:
-     * (Internal) event emitter. */
+     * (internal) event emitter. */
     this.emitter = $({});
 
     /** el:
      * The DOM element.
      *
-     *       $(nav.el).show()
+     *     $(nav.el).show()
      */
     this.el = (options && options.el) ? $(options.el) : $('<div>');
 
@@ -98,7 +117,9 @@
   Navstack.prototype = {
     /**
      * init:
-     * Constructor. Override me.
+     * Constructor. You may override this function when subclassing via
+     * [Navstack.extend] to run some code when subclassed stack is
+     * instanciated.
      *
      *   var MyStack = Navstack.extend({
      *     init: function() {
@@ -111,16 +132,16 @@
 
     /**
      * Events:
-     * There's events. Available events are:
+     * A stack may emit events, which you can listen to via [on()]. Available events are:
      *
-     * ~ remove: called when removing
+     * ~ remove: called when removing the stack.
      */
 
     /**
      * on : .on(event, function)
      * Binds an event handler.
      *
-     *     nav.on('remove', function() {
+     *     stage.on('remove', function() {
      *       // do things
      *     });
      */
@@ -134,7 +155,7 @@
      * off : .off(event, callback)
      * Removes an event handler.
      *
-     *     nav.off('remove', myfunction);
+     *     stage.off('remove', myfunction);
      */
 
     off: function (event, handler) {
@@ -153,7 +174,7 @@
     },
 
     /**
-     * push : .push(name, [fn])
+     * push : .push(name, [options], [fn])
      * Registers a pane.
      *
      *     nav.push('home', function() {
@@ -231,8 +252,8 @@
     },
 
     /**
-     * transition: Object
-     * Pane transition.
+     * transition:
+     * Pane transition. This can either be a *String* or a *Function*.
      */
 
     transition: function (direction, current, previous) {
@@ -255,6 +276,9 @@
     /**
      * remove:
      * Removes and destroys the Navstack.
+     *
+     *     nav = new Navstack({ el: '#stack' });
+     *     nav.remove();
      */
 
     remove: function () {
@@ -265,8 +289,8 @@
 
     /**
      * teardown:
-     * Alias for `remove` (to make Navstack behave a bit more like Ractive
-     * components).
+     * Alias for [remove()]. This alias exists so that stacks behave a bit more like
+     * Ractive components.
      */
 
     teardown: function () {
@@ -275,7 +299,7 @@
 
     /**
      * getAdaptors:
-     * Returns the adaptors available.
+     * (internal) Returns the adaptors available.
      */
 
     getAdaptors: function () {
@@ -295,7 +319,7 @@
 
     /**
      * getAdaptorFor : .getAdaptorFor(obj)
-     * Wraps the given `obj` object with a suitable adaptor.
+     * (internal) Wraps the given `obj` object with a suitable adaptor.
      *
      *     view = new Backbone.View({ ... });
      *     adaptor = nav.getAdaptorFor(view);
@@ -479,21 +503,6 @@
 
   };
 
-  /**
-   * extend:
-   * Subclasses Navstack to create your new Navstack class.
-   *
-   *     var Mystack = Navstack.extend({
-   *     });
-   */
-
-  Navstack.extend = function (proto) {
-    var klass = function() { Navstack.apply(this, arguments); };
-    $.extend(klass.prototype, Navstack.prototype, proto);
-    return klass;
-  };
-
-
   /***
    * Navstack.Pane:
    * A pane. Panes are accessible via `navstack.panes['name']` or
@@ -585,6 +594,26 @@
    * Static members:
    * These are static members you can access from the global `Navstack` object.
    */
+
+  /**
+   * Navstack.extend : extend(prototype)
+   * Subclasses Navstack to create your new Navstack class. This allows you to
+   * create 'presets' of the options to be passed onto the constructor.
+   *
+   *     var Mystack = Navstack.extend({
+   *       transition: 'slide'
+   *     });
+   *
+   *     // doing this is equivalent to passing `transition: 'slide'` to the
+   *     // options object.
+   *     var stack = new Mystack({ el: '#stack' });
+   */
+
+  Navstack.extend = function (proto) {
+    var klass = function() { Navstack.apply(this, arguments); };
+    $.extend(klass.prototype, Navstack.prototype, proto);
+    return klass;
+  };
 
   /**
    * Navstack.buildTransition : buildTransition(prefix)

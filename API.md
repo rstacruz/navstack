@@ -4,12 +4,24 @@
 A stack. Instanciate a new stack:
 
 ```js
-nav = new Navstack();
+stage = new Navstack({
+  el: '#stack'
+});
 ```
 
-You may pass these options:
+You may pass these options (all of them are optional):
 
 * `el` <span class='dash'>&mdash;</span> a selector, a jQuery object, or a DOM element.
+* `transition` <span class='dash'>&mdash;</span> a string of the transition name to use.
+
+You'll then use [push()].
+
+----
+
+<a name="Attributes"></a>
+### Attributes
+
+
 
 <a name="transitions"></a>
 ### transitions
@@ -44,9 +56,21 @@ nav.panes['home'].view
 Alias for the active pane. This is a `Pane` instance.
 
 <a name="stack"></a>
-### stack
+### stack `Array`
 
-Ordered array of pane names of what are the actively.
+Ordered array of pane names of what are the panes present in the stack.
+When doing [push()], you are adding an item to the stack.
+
+```js
+nav.push('home', function() { ... });
+nav.stack == ['home'];
+
+nav.push('timeline', function() { ... });
+nav.stack == ['home', 'timeline'];
+
+nav.push('home');
+nav.stack == ['home'];
+```
 
 <a name="el"></a>
 ### el
@@ -54,13 +78,15 @@ Ordered array of pane names of what are the actively.
 The DOM element.
 
 ```js
-  $(nav.el).show()
+$(nav.el).show()
 ```
 
 <a name="init"></a>
 ### init
 
-Constructor. Override me.
+Constructor. You may override this function when subclassing via
+[Navstack.extend] to run some code when subclassed stack is
+instanciated.
 
 ```js
 var MyStack = Navstack.extend({
@@ -70,12 +96,14 @@ var MyStack = Navstack.extend({
 });
 ```
 
+----
+
 <a name="Events"></a>
 ### Events
 
-There's events. Available events are:
+A stack may emit events, which you can listen to via [on()]. Available events are:
 
-* `remove` <span class='dash'>&mdash;</span> called when removing
+* `remove` <span class='dash'>&mdash;</span> called when removing the stack.
 
 <a name="on"></a>
 ### on `.on(event, function)`
@@ -102,8 +130,13 @@ nav.off('remove', myfunction);
 
 Works like `.on`, except it unbinds itself right after.
 
+----
+
+<a name="Methods"></a>
+### Methods
+
 <a name="push"></a>
-### push `.push(name, [fn])`
+### push `.push(name, [options], [fn])`
 
 Registers a pane.
 
@@ -116,47 +149,23 @@ nav.push('home', function() {
 <a name="transition"></a>
 ### transition
 
-Object
-Pane transition.
+Pane transition. This can either be a *String* or a *Function*.
 
 <a name="remove"></a>
 ### remove
 
 Removes and destroys the Navstack.
 
+```js
+nav = new Navstack({ el: '#stack' });
+nav.remove();
+```
+
 <a name="teardown"></a>
 ### teardown
 
-Alias for `remove` (to make Navstack behave a bit more like Ractive
-components).
-
-<a name="getAdaptors"></a>
-### getAdaptors
-
-Returns the adaptors available.
-
-<a name="getAdaptorFor"></a>
-### getAdaptorFor `.getAdaptorFor(obj)`
-
-Wraps the given `obj` object with a suitable adaptor.
-
-```js
-view = new Backbone.View({ ... });
-adaptor = nav.getAdaptorFor(view);
-
-adaptor.el()
-adaptor.remove()
-```
-
-<a name="extend"></a>
-### extend
-
-Subclasses Navstack to create your new Navstack class.
-
-```js
-var Mystack = Navstack.extend({
-});
-```
+Alias for [remove()]. This alias exists so that stacks behave a bit more like
+Ractive components.
 
 <a name="Navstack_Pane"></a>
 ## Navstack.Pane
@@ -216,6 +225,23 @@ A wrapped version of the `view`
 ## Static members
 
 These are static members you can access from the global `Navstack` object.
+
+<a name="Navstack_extend"></a>
+### Navstack.extend
+
+extend(prototype)
+Subclasses Navstack to create your new Navstack class. This allows you to
+create 'presets' of the options to be passed onto the constructor.
+
+```js
+var Mystack = Navstack.extend({
+  transition: 'slide'
+});
+
+// doing this is equivalent to passing `transition: 'slide'` to the
+// options object.
+var stack = new Mystack({ el: '#stack' });
+```
 
 <a name="Navstack_transitions"></a>
 ### Navstack.transitions
@@ -280,3 +306,6 @@ Adaptors registry.
 ### Navstack.version
 
 A string of the version of Navstack.
+
+[push()]: #push
+[Navstack.extend]: #Navstack_extend

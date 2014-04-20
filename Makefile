@@ -1,5 +1,9 @@
+all: navstack.css API.md
 navstack.css: navstack.styl
 	./node_modules/.bin/stylus < $^ | ./node_modules/.bin/autoprefixer -b "> 1%" > $@
+
+API.md: navstack.js
+	mdextract < $^ > $@
 
 size:
 	@echo "  .js        " `cat navstack.js | wc -c` bytes
