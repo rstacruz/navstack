@@ -623,8 +623,6 @@
           // prevent scrolling while transitions are working
           $(document).on('touchmove', noscroll);
 
-          $parent.addClass(container);
-
           var after = once(function() {
             $parent.removeClass(container);
             $previous.addClass(hide).removeClass(exit);
@@ -632,14 +630,13 @@
             setTimeout(next, 0);
           });
 
+          $parent
+            .addClass(container);
           $previous
-            .removeClass(hide)
-            .addClass(exit)
+            .removeClass(hide).addClass(exit)
             .one(animationend, after);
-
           $current
-            .removeClass(hide)
-            .addClass(enter)
+            .removeClass(hide).addClass(enter)
             .one(animationend, after);
         }
       };
