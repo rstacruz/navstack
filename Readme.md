@@ -1,6 +1,8 @@
 Navstack
 ========
 
+<img src="http://ricostacruz.com/navstack/assets/navstack.gif" align="right">
+
 Manage a stack of multiple views. Perfect for tabs, navigation stacks, and 
 similar.  Inspired by iOS's UINavigationController.
 
