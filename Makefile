@@ -17,7 +17,7 @@ size:
 bump:
 	bump navstack.js package.json bower.json
 
-site:
+site: all
 	@if [ ! -d site ]; then echo "  !  err: clone the site repo into ./site"; exit 1; fi
 	cp navstack.js site
 	cp navstack.css site

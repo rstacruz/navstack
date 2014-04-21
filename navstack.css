@@ -5,15 +5,21 @@
   position: relative;
   overflow: hidden;
 }
-.-navstack-pane,
-.full-screen {
+.-navstack-nav,
+.-navstack-pane {
   position: absolute;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
-  background: #fff;
   overflow: hidden;
+}
+.-navstack-pane,
+.full-screen {
+  background: #fff;
+}
+.-navstack-nav {
+  z-index: 3;
 }
 /* ----------------------------------------------------------------------------------
  * Animations: slide

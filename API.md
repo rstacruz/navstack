@@ -16,8 +16,6 @@ You may pass these options (all of them are optional):
 
 You'll then use [push()].
 
-----
-
 <a name="Attributes"></a>
 ### Attributes
 
@@ -62,14 +60,14 @@ Ordered array of pane names of what are the panes present in the stack.
 When doing [push()], you are adding an item to the stack.
 
 ```js
-nav.push('home', function() { ... });
-nav.stack == ['home'];
+stage.push('home', function() { ... });
+stage.stack == ['home'];
 
-nav.push('timeline', function() { ... });
-nav.stack == ['home', 'timeline'];
+stage.push('timeline', function() { ... });
+stage.stack == ['home', 'timeline'];
 
-nav.push('home');
-nav.stack == ['home'];
+stage.push('home');
+stage.stack == ['home'];
 ```
 
 <a name="el"></a>
@@ -96,8 +94,6 @@ var MyStack = Navstack.extend({
 });
 ```
 
-----
-
 <a name="Events"></a>
 ### Events
 
@@ -111,7 +107,7 @@ A stack may emit events, which you can listen to via [on()]. Available events ar
 Binds an event handler.
 
 ```js
-nav.on('remove', function() {
+stage.on('remove', function() {
   // do things
 });
 ```
@@ -122,18 +118,13 @@ nav.on('remove', function() {
 Removes an event handler.
 
 ```js
-nav.off('remove', myfunction);
+stage.off('remove', myfunction);
 ```
 
 <a name="one"></a>
 ### one `.one(event, callback)`
 
 Works like `.on`, except it unbinds itself right after.
-
-----
-
-<a name="Methods"></a>
-### Methods
 
 <a name="push"></a>
 ### push `.push(name, [options], [fn])`
@@ -227,9 +218,8 @@ A wrapped version of the `view`
 These are static members you can access from the global `Navstack` object.
 
 <a name="Navstack_extend"></a>
-### Navstack.extend
+### Navstack.extend `extend(prototype)`
 
-extend(prototype)
 Subclasses Navstack to create your new Navstack class. This allows you to
 create 'presets' of the options to be passed onto the constructor.
 
@@ -306,6 +296,3 @@ Adaptors registry.
 ### Navstack.version
 
 A string of the version of Navstack.
-
-[push()]: #push
-[Navstack.extend]: #Navstack_extend

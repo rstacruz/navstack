@@ -459,8 +459,11 @@
 
     runTransition: function (transitionFn, direction, current, previous) {
       var transition = transitionFn(direction, current, previous);
+      var nav = this;
       transition.before(function () {
         Navstack.queue(function (next) {
+          if (transition.nav)
+            nav.runOverlay(direction, current, previous);
           transition.run(function () {
             transition.after(next);
           });
@@ -499,6 +502,37 @@
       }
 
       this.panes[name] = new Pane(name, options, fn, this);
+    },
+
+    /**
+     * runOverlay: (internal) makes the overlay div
+     */
+
+    runOverlay: function (direction, current, previous) {
+      if (direction === 'first') return;
+
+      var $current = $(current && current.el);
+      var $previous = $(previous && previous.el);
+      var $parent = $current.add($previous).parent();
+      var nav = '.top-bar';
+
+      // build the nav in there
+      var $nav1 = $current.find(nav);
+      var $nav2 = $previous.find(nav);
+      if (!$nav1.length || !$nav2.length) return;
+
+      // create the overlay
+      var $overlay = $("<div class='-navstack-nav'>");
+      var $bar = $($nav2[0].outerHTML);
+      // $bar.append($nav1.html());
+      $overlay.append($bar);
+
+      // append it
+      $overlay.appendTo($parent);
+
+      setTimeout(function () {
+        $overlay.remove();
+      }, 500);
     }
 
   };
@@ -620,7 +654,7 @@
    * (internal) builds a transition for the given `prefix`.
    */
 
-  Navstack.buildTransition = function (prefix) {
+  Navstack.buildTransition = function (prefix, options) {
     // scroll-stopper
     var noscroll = function (e) { e.preventDefault(); };
 
@@ -637,7 +671,7 @@
         exit      = prefix + '-exit-' + direction,
         animationend = 'webkitAnimationEnd oanimationend msAnimationEnd animationend';
 
-      return {
+      var trans = {
         before: function (next) {
           if (direction !== 'first')
             $current.addClass(hide);
@@ -675,6 +709,11 @@
             .one(animationend, after);
         }
       };
+
+      // enable nav support for certain transitions
+      if (options && options.nav) trans.nav = true;
+
+      return trans;
     };
   };
 
@@ -731,7 +770,7 @@
    */
 
   Navstack.transitions = {
-    slide: Navstack.buildTransition('slide'),
+    slide: Navstack.buildTransition('slide', { nav: true }),
     modal: Navstack.buildTransition('modal'),
     flip: Navstack.buildTransition('flip')
   };
@@ -816,6 +855,10 @@
     check: function (obj) { return $(obj)[0].nodeType === 1; },
     remove: function (obj) { return $(obj).remove(); }
   });
+
+  /*
+   * Adaptors in use
+   */
 
   Navstack.adapt = ['backbone', 'ractive', 'react', 'jquery'];
 
