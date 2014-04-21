@@ -43,7 +43,7 @@ describe 'Transitions', ->
       setTimeout done, 10
 
     it 'run queue', ->
-      expect(Navstack.queue.calledTwice).be.true
+      expect(Navstack.queue.callCount).gte 2
 
     it 'parent container', ->
       expect(className "#parent").match /slide-container/
