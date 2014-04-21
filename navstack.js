@@ -460,11 +460,15 @@
     runTransition: function (transitionFn, direction, current, previous) {
       var transition = transitionFn(direction, current, previous);
       var nav = this;
+      var $nav = $(this.el);
+
       transition.before(function () {
         Navstack.queue(function (next) {
           if (transition.nav)
             nav.runOverlay(direction, current, previous);
           transition.run(function () {
+            if (transition.nav)
+              $nav.find('.-navstack-nav').remove();
             transition.after(next);
           });
         });
@@ -525,12 +529,14 @@
       var $bar = $("<" + $nav2[0].nodeName + ">");
       $bar.attr('class', $nav2.attr('class'));
 
+      // add the previous stuff as exiting
       $nav2.children().each(function () {
         var $el = $(this.outerHTML);
         $el.addClass('nav-slide-exit-'+direction);
         $bar.append($el);
       });
 
+      // add the current stuff as entering
       $nav1.children().each(function () {
         var $el = $(this.outerHTML);
         $el.addClass('nav-slide-enter-'+direction);
@@ -543,9 +549,10 @@
       // append it
       $overlay.appendTo($parent);
 
+      // change the classname to transition
       setTimeout(function () {
-        $overlay.remove();
-      }, 500);
+        $bar.attr('class', $nav1.attr('class'));
+      }, 0);
     }
 
   };
