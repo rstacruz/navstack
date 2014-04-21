@@ -509,16 +509,17 @@
     },
 
     /**
-     * runOverlay: (internal) makes the overlay div
+     * runOverlay: (internal) makes the overlay div to draw the animating nav
+     * elements.
      */
 
     runOverlay: function (direction, current, previous) {
-      if (direction === 'first') return;
+      if (direction === 'first' || !this.nav) return;
 
       var $current = $(current && current.el);
       var $previous = $(previous && previous.el);
       var $parent = $current.add($previous).parent();
-      var nav = '.top-bar';
+      var nav = this.nav;
 
       // build the nav in there
       var $nav1 = $current.find(nav);
@@ -532,6 +533,9 @@
       // add the previous stuff as exiting
       $nav2.children().each(function () {
         var $el = $(this.outerHTML);
+        // skip if the same data-id exists in the current pane
+        var id = $el.attr('data-id');
+        if (id && $nav1.find('>[data-id="'+id+'"]').length) return;
         $el.addClass('nav-slide-exit-'+direction);
         $bar.append($el);
       });
@@ -539,14 +543,16 @@
       // add the current stuff as entering
       $nav1.children().each(function () {
         var $el = $(this.outerHTML);
-        $el.addClass('nav-slide-enter-'+direction);
+        var id = $el.attr('data-id');
+        // skip entrance animation if the same data-id exists in the previous
+        if (!id || !$nav2.find('>[data-id="'+id+'"]').length)
+          $el.addClass('nav-slide-enter-'+direction);
         $bar.append($el);
       });
 
+      // build the overlay bar
       var $overlay = $("<div class='-navstack-nav'>");
       $overlay.append($bar);
-
-      // append it
       $overlay.appendTo($parent);
 
       // change the classname to transition
