@@ -30,14 +30,21 @@
    * Navstack : new Navstack(options)
    * A stack. Instanciate a new stack:
    *
-   *     nav = new Navstack();
+   *     stage = new Navstack({
+   *       el: '#stack'
+   *     });
    *
-   * You may pass these options:
+   * You may pass these options (all of them are optional):
    *
    * ~ el: a selector, a jQuery object, or a DOM element.
+   * ~ transition: a string of the transition name to use.
+   *
+   * You'll then use [push()].
    */
 
   Navstack = function (options) {
+    /** Attributes: */
+
     /**
      * transitions:
      * Registry of pane transitions.
@@ -73,18 +80,30 @@
     /** active: Alias for the active pane. This is a `Pane` instance. */
     this.active = null;
 
-    /** stack:
-     * Ordered array of pane names of what are the actively. */
+    /**
+     * stack : Array
+     * Ordered array of pane names of what are the panes present in the stack.
+     * When doing [push()], you are adding an item to the stack.
+     *
+     *     stage.push('home', function() { ... });
+     *     stage.stack == ['home'];
+     *
+     *     stage.push('timeline', function() { ... });
+     *     stage.stack == ['home', 'timeline'];
+     *
+     *     stage.push('home');
+     *     stage.stack == ['home'];
+     * */
     this.stack = [];
 
     /** emitter:
-     * (Internal) event emitter. */
+     * (internal) event emitter. */
     this.emitter = $({});
 
     /** el:
      * The DOM element.
      *
-     *       $(nav.el).show()
+     *     $(nav.el).show()
      */
     this.el = (options && options.el) ? $(options.el) : $('<div>');
 
@@ -98,7 +117,9 @@
   Navstack.prototype = {
     /**
      * init:
-     * Constructor. Override me.
+     * Constructor. You may override this function when subclassing via
+     * [Navstack.extend] to run some code when subclassed stack is
+     * instanciated.
      *
      *   var MyStack = Navstack.extend({
      *     init: function() {
@@ -111,16 +132,16 @@
 
     /**
      * Events:
-     * There's events. Available events are:
+     * A stack may emit events, which you can listen to via [on()]. Available events are:
      *
-     * ~ remove: called when removing
+     * ~ remove: called when removing the stack.
      */
 
     /**
      * on : .on(event, function)
      * Binds an event handler.
      *
-     *     nav.on('remove', function() {
+     *     stage.on('remove', function() {
      *       // do things
      *     });
      */
@@ -134,7 +155,7 @@
      * off : .off(event, callback)
      * Removes an event handler.
      *
-     *     nav.off('remove', myfunction);
+     *     stage.off('remove', myfunction);
      */
 
     off: function (event, handler) {
@@ -153,7 +174,7 @@
     },
 
     /**
-     * push : .push(name, [fn])
+     * push : .push(name, [options], [fn])
      * Registers a pane.
      *
      *     nav.push('home', function() {
@@ -231,8 +252,8 @@
     },
 
     /**
-     * transition: Object
-     * Pane transition.
+     * transition:
+     * Pane transition. This can either be a *String* or a *Function*.
      */
 
     transition: function (direction, current, previous) {
@@ -255,6 +276,9 @@
     /**
      * remove:
      * Removes and destroys the Navstack.
+     *
+     *     nav = new Navstack({ el: '#stack' });
+     *     nav.remove();
      */
 
     remove: function () {
@@ -265,8 +289,8 @@
 
     /**
      * teardown:
-     * Alias for `remove` (to make Navstack behave a bit more like Ractive
-     * components).
+     * Alias for [remove()]. This alias exists so that stacks behave a bit more like
+     * Ractive components.
      */
 
     teardown: function () {
@@ -275,7 +299,7 @@
 
     /**
      * getAdaptors:
-     * Returns the adaptors available.
+     * (internal) Returns the adaptors available.
      */
 
     getAdaptors: function () {
@@ -295,7 +319,7 @@
 
     /**
      * getAdaptorFor : .getAdaptorFor(obj)
-     * Wraps the given `obj` object with a suitable adaptor.
+     * (internal) Wraps the given `obj` object with a suitable adaptor.
      *
      *     view = new Backbone.View({ ... });
      *     adaptor = nav.getAdaptorFor(view);
@@ -435,9 +459,16 @@
 
     runTransition: function (transitionFn, direction, current, previous) {
       var transition = transitionFn(direction, current, previous);
+      var nav = this;
+      var $nav = $(this.el);
+
       transition.before(function () {
         Navstack.queue(function (next) {
+          if (transition.nav)
+            nav.runOverlay(direction, current, previous);
           transition.run(function () {
+            if (transition.nav)
+              $nav.find('.-navstack-nav').remove();
             transition.after(next);
           });
         });
@@ -475,24 +506,62 @@
       }
 
       this.panes[name] = new Pane(name, options, fn, this);
+    },
+
+    /**
+     * runOverlay: (internal) makes the overlay div to draw the animating nav
+     * elements.
+     */
+
+    runOverlay: function (direction, current, previous) {
+      if (direction === 'first' || !this.nav) return;
+
+      var $current = $(current && current.el);
+      var $previous = $(previous && previous.el);
+      var $parent = $current.add($previous).parent();
+      var nav = this.nav;
+
+      // build the nav in there
+      var $nav1 = $current.find(nav);
+      var $nav2 = $previous.find(nav);
+      if (!$nav1.length || !$nav2.length) return;
+
+      // create the overlay bar
+      var $bar = $("<" + $nav2[0].nodeName + ">");
+      $bar.attr('class', $nav2.attr('class'));
+
+      // add the previous stuff as exiting
+      $nav2.children().each(function () {
+        var $el = $(this.outerHTML);
+        // skip if the same data-id exists in the current pane
+        var id = $el.attr('data-id');
+        if (id && $nav1.find('>[data-id="'+id+'"]').length) return;
+        $el.addClass('nav-slide-exit-'+direction);
+        $bar.append($el);
+      });
+
+      // add the current stuff as entering
+      $nav1.children().each(function () {
+        var $el = $(this.outerHTML);
+        var id = $el.attr('data-id');
+        // skip entrance animation if the same data-id exists in the previous
+        if (!id || !$nav2.find('>[data-id="'+id+'"]').length)
+          $el.addClass('nav-slide-enter-'+direction);
+        $bar.append($el);
+      });
+
+      // build the overlay bar
+      var $overlay = $("<div class='-navstack-nav'>");
+      $overlay.append($bar);
+      $overlay.appendTo($parent);
+
+      // change the classname to transition
+      setTimeout(function () {
+        $bar.attr('class', $nav1.attr('class'));
+      }, 0);
     }
 
   };
-
-  /**
-   * extend:
-   * Subclasses Navstack to create your new Navstack class.
-   *
-   *     var Mystack = Navstack.extend({
-   *     });
-   */
-
-  Navstack.extend = function (proto) {
-    var klass = function() { Navstack.apply(this, arguments); };
-    $.extend(klass.prototype, Navstack.prototype, proto);
-    return klass;
-  };
-
 
   /***
    * Navstack.Pane:
@@ -581,11 +650,37 @@
     }
   };
 
-  /**
-   * For transitions
+  /***
+   * Static members:
+   * These are static members you can access from the global `Navstack` object.
    */
 
-  Navstack.buildTransition = function (prefix) {
+  /**
+   * Navstack.extend : extend(prototype)
+   * Subclasses Navstack to create your new Navstack class. This allows you to
+   * create 'presets' of the options to be passed onto the constructor.
+   *
+   *     var Mystack = Navstack.extend({
+   *       transition: 'slide'
+   *     });
+   *
+   *     // doing this is equivalent to passing `transition: 'slide'` to the
+   *     // options object.
+   *     var stack = new Mystack({ el: '#stack' });
+   */
+
+  Navstack.extend = function (proto) {
+    var klass = function() { Navstack.apply(this, arguments); };
+    $.extend(klass.prototype, Navstack.prototype, proto);
+    return klass;
+  };
+
+  /**
+   * Navstack.buildTransition : buildTransition(prefix)
+   * (internal) builds a transition for the given `prefix`.
+   */
+
+  Navstack.buildTransition = function (prefix, options) {
     // scroll-stopper
     var noscroll = function (e) { e.preventDefault(); };
 
@@ -602,7 +697,7 @@
         exit      = prefix + '-exit-' + direction,
         animationend = 'webkitAnimationEnd oanimationend msAnimationEnd animationend';
 
-      return {
+      var trans = {
         before: function (next) {
           if (direction !== 'first')
             $current.addClass(hide);
@@ -623,8 +718,6 @@
           // prevent scrolling while transitions are working
           $(document).on('touchmove', noscroll);
 
-          $parent.addClass(container);
-
           var after = once(function() {
             $parent.removeClass(container);
             $previous.addClass(hide).removeClass(exit);
@@ -632,38 +725,101 @@
             setTimeout(next, 0);
           });
 
+          $parent
+            .addClass(container);
           $previous
-            .removeClass(hide)
-            .addClass(exit)
+            .removeClass(hide).addClass(exit)
             .one(animationend, after);
-
           $current
-            .removeClass(hide)
-            .addClass(enter)
+            .removeClass(hide).addClass(enter)
             .one(animationend, after);
         }
       };
+
+      // enable nav support for certain transitions
+      if (options && options.nav) trans.nav = true;
+
+      return trans;
     };
   };
 
   /**
-   * Transitions
+   * Navstack.transitions:
+   * The global transitions registry. It's an Object where transition functions are
+   * stored.
+   *
+   * Whenever a transition is used on a Navstack (eg, with `new Navstack({
+   * transition: 'foo' })`), it is first looked up in the stack's own registry
+   * ([transitions]). If it's not found there, it's then looked up in the
+   * global transitions registry, `Navstack.transitions`.
+   *
+   * You can define your own transitions via:
+   *
+   *     Navstack.transitions.foo = function (direction, previous, current) {
+   *
+   *       // this function should return an object with 3 keys: `before`,
+   *       // `run`, and `after`. Each of them are asynchronous functions
+   *       // that will perform different phases of the transition.
+   *       //
+   *       // you can use the arguments:
+   *       //
+   *       //   direction - this is either "first", "forward", or "backward".
+   *       //   previous  - the previous pane. This an instance of [Pane].
+   *       //   current   - the pane to transition to.
+   *
+   *       return {
+   *         before: function (next) {
+   *           // things to perform in preparation of a transition,
+   *           // such as hide the current pane.
+   *           // invoke next() after it's done.
+   *
+   *           if (current) $(current.el).hide();
+   *           next();
+   *         },
+   *
+   *         run: function (next) {
+   *           // run the actual transition.
+   *           // invoke next() after it's done.
+   *
+   *           if (current)  $(current.el).show();
+   *           if (previous) $(previous.el).hide();
+   *           next();
+   *         },
+   *
+   *         after: function (next) {
+   *           // things to perform after running the transition.
+   *           // invoke next() after it's done.
+   *           next();
+   *         }
+   *       }
+   *     };
    */
 
   Navstack.transitions = {
-    slide: Navstack.buildTransition('slide'),
+    slide: Navstack.buildTransition('slide', { nav: true }),
     modal: Navstack.buildTransition('modal'),
     flip: Navstack.buildTransition('flip')
   };
 
   /**
-   * Adaptors
+   * Navstack.queue:
+   * (internal) Queues animations.
+   */
+
+  Navstack.queue = function (fn) {
+    $(document).queue(fn);
+  };
+
+  /**
+   * Navstack.adaptors:
+   * Adaptors registry.
    */
 
   Navstack.adaptors = {};
 
   /**
-   * (Internal) Helper for building a generic filter
+   * buildAdaptor:
+   * (internal) Helper for building a generic filter
    */
 
   function buildAdaptor (options) {
@@ -726,6 +882,10 @@
     remove: function (obj) { return $(obj).remove(); }
   });
 
+  /*
+   * Adaptors in use
+   */
+
   Navstack.adapt = ['backbone', 'ractive', 'react', 'jquery'];
 
   /*
@@ -748,12 +908,9 @@
   }
 
   /**
-   * (Internal) Queues animations.
+   * Navstack.version:
+   * A string of the version of Navstack.
    */
-
-  Navstack.queue = function (fn) {
-    $(document).queue(fn);
-  };
 
   Navstack.version = '0.1.2';
 

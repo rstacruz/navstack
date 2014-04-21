@@ -18,7 +18,7 @@
      * initialize your stack using `new Navstack()`.
      */
 
-    var stack = new Navstack({ el: '#stack', transition: 'slide' });
+    var stack = new Navstack({ el: '#stack', transition: 'slide', nav: '.top-bar' });
 
     /*
      * use `stack.push()` to create your new pages.
@@ -85,7 +85,7 @@
   <script type='text/x-template' id='features'>
     <div>
       <section class='top-bar'>
-        <div class='back'>
+        <div class='back' data-id='back-btn'>
           <a class='back-button' href='#' role='back'></a>
         </div>
 
@@ -121,7 +121,7 @@
   <script type='text/x-template' id='how'>
     <div>
       <section class='top-bar'>
-        <div class='back'>
+        <div class='back' data-id='back-btn'>
           <a class='back-button' role='back' href='#features'></a>
         </div>
 
@@ -148,8 +148,8 @@
 
   <script type='text/x-template' id='back'>
     <div>
-      <section class='top-bar'>
-        <div class='back'>
+      <section class='top-bar lite'>
+        <div class='back' data-id='back-btn'>
           <a class='back-button' role='back' href='#features'></a>
         </div>
 

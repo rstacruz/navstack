@@ -170,11 +170,20 @@ html, body {
 
 .top-bar {
   background: #fff;
+  transition: all 300ms linear;
   border-bottom: solid 1px #eee;
 
   height: 40px;
   line-height: 40px;
 }
+
+/* .top-bar.lite { */
+/*   background: #1d8; */
+/* } */
+
+/* .top-bar.lite .center { */
+/*   color: #fff; */
+/* } */
 
 .top-bar .center {
   position: absolute;
