@@ -10,7 +10,7 @@ similar.  Inspired by iOS's UINavigationController.
  [React.js] and more. Can even work with plain old jQuery.
 
  * __Router-friendly__: made to be able to work with pushstate routers (like 
-     [page.js]).
+     [page.js]), giving you back/forward button support.
 
  * __Mobile-like transitions__: buttery-smooth transitions are available out of 
  the box, modeled after iOS7.
@@ -19,8 +19,7 @@ Requires jQuery 1.7+.
 
 [![Status](https://travis-ci.org/rstacruz/navstack.png?branch=master)](https://travis-ci.org/rstacruz/navstack)
 
-(__Status:__ *very usable, but lacking documentation and examples. API is not 
- fully stable yet. Will get to that eventually!*)
+__Status:__ very usable - just need to add documentation and examples.
 
 Install
 -------
