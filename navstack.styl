@@ -3,6 +3,7 @@ navstack-shadow ?= 0 0 20px rgba(black, 0.3), 0 0 10px rgba(black, 0.1)
 navstack-ease ?= cubic-bezier(.3, .5, 0, 1)
 navstack-tint ?= #345
 navstack-tint-strength ?= 0.05
+navstack-nav-displacement ?= 40%
 
 $noshadow ?= 0 0 20px rgba(black, 0.0), 0 0 10px rgba(black, 0.0)
 
@@ -86,6 +87,54 @@ $noshadow ?= 0 0 20px rgba(black, 0.0), 0 0 10px rgba(black, 0.0)
   100%
     transform: translate3d(100%, 0, 0)
     box-shadow: $noshadow
+
+/* ----------------------------------------------------------------------------
+ */
+.nav-slide-enter-forward
+  z-index: 2
+  animation: nav-slide-enter-forward navstack-speed navstack-ease
+
+.nav-slide-enter-backward
+  z-index: 1
+  animation: nav-slide-enter-backward (navstack-speed * 0.7) navstack-ease
+
+.nav-slide-exit-forward
+  z-index: 1
+  animation: nav-slide-exit-forward navstack-speed navstack-ease
+  opacity: 0
+
+.nav-slide-exit-backward
+  z-index: 2
+  animation: nav-slide-exit-backward (navstack-speed * 0.7) navstack-ease
+  opacity: 0
+
+@keyframes nav-slide-enter-forward
+  0%
+    transform: translate3d(navstack-nav-displacement, 0, 0)
+    opacity: 0
+  100%
+    transform: translate3d(0, 0, 0)
+
+@keyframes nav-slide-enter-backward
+  0%
+    transform: translate3d(-1 * navstack-nav-displacement, 0, 0)
+    opacity: 0
+  100%
+    transform: translate3d(0, 0, 0)
+
+@keyframes nav-slide-exit-forward
+  0%
+    transform: translate3d(0%, 0, 0)
+    opacity: 1
+  100%
+    transform: translate3d(-1 * navstack-nav-displacement, 0, 0)
+
+@keyframes nav-slide-exit-backward
+  0%
+    transform: translate3d(0%, 0, 0)
+    opacity: 1
+  100%
+    transform: translate3d(navstack-nav-displacement, 0, 0)
 
 /* ----------------------------------------------------------------------------------
  * Animations: vertical slide

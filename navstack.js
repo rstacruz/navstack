@@ -521,10 +521,23 @@
       var $nav2 = $previous.find(nav);
       if (!$nav1.length || !$nav2.length) return;
 
-      // create the overlay
+      // create the overlay bar
+      var $bar = $("<" + $nav2[0].nodeName + ">");
+      $bar.attr('class', $nav2.attr('class'));
+
+      $nav2.children().each(function () {
+        var $el = $(this.outerHTML);
+        $el.addClass('nav-slide-exit-'+direction);
+        $bar.append($el);
+      });
+
+      $nav1.children().each(function () {
+        var $el = $(this.outerHTML);
+        $el.addClass('nav-slide-enter-'+direction);
+        $bar.append($el);
+      });
+
       var $overlay = $("<div class='-navstack-nav'>");
-      var $bar = $($nav2[0].outerHTML);
-      // $bar.append($nav1.html());
       $overlay.append($bar);
 
       // append it
