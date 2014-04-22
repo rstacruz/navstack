@@ -1,3 +1,15 @@
+## v0.1.3 - April 22, 2014
+
+ * Add documentation and examples.
+
+ * Support `nav: '.selector'` to keep the nav bar between sliding screens.
+
+ * Fix bug where going back on a modal screen while it's animating will produce 
+ unexpected results.
+
+ * Allow passing a custom transition to a pane via `.push(name, { transition: 
+   'modal' }, fn)`.
+
 ## v0.1.2 - April 4, 2014
 
  * Allow `.push(name)` without a function to switch to previously-defined panes.  
