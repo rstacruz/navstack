@@ -1,3 +1,8 @@
+## v0.1.4 - April 24, 2014
+
+ * Supress transition delays by using a better `setImmediate()` shim instead of 
+ `setTimeout(fn, 0)`.
+
 ## v0.1.3 - April 22, 2014
 
  * Add documentation and examples.
