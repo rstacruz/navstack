@@ -24,7 +24,7 @@
 
 })(this, function ($) {
 
-  var Navstack, Pane;
+  var Navstack, Pane, setImmediate;
 
   /***
    * Navstack : new Navstack(options)
@@ -556,9 +556,9 @@
       $overlay.appendTo($parent);
 
       // change the classname to transition
-      setTimeout(function () {
+      setImmediate(function () {
         $bar.attr('class', $nav1.attr('class'));
-      }, 0);
+      });
     }
 
   };
@@ -704,7 +704,7 @@
 
           // Do transitions on next browser tick so that any DOM elements that
           // need rendering will take its time
-          return setTimeout(next, 0);
+          return setImmediate(next);
         },
 
         after: function (next) {
@@ -722,7 +722,7 @@
             $parent.removeClass(container);
             $previous.addClass(hide).removeClass(exit);
             $current.removeClass(enter);
-            setTimeout(next, 0);
+            setImmediate(next);
           });
 
           $parent
@@ -906,6 +906,44 @@
       return value;
     };
   }
+
+  /*
+   * setImmediate helper
+   * Taken from browserify's process.nextTick
+   */
+
+  Navstack.setImmediate = setImmediate = (function() {
+    var canSetImmediate = typeof window !== 'undefined' && window.setImmediate;
+    var canPost = typeof window !== 'undefined' && window.postMessage && window.addEventListener;
+
+    if (canSetImmediate) {
+      return function (f) { return window.setImmediate(f); };
+    }
+
+    if (canPost) {
+      var queue = [];
+      console.log('addEventListener message');
+      window.addEventListener('message', function (ev) {
+        var source = ev.source;
+        if ((source === window || source === null) && ev.data === 'process-tick') {
+          ev.stopPropagation();
+          if (queue.length > 0) {
+            var fn = queue.shift();
+            fn();
+          }
+        }
+      }, true);
+
+      return function (fn) {
+        queue.push(fn);
+        window.postMessage('process-tick', '*');
+      };
+    }
+
+    return function (fn) {
+      setTimeout(fn, 0);
+    };
+  })();
 
   /**
    * Navstack.version:
