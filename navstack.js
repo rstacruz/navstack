@@ -1,4 +1,5 @@
 /* jshint es3: true */
+/* globals define */
 /*
  * Navstack
  * https://github.com/rstacruz/navstack
