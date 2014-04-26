@@ -923,7 +923,6 @@
 
     if (canPost) {
       var queue = [];
-      console.log('addEventListener message');
       window.addEventListener('message', function (ev) {
         var source = ev.source;
         if ((source === window || source === null) && ev.data === 'process-tick') {
