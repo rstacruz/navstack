@@ -1,3 +1,7 @@
+## v0.1.5 - unreleased
+
+ * Remove extra console.log
+
 ## v0.1.4 - April 24, 2014
 
  * Supress transition delays by using a better `setImmediate()` shim instead of 
