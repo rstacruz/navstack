@@ -1,6 +1,7 @@
-## v0.1.5 - unreleased
+## v0.1.5 - June 7, 2014
 
- * Remove extra console.log
+ * Remove extra console.log.
+ * Add support for `navstack:sleep` and `navstack:wake` events.
 
 ## v0.1.4 - April 24, 2014
 
