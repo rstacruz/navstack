@@ -227,7 +227,6 @@
       }
 
       // tell it
-      if (this.active) this.active.adaptor.onsleep();
       current.adaptor.onwake();
 
       // Register a new 'active' pane
@@ -244,7 +243,9 @@
 
       // use transition
       var transition = this.getTransition(transName);
-      this.runTransition(transition, direction, current, previous);
+      this.runTransition(transition, direction, current, previous, function () {
+        if (previous) previous.adaptor.onsleep();
+      });
 
       // Event
       this.emitter.trigger($.Event('transition', {
@@ -462,7 +463,7 @@
      * (internal) performs a transition with the given `transition` object.
      */
 
-    runTransition: function (transitionFn, direction, current, previous) {
+    runTransition: function (transitionFn, direction, current, previous, callback) {
       var transition = transitionFn(direction, current, previous);
       var nav = this;
       var $nav = $(this.el);
@@ -474,7 +475,10 @@
           transition.run(function () {
             if (transition.nav)
               $nav.find('.-navstack-nav').remove();
-            transition.after(next);
+            transition.after(function () {
+              if (callback) callback();
+              next();
+            });
           });
         });
       });
