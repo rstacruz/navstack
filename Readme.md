@@ -114,6 +114,21 @@ stage = new Navstack({
 
 Available transitions are `slide` and `modal`.
 
+### Sleeping and waking
+
+When a view is about to be hidden, a `navstack:sleep` event is called.
+
+When a view is about to be shown, a `navstack:wake` event is called.
+
+```js
+var $box = $("<div>hello</div>");
+$box.on('navstack:sleep', function () { ... });
+$box.on('navstack:wake', function () { ... });
+
+stage.push('home', function () {
+  return $box;
+});
+
 ### Use with routers
 
 To take full advantage of Navstack, it's recommended to use it with a router to
