@@ -41,7 +41,7 @@ testSuite 'Events', ->
 
     it 'attributes', (done) ->
       @stack.push 'home', ->
-        { id: "Home view", el: $("<div>"), remove: -> }
+        { id: "Home view", el: $("<div>"), remove: (->), trigger: sinon.spy() }
 
       @stack.on 'transition', (e) ->
         expect(e.direction).eq 'forward'
@@ -53,4 +53,4 @@ testSuite 'Events', ->
         done()
 
       @stack.push 'timeline', ->
-        { id: "Timeline view", el: $("<div>"), remove: -> }
+        { id: "Timeline view", el: $("<div>"), remove: (->), trigger: sinon.spy() }

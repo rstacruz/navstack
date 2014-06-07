@@ -6,8 +6,13 @@ testSuite 'Individual adaptors', ->
 
   describe 'adaptors.jquery', ->
     beforeEach ->
+      @sleep = sinon.spy()
+      @wake = sinon.spy()
       @stack.adapt = ['jquery']
-      @stack.push 'home', -> $("<div class='xyz'>hello</div>")
+      @stack.push 'home', =>
+        $("<div class='xyz'>hello</div>")
+          .on('navstack:sleep', @sleep)
+          .on('navstack:wake', @wake)
 
     it 'push', ->
       expect($('body > div > .xyz')[0]).not.be.undefined
@@ -19,17 +24,43 @@ testSuite 'Individual adaptors', ->
       @stack.panes.home.adaptor.remove()
       expect($('.xyz')[0]).be.undefined
 
+    it 'wake', ->
+      expect(@wake.calledOnce).eql.true
+
+    it 'sleep', ->
+      @stack.push 'other', =>
+        $("<div class='xyz'>hello</div>")
+
+      expect(@sleep.calledOnce).eql true
+
   describe 'adaptors.ractive', ->
     beforeEach ->
+      @fire = sinon.spy()
       @stack.adapt = ['ractive']
-      @stack.push 'home', ->
+      @stack.push 'home', =>
         div = $("<div class='xyz'>hello</div>")[0]
         el: div
         find: (sel) -> div
         teardown: -> $(".xyz").remove()
+        fire: @fire
 
     it 'push', ->
       expect($('body > div > .xyz')[0]).not.be.undefined
+
+    it 'wake', ->
+      expect(@fire.calledOnce).eql.true
+      expect(@fire.firstCall.args).eql ['navstack:wake']
+
+    it 'sleep', ->
+      @stack.push 'other', =>
+        div = $("<div class='xyz'>hello</div>")[0]
+        el: div
+        find: (sel) -> div
+        teardown: -> $(".xyz").remove()
+        fire: ->
+
+      expect(@fire.callCount).eql 2
+      expect(@fire.secondCall.args).eql ['navstack:sleep']
 
     it 'el', ->
       expect($(@stack.panes.home.el).html()).eq "hello"
@@ -40,13 +71,28 @@ testSuite 'Individual adaptors', ->
 
   describe 'adaptors.backbone', ->
     beforeEach ->
+      @trigger = sinon.spy()
       @stack.adapt = ['backbone']
-      @stack.push 'home', ->
+      @stack.push 'home', =>
         el: $("<div class='xyz'>hello</div>")
         remove: -> $(".xyz").remove()
+        trigger: @trigger
 
     it 'push', ->
       expect($('body > div > .xyz')[0]).not.be.undefined
+
+    it 'wake', ->
+      expect(@trigger.calledOnce).eql.true
+      expect(@trigger.firstCall.args).eql ['navstack:wake']
+
+    it 'sleep', ->
+      @stack.push 'other', =>
+        el: $("<div class='xyz'>hello</div>")
+        remove: -> $(".xyz").remove()
+        trigger: (->)
+
+      expect(@trigger.callCount).eql 2
+      expect(@trigger.secondCall.args).eql ['navstack:sleep']
 
     it 'el', ->
       expect(@stack.panes.home.el.html()).eq "hello"

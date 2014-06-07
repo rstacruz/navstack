@@ -226,6 +226,10 @@
         this.insertIntoStack(current);
       }
 
+      // tell it
+      if (this.active) this.active.adaptor.onsleep();
+      current.adaptor.onwake();
+
       // Register a new 'active' pane
       this.active = current;
 
@@ -832,7 +836,9 @@
       wrap: function (obj, nav) {
         return {
           el: function () { return options.el(obj); },
-          remove: function () { return options.remove(obj); }
+          remove: function () { return options.remove(obj); },
+          onsleep: function () { options.onsleep(obj); },
+          onwake: function () { options.onwake(obj); }
         };
       }
     };
@@ -847,7 +853,9 @@
     check: function (obj) {
       return (typeof obj.remove === 'function') && (typeof obj.el === 'object');
     },
-    remove: function (obj) { return obj.remove(); }
+    remove: function (obj) { return obj.remove(); },
+    onsleep: function (obj) { obj.trigger('navstack:sleep'); },
+    onwake: function (obj) { obj.trigger('navstack:wake'); }
   });
 
   /*
@@ -859,7 +867,9 @@
     check: function (obj) {
       return (typeof obj.teardown === 'function') && (typeof obj.el === 'object');
     },
-    remove: function (obj) { return obj.teardown(); }
+    remove: function (obj) { return obj.teardown(); },
+    onsleep: function (obj) { obj.fire('navstack:sleep'); },
+    onwake: function (obj) { obj.fire('navstack:wake'); }
   });
 
   /*
@@ -869,7 +879,9 @@
   Navstack.adaptors.react = buildAdaptor({
     el: function (obj) { return obj.getDOMNode(); },
     check: function (obj) { return (typeof obj.getDOMNode === 'function'); },
-    remove: function (obj) { return window.React.unmountComponentAtNode(obj.getDOMNode()); }
+    remove: function (obj) { return window.React.unmountComponentAtNode(obj.getDOMNode()); },
+    onsleep: function (obj) { },
+    onwake: function (obj) { }
   });
 
 
@@ -880,7 +892,9 @@
   Navstack.adaptors.jquery = buildAdaptor({
     el: function (obj) { return $(obj); },
     check: function (obj) { return $(obj)[0].nodeType === 1; },
-    remove: function (obj) { return $(obj).remove(); }
+    remove: function (obj) { return $(obj).remove(); },
+    onsleep: function (obj) { $(obj).trigger('navstack:sleep'); },
+    onwake: function (obj) { $(obj).trigger('navstack:wake'); }
   });
 
   /*

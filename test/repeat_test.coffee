@@ -12,7 +12,7 @@ testSuite 'Repeat', ->
   describe '.push', ->
     it '.push', ->
       view = @stack.push 'home', ->
-        { el: $("<div>"), title: "Home view", remove: -> }
+        { el: $("<div>"), title: "Home view", remove: (->), trigger: sinon.spy() }
 
       expect(view.title).eq "Home view"
 
@@ -21,10 +21,10 @@ testSuite 'Repeat', ->
 
       view1 = @stack.push 'home', ->
         count++
-        { el: $("<div id='home'>Home</div>"), title: "Home view", remove: -> }
+        { el: $("<div id='home'>Home</div>"), title: "Home view", remove: (->), trigger: sinon.spy() }
 
       view2 = @stack.push 'home', ->
-        { el: $("<div id='home'>Home</div>"), title: "I'm ignored", remove: -> }
+        { el: $("<div id='home'>Home</div>"), title: "I'm ignored", remove: (->), trigger: sinon.spy() }
 
       expect(view1.title).eq "Home view"
       expect(view2.title).eq "Home view"
@@ -35,7 +35,7 @@ testSuite 'Repeat', ->
       sinon.spy @stack, 'spawnPane'
 
       @stack.register 'home', ->
-        { el: $("<div>"), title: "Home view", remove: -> }
+        { el: $("<div>"), title: "Home view", remove: (->), trigger: sinon.spy() }
 
     it 'should work', ->
       view = @stack.go 'home'

@@ -22,7 +22,7 @@ testSuite 'Stack', ->
       @chrome = new Navstack(el: 'body')
 
       @chrome.register 'home', ->
-        { el: $('<div><h1>hi</h1></div>'), number: 31337, remove: -> }
+        { el: $('<div><h1>hi</h1></div>'), number: 31337, remove: (->), trigger: sinon.spy() }
 
       @chrome.register 'messages', ->
         $('<div>')
