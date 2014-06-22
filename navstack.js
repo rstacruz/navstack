@@ -968,7 +968,7 @@
    * A string of the version of Navstack.
    */
 
-  Navstack.version = '0.1.2';
+  Navstack.version = '0.1.5';
 
   return Navstack;
 
