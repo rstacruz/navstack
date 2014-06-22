@@ -21,6 +21,9 @@
     "prepublish": "make",
     "examples": "serve examples"
   },
+  "peerDependencies": {
+    "jquery": "*"
+  },
   "devDependencies": {
     "mocha": "^1.17.1",
     "chai": "^1.9.0",
