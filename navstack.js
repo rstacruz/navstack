@@ -644,6 +644,7 @@
       this.view = this.initializer.call(this.parent);
       this.adaptor = this.parent.getAdaptorFor(this.view);
       this.el = this.adaptor.el();
+      this.group = getGroupName(this.name) || '';
 
       if (!this.el)
         throw new Error("Navstack: no element found");
@@ -924,6 +925,11 @@
       value = fn.apply(this, arguments);
       return value;
     };
+  }
+
+  function getGroupName (name) {
+    var m = name.match(/^([^!]+)!/);
+    return m && m[1];
   }
 
   /*
