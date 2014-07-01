@@ -20,7 +20,7 @@ describe 'Groups', ->
     pane = @stack.panes['x']
     expect(pane.group).eql ''
 
-  xit 'insert into proper', ->
+  it 'insert into proper position', ->
     @stack.push 'root!x', -> $("<div id='root-x'>")
     @stack.push 'modal!a', -> $("<div id='modal-a'>")
     @stack.push 'root!y', -> $("<div id='root-y'>")

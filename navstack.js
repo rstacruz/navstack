@@ -495,9 +495,24 @@
 
     insertIntoStack: function (pane) {
       var name = pane.name;
-      if (this.stack.indexOf(name) > -1) return;
+      var group = pane.group;
 
-      this.stack.push(pane.name);
+      // don't repush
+      if (~this.stack.indexOf(name)) return;
+
+      // find the other panes in the same group, and find their last pane.
+      var alpha, omega;
+      for (var i = 0, len = this.stack.length; i < len; i++) {
+        var item = this.stack[i];
+        var _pane = this.panes[item];
+        if (typeof alpha === 'undefined' && _pane.group === group) alpha = i;
+        if (typeof alpha !== 'undefined' && typeof omega === 'undefined' && _pane.group !== group) omega = i;
+      }
+      if (!alpha) alpha = this.stack.length;
+      if (!omega) omega = this.stack.length;
+
+      // insert at the correct place.
+      this.stack.splice(omega, 0, pane.name);
     },
 
     /**
