@@ -4,6 +4,7 @@ var fast = (!! process.env.fast);
 // Deps
 global.chai = require('chai');
 global.expect = require('chai').expect;
+chai.use(require('chai-fuzzy'));
 chai.should();
 
 var fs = require('fs');
