@@ -39,6 +39,7 @@
    *
    * ~ el: a selector, a jQuery object, or a DOM element.
    * ~ transition: a string of the transition name to use.
+   * ~ groupTransition: a string of the transition to use in between groups.
    *
    * You'll then use [push()].
    */
@@ -239,7 +240,10 @@
       var transName;
       if (direction === 'forward') transName = current.transition;
       else if (direction === 'backward') transName = previous.transition;
-      if (!transName) transName = this.transition;
+      if (!transName) {
+        if (current && previous && current.group !== previous.group) transName = this.groupTransition;
+        if (!transName) transName = this.transition;
+      }
 
       // use transition
       var transition = this.getTransition(transName);
@@ -491,6 +495,8 @@
      *
      *     pane = this.pane['home'];
      *     this.insertIntoStack(pane);
+     *
+     * This also accounts for grouped panes.
      */
 
     insertIntoStack: function (pane) {
