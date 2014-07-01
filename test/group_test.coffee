@@ -43,3 +43,10 @@ describe 'Groups', ->
       @stack.push 'modal!a', -> $("<div>")
       @stack.push 'root!y', -> $("<div>")
       expect(@transitions()).eql ['slide', 'modal', 'modal']
+
+    it 'purge old modals', ->
+      @stack.push 'root!x', -> $("<div>")
+      @stack.push 'modal!a', -> $("<div>")
+      @stack.push 'root!y', -> $("<div>")
+      @stack.purgeObsolete()
+      expect(Object.keys(@stack.panes)).eql ['root!x', 'root!y']
