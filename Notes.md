@@ -14,5 +14,5 @@ Releasing new versions:
 
     bump *.json navstack.js
     vim History.md
-    vim git release 1.0.0
+    git release v1.0.0
 
