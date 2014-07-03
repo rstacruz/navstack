@@ -31,3 +31,13 @@ testSuite 'Ready:', ->
       @stack.ready =>
         expect(@log).eql ['push', 'transition']
         done()
+
+    it 'can be called twice', (done) ->
+      @log = []
+      @stack.push 'root', -> $("<div>")
+      @stack.ready => @log.push '1'
+      @stack.ready => @log.push '2'
+      @stack.ready =>
+        expect(@log).eql ['1', '2']
+        done()
+

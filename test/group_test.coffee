@@ -8,10 +8,14 @@ testSuite 'Groups', ->
 
   beforeEach ->
     sinon.spy @stack, 'getTransition'
-    sinon.spy @stack, 'runTransition'
+    sinon.stub @stack, 'runTransition', (a, b, c, d, fn) -> setImmediate fn
 
     @transitions = ->
       @stack.getTransition.getCalls().map (c) -> c.args[0]
+
+  # ensure we're done
+  afterEach (done) ->
+    @stack.ready -> done()
 
   it 'ok', ->
     @stack.push 'root!x', -> $("<div id='root-x'>")

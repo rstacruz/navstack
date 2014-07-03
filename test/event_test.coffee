@@ -19,7 +19,7 @@ testSuite 'Events', ->
 
   describe '.one', ->
     it 'should only trigger once', (done) ->
-      @stack.one 'transition', -> done()
+      @stack.one 'pane', -> done()
 
       @stack.push 'home', -> $("<div>")
       @stack.push 'messages', -> $("<div>")
@@ -36,14 +36,14 @@ testSuite 'Events', ->
 
   describe 'triggering', ->
     it 'should work', (done) ->
-      @stack.on 'transition', (e) -> done()
+      @stack.on 'pane', (e) -> done()
       @stack.push 'home', -> $("<div>")
 
     it 'attributes', (done) ->
       @stack.push 'home', ->
         { id: "Home view", el: $("<div>"), remove: (->), trigger: sinon.spy() }
 
-      @stack.on 'transition', (e) ->
+      @stack.on 'pane', (e) ->
         expect(e.direction).eq 'forward'
         expect(e.previous.name).eq 'home'
         expect(e.previous.view.id).eq 'Home view'
