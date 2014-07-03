@@ -1,7 +1,8 @@
-## v0.2.2 - unreleased
+## v0.2.2 - July 3, 2014
 
  * Rename `transition` event to `push`.
  * Trigger pane changes as `push:name`.
+ * Ensure that the `.-navstack-nav` element has a transparent background.
 
 ## v0.2.1 - July 3, 2014
 

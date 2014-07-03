@@ -21,6 +21,7 @@
 .-navstack-nav {
   z-index: 3;
   pointer-events: none;
+  background: transparent;
 }
 /* ----------------------------------------------------------------------------------
  * Animations: slide
