@@ -208,6 +208,8 @@
      */
 
     go: function (name) {
+      var self = this;
+
       // Switching to the same thing? No need to do anything
       if (this.active && this.active.name === name)
         return this.active.view;
@@ -251,8 +253,11 @@
 
       // use transition
       var transition = this.getTransition(transName);
+      self.transitioning = true;
       this.runTransition(transition, direction, current, previous, function () {
         if (previous) previous.adaptor.onsleep();
+        self.transitioning = false;
+        self.ready();
       });
 
       // Event
@@ -309,6 +314,40 @@
 
     teardown: function () {
       return this.remove.apply(this, arguments);
+    },
+
+    /**
+     * ready : ready(fn)
+     * Runs a function `fn` when transitions have elapsed. If no transitions
+     * are happening, run the function immediately.
+     *
+     *     nav = new Navstack();
+     *     nav.push('home', function () { ... });
+     *     nav.push('messages', function () { ... });
+     *
+     *     nav.ready(function () {
+     *       // gets executed only after transitions are done
+     *     });
+     */
+
+    ready: function (fn) {
+      if (fn) {
+        if (!this.transitioning) {
+          fn();
+        } else {
+          if (!this._callbacks) this._callbacks = [];
+          this._callbacks.push(fn);
+        }
+        return this;
+      } else {
+        if (this._callbacks) {
+          for (var i = 0, len = this._callbacks.length; i < len; i++) {
+            var callback = this._callbacks[i];
+            callback();
+          }
+          delete this._callbacks;
+        }
+      }
     },
 
     /**
@@ -469,6 +508,7 @@
     /**
      * runTransition : .runTransition(...)
      * (internal) performs a transition with the given `transition` object.
+     * Runs the given `callback` when its done.
      */
 
     runTransition: function (transitionFn, direction, current, previous, callback) {
