@@ -159,6 +159,22 @@ nav.remove();
 Alias for [remove()]. This alias exists so that stacks behave a bit more like
 Ractive components.
 
+<a name="ready"></a>
+### ready `ready(fn)`
+
+Runs a function `fn` when transitions have elapsed. If no transitions
+are happening, run the function immediately.
+
+```js
+nav = new Navstack();
+nav.push('home', function () { ... });
+nav.push('messages', function () { ... });
+
+nav.ready(function () {
+  // gets executed only after transitions are done
+});
+```
+
 <a name="Navstack_Pane"></a>
 ## Navstack.Pane
 
