@@ -13,6 +13,7 @@ You may pass these options (all of them are optional):
 
 * `el` <span class='dash'>&mdash;</span> a selector, a jQuery object, or a DOM element.
 * `transition` <span class='dash'>&mdash;</span> a string of the transition name to use.
+* `groupTransition` <span class='dash'>&mdash;</span> a string of the transition to use in between groups.
 
 You'll then use [push()].
 
@@ -291,8 +292,3 @@ Navstack.transitions.foo = function (direction, previous, current) {
 ### Navstack.adaptors
 
 Adaptors registry.
-
-<a name="Navstack_version"></a>
-### Navstack.version
-
-A string of the version of Navstack.
