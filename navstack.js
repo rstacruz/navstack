@@ -229,7 +229,6 @@
 
       // Insert into stack
       if (this.stack.indexOf(name) === -1) {
-        this.purgeObsolete();
         this.insertIntoStack(current);
       }
 
@@ -266,6 +265,11 @@
         current: current,
         previous: previous
       }));
+
+      // clear out other panes
+      this.ready(function () {
+        self.purgeObsolete();
+      });
 
       return (current && current.view);
     },

@@ -1,6 +1,6 @@
 require './setup'
 
-testSuite 'Purging', ->
+testSuite 'Purging:', ->
   beforeEach ->
     @stack = new Navstack()
 

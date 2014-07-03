@@ -2,6 +2,7 @@
 
  * Add `Navstack#cleanup()` which will clear all pages except the current one.
  * Add `Navstack#ready()` to defer a function until all transitions are clear.
+ * Purge obsolete panes properly.
 
 ## v0.2.0 - July 3, 2014
 
