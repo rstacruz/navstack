@@ -1,3 +1,7 @@
+## v0.2.0 - July 3, 2014
+
+ * Preliminary support for pane groups. (`.push('group!pane_id', ...)`)
+
 ## v0.1.5 - June 7, 2014
 
  * Remove extra console.log.

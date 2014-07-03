@@ -63,6 +63,10 @@
 
     this.adaptors = {};
 
+    // Later, we'd like to have defaults like these:
+    // this.transition = 'slide';
+    // this.paneTransition = 'modal';
+
     $.extend(this, options);
 
     /**
@@ -990,12 +994,7 @@
     };
   })();
 
-  /**
-   * Navstack.version:
-   * A string of the version of Navstack.
-   */
-
-  Navstack.version = '0.1.5';
+  Navstack.version = '0.2.0';
 
   return Navstack;
 
