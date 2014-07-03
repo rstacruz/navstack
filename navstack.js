@@ -428,7 +428,16 @@
     },
 
     /*
-     * (Internal) Purges any panes that are not needed.
+     * Kills all panes but the current one.
+     */
+
+    cleanup: function () {
+      var self = this;
+      self.ready(function () { self.purgeAll(); });
+    },
+
+    /*
+     * (Internal) Purges all panes in front of the current pane.
      */
 
     purgeObsolete: function () {
@@ -438,6 +447,24 @@
 
       for (var i = this.stack.length; i>idx; i--) {
         this.purgePane(this.stack[i]);
+      }
+    },
+
+    /*
+     * (Internal) Purges all panes except the current one.
+     * Use `.cleanup()` instead.
+     */
+
+    purgeAll: function () {
+      if (!this.active) return;
+
+      for (var name in this.panes) {
+        if (this.panes.hasOwnProperty(name)) {
+          var pane = this.panes[name];
+          if (pane.name !== this.active.name) {
+            this.purgePane(name);
+          }
+        }
       }
     },
 
