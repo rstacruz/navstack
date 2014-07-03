@@ -259,14 +259,15 @@
         self.ready();
       });
 
-      this.emitter.trigger($.Event('push:'+current.name));
-
-      // Event: fire `transition`
-      this.emitter.trigger($.Event('push', {
+      var eventData =  {
         direction: direction,
         current: current,
         previous: previous
-      }));
+      };
+
+      // Events
+      this.emitter.trigger($.Event('push:'+current.name, eventData));
+      this.emitter.trigger($.Event('push', eventData));
 
       // clear out other panes
       this.ready(function () {

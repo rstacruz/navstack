@@ -114,6 +114,21 @@ stage = new Navstack({
 
 Available transitions are `slide` and `modal`.
 
+### Events
+
+You can listen to events.
+
+```js
+stage = new Navstack().
+stage.on('push', function (e) {
+  e.direction  // 'forward' or 'backward'
+  e.current    // current pane
+  e.previous   // previous pane
+});
+
+stage.on('push:yourpanenamehere', function (e) { ... });
+```
+
 ### Groups
 
 Allows you to do modal dialogs.
