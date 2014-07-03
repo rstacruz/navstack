@@ -955,7 +955,7 @@
     check: function (obj) {
       return (typeof obj.remove === 'function') && (typeof obj.el === 'object');
     },
-    remove: function (obj) { return obj.remove(); },
+    remove: function (obj) { obj.trigger('navstack:remove'); return obj.remove(); },
     onsleep: function (obj) { obj.trigger('navstack:sleep'); },
     onwake: function (obj) { obj.trigger('navstack:wake'); }
   });
@@ -969,7 +969,7 @@
     check: function (obj) {
       return (typeof obj.teardown === 'function') && (typeof obj.el === 'object');
     },
-    remove: function (obj) { return obj.teardown(); },
+    remove: function (obj) { obj.fire('navstack:remove'); return obj.teardown(); },
     onsleep: function (obj) { obj.fire('navstack:sleep'); },
     onwake: function (obj) { obj.fire('navstack:wake'); }
   });
@@ -994,7 +994,7 @@
   Navstack.adaptors.jquery = buildAdaptor({
     el: function (obj) { return $(obj); },
     check: function (obj) { return $(obj)[0].nodeType === 1; },
-    remove: function (obj) { return $(obj).remove(); },
+    remove: function (obj) { $(obj).trigger('navstack:remove'); return $(obj).remove(); },
     onsleep: function (obj) { $(obj).trigger('navstack:sleep'); },
     onwake: function (obj) { $(obj).trigger('navstack:wake'); }
   });
