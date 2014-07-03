@@ -5,6 +5,13 @@ testSuite 'Purging:', ->
     @stack = new Navstack()
 
   describe '.purgePane()', ->
+    it 'triggers navstack:remove', (done) ->
+      $div = $("<div>")
+      $div.on 'navstack:remove', -> done()
+      @stack.push 'a', -> $div
+      @stack.purgePane('a')
+
+  describe '.purgePane()', ->
     beforeEach ->
       @stack.push 'a', -> $("<div>")
       @stack.push 'b', -> $("<div>")

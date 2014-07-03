@@ -18,3 +18,7 @@ testSuite 'Purge all:', ->
       @stack.ready =>
         expect(Object.keys(@stack.panes)).eql ['c']
         done()
+
+    it 'triggers navstack:remove', (done) ->
+      $(@stack.panes.a.el).on 'navstack:remove', -> done()
+      @stack.cleanup()
