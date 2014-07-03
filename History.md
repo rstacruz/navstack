@@ -1,3 +1,8 @@
+## v0.2.1 - July 3, 2014
+
+ * Add `Navstack#cleanup()` which will clear all pages except the current one.
+ * Add `Navstack#ready()` to defer a function until all transitions are clear.
+
 ## v0.2.0 - July 3, 2014
 
  * Preliminary support for pane groups. (`.push('group!pane_id', ...)`)
