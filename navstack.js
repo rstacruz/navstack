@@ -676,6 +676,7 @@
 
       $(this.el)
         .attr('data-stack-pane', this.name)
+        .attr('data-stack-group', this.group)
         .addClass('-navstack-pane')
         .appendTo(this.parent.el);
     },

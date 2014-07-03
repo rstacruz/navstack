@@ -1,6 +1,6 @@
 require './setup'
 
-describe 'Groups', ->
+testSuite 'Groups', ->
   beforeEach ->
     @stack = new Navstack
       transition: 'slide'
@@ -29,24 +29,25 @@ describe 'Groups', ->
     pane = @stack.panes['x']
     expect(pane.group).eql ''
 
-  describe 'groups', ->
+  it 'insert into proper position', ->
+    @stack.push 'root!x', -> $("<div>")
+    @stack.push 'modal!a', -> $("<div>")
+    @stack.push 'root!y', -> $("<div>")
+    expect(@stack.stack).eql ['root!x', 'root!y', 'modal!a']
+
+  it 'do the correct transitions', ->
+    @stack.push 'root!x', -> $("<div>")
+    @stack.push 'modal!a', -> $("<div>")
+    @stack.push 'root!y', -> $("<div>")
+    expect(@transitions()).eql ['slide', 'modal', 'modal']
+
+  describe 'pane element', ->
     beforeEach ->
+      @div = $("<div>")
+      @stack.push 'root!x', => @div
 
-    it 'insert into proper position', ->
-      @stack.push 'root!x', -> $("<div>")
-      @stack.push 'modal!a', -> $("<div>")
-      @stack.push 'root!y', -> $("<div>")
-      expect(@stack.stack).eql ['root!x', 'root!y', 'modal!a']
+    it 'should have data-stack-pane', ->
+      expect(@div.attr('data-stack-pane')).eql 'root!x'
 
-    it 'do the correct transitions', ->
-      @stack.push 'root!x', -> $("<div>")
-      @stack.push 'modal!a', -> $("<div>")
-      @stack.push 'root!y', -> $("<div>")
-      expect(@transitions()).eql ['slide', 'modal', 'modal']
-
-    it 'purge old modals', ->
-      @stack.push 'root!x', -> $("<div>")
-      @stack.push 'modal!a', -> $("<div>")
-      @stack.push 'root!y', -> $("<div>")
-      @stack.purgeObsolete()
-      expect(Object.keys(@stack.panes)).eql ['root!x', 'root!y']
+    it 'should have data-stack-group', ->
+      expect(@div.attr('data-stack-group')).eql 'root'
