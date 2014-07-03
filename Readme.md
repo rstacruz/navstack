@@ -114,6 +114,23 @@ stage = new Navstack({
 
 Available transitions are `slide` and `modal`.
 
+### Groups
+
+Allows you to do modal dialogs.
+
+(TODO: explain this.)
+
+```js
+stage = new Navstack({
+  transition: 'slide',
+  groupTransition: 'modal',
+});
+
+stage.push('root!hello', function () { ... });
+stage.push('modal!login', function () { ... });
+stage.push('modal!confirm-email', function () { ... });
+```
+
 ### Sleeping and waking
 
 When a view is about to be hidden, a `navstack:sleep` event is called.
