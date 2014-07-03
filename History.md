@@ -1,3 +1,7 @@
+## v0.2.2 - unreleased
+
+ * Rename `transition` event to `push`.
+
 ## v0.2.1 - July 3, 2014
 
  * Add `Navstack#cleanup()` which will clear all pages except the current one.

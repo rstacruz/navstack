@@ -259,10 +259,10 @@
         self.ready();
       });
 
-      this.emitter.trigger($.Event('pane:'+current.name));
+      this.emitter.trigger($.Event('push:'+current.name));
 
       // Event: fire `transition`
-      this.emitter.trigger($.Event('pane', {
+      this.emitter.trigger($.Event('push', {
         direction: direction,
         current: current,
         previous: previous

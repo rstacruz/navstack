@@ -7,7 +7,7 @@ testSuite 'Transition direction', ->
     @stack = new Navstack()
 
   it 'first', (done) ->
-    @stack.one 'pane', (e) ->
+    @stack.one 'push', (e) ->
       expect(e.direction).eq 'first'
       done()
 
@@ -16,7 +16,7 @@ testSuite 'Transition direction', ->
   it 'forward, on 2nd', (done) ->
     @stack.push 'home', -> $("<div>")
 
-    @stack.one 'pane', (e) ->
+    @stack.one 'push', (e) ->
       expect(e.direction).eq 'forward'
       done()
 
@@ -26,7 +26,7 @@ testSuite 'Transition direction', ->
     @stack.push 'home', -> $("<div>")
     @stack.push 'messages', -> $("<div>")
 
-    @stack.one 'pane', (e) ->
+    @stack.one 'push', (e) ->
       expect(e.direction).eq 'backward'
       done()
 
