@@ -104,7 +104,7 @@
 
     /** emitter:
      * (internal) event emitter. */
-    this.emitter = $({}); // TODO unJquery
+    this.emitter = new Emitter;
 
     /** el:
      * The DOM element.
@@ -268,8 +268,8 @@
       };
 
       // Events
-      this.emitter.trigger($.Event('push:'+current.name, eventData)); // TODO unJquery
-      this.emitter.trigger($.Event('push', eventData));
+      this.emitter.trigger('push:'+current.name, eventData);
+      this.emitter.trigger('push', eventData);
 
       // clear out other panes
       this.ready(function () {
@@ -1180,6 +1180,41 @@
   function show (el) {
     el.style.display = '';
   }
+
+  /*
+   * Emitter based on microevent.js
+   * https://github.com/jeromeetienne/microevent.js
+   */
+
+  function Emitter() {}
+
+  Emitter.prototype = {
+    on: function (event, fct) {
+      this._events = this._events || {};
+      this._events[event] = this._events[event]	|| [];
+      this._events[event].push(fct);
+    },
+    off: function (event, fct) {
+      this._events = this._events || {};
+      if(event in this._events === false) return;
+      this._events[event].splice(this._events[event].indexOf(fct), 1);
+    },
+    one: function (event, fct) {
+      var self = this;
+      var callback = function () {
+        self.off(event, callback);
+        return fct.apply(this, arguments);
+      };
+      self.on(event, callback);
+    },
+    trigger: function (event /* , args... */) {
+      this._events = this._events || {};
+      if( event in this._events === false) return;
+      for(var i = 0; i < this._events[event].length; i++){
+        this._events[event][i].apply(this, Array.prototype.slice.call(arguments, 1));
+      }
+    }
+  };
 
   /*
    * setImmediate helper

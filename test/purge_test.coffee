@@ -27,13 +27,13 @@ testSuite 'Purging:', ->
       expect(@stack.stack).eql ['a', 'b', 'd', 'e']
 
     it 'triggers the event "purge"', (done) ->
-      @stack.one 'purge', (e, pane) ->
+      @stack.one 'purge', (pane) ->
         expect(pane.name).eq 'a'
         done()
       @stack.purgePane('a')
 
     it 'triggers the event "purge:id"', (done) ->
-      @stack.one 'purge:a', (e, pane) ->
+      @stack.one 'purge:a', (pane) ->
         expect(pane.name).eq 'a'
         done()
       @stack.purgePane('a')
