@@ -98,7 +98,7 @@
 
     /** emitter:
      * (internal) event emitter. */
-    this.emitter = new Emitter;
+    this.emitter = new Emitter();
 
     /** el:
      * The DOM element.
