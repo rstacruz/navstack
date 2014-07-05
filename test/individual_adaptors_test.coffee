@@ -17,8 +17,11 @@ testSuite 'Individual adaptors', ->
     it 'push', ->
       expect($('body > div > .xyz')[0]).not.be.undefined
 
+    it 'el is a DOM node', ->
+      expect(@stack.panes.home.el.nodeType).eql 1
+
     it 'el', ->
-      expect(@stack.panes.home.el.html()).eq "hello"
+      expect($(@stack.panes.home.el).html()).eq "hello"
 
     it 'remove', ->
       @stack.panes.home.adaptor.remove()
@@ -47,6 +50,9 @@ testSuite 'Individual adaptors', ->
     it 'push', ->
       expect($('body > div > .xyz')[0]).not.be.undefined
 
+    it 'el is a DOM node', ->
+      expect(@stack.panes.home.el.nodeType).eql 1
+
     it 'wake', ->
       expect(@fire.calledOnce).eql.true
       expect(@fire.firstCall.args).eql ['navstack:wake']
@@ -71,11 +77,12 @@ testSuite 'Individual adaptors', ->
 
   describe 'adaptors.backbone', ->
     beforeEach ->
+      @div = $("<div class='xyz'>hello</div>")[0]
       @trigger = sinon.spy()
       @stack.adapt = ['backbone']
       @stack.push 'home', =>
-        el: $("<div class='xyz'>hello</div>")
-        remove: -> $(".xyz").remove()
+        el: @div
+        remove: => $(@div).remove()
         trigger: @trigger
 
     it 'push', ->
@@ -87,7 +94,7 @@ testSuite 'Individual adaptors', ->
 
     it 'sleep', ->
       @stack.push 'other', =>
-        el: $("<div class='xyz'>hello</div>")
+        el: $("<div class='xyz'>hello</div>")[0]
         remove: -> $(".xyz").remove()
         trigger: (->)
 
@@ -95,7 +102,10 @@ testSuite 'Individual adaptors', ->
       expect(@trigger.secondCall.args).eql ['navstack:sleep']
 
     it 'el', ->
-      expect(@stack.panes.home.el.html()).eq "hello"
+      expect($(@stack.panes.home.el).html()).eq "hello"
+
+    it 'el is a DOM node', ->
+      expect(@stack.panes.home.el.nodeType).eql 1
 
     it 'remove', ->
       @stack.panes.home.adaptor.remove()
@@ -121,6 +131,9 @@ testSuite 'Individual adaptors', ->
 
     it 'el', ->
       expect($(@stack.panes.home.el).html()).eq "hello"
+
+    it 'el is a DOM node', ->
+      expect(@stack.panes.home.el.nodeType).eql 1
 
     it 'remove', ->
       @stack.panes.home.adaptor.remove()

@@ -748,11 +748,14 @@
       if (!this.el)
         throw new Error("Navstack: no element found");
 
-      $(this.el)
-        .attr('data-stack-pane', this.name)
-        .attr('data-stack-group', this.group)
-        .addClass('-navstack-pane')
-        .appendTo(this.parent.el);
+      // if (!this.el.nodename)
+      //   throw new error("navstack: pane has no element");
+
+      var el = $(this.el)[0];
+      attr(el, 'data-stack-pane', this.name);
+      attr(el, 'data-stack-group', this.group);
+      addClass(el, '-navstack-pane');
+      this.parent.el.appendChild(el);
     },
 
     isInitialized: function () {
@@ -995,7 +998,7 @@
    */
 
   Navstack.adaptors.jquery = buildAdaptor({
-    el: function (obj) { return $(obj); },
+    el: function (obj) { return $(obj)[0]; },
     check: function (obj) { return $(obj)[0].nodeType === 1; },
     remove: function (obj) { $(obj).trigger('navstack:remove'); return $(obj).remove(); },
     onsleep: function (obj) { $(obj).trigger('navstack:sleep'); },
