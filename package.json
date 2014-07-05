@@ -7,7 +7,7 @@
     "stack"
   ],
   "author": "Rico Sta. Cruz <hi@ricostacruz.com>",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/rstacruz/navstack.git"
@@ -20,9 +20,6 @@
     "coverage": "(cp navstack.js navstack.js~; jscoverage navstack.js; mv navstack-cov.js navstack.js; env cov=1 mocha -R html-cov > coverage.html); mv navstack.js~ navstack.js",
     "prepublish": "make",
     "examples": "serve examples"
-  },
-  "peerDependencies": {
-    "jquery": "*"
   },
   "devDependencies": {
     "autoprefixer": "^1.1.20140302",

@@ -8,9 +8,6 @@
     "navigation",
     "stack"
   ],
-  "dependencies": {
-    "jquery": "*"
-  },
   "license": "MIT",
   "main": "navstack.js",
   "scripts": [

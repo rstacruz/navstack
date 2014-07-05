@@ -10,20 +10,14 @@
 (function(root, factory) {
 
   if (typeof define === 'function' && define.amd) {
-    define(['jquery'], factory); /* AMD */
+    define(factory); /* AMD */
   } else if (typeof exports === 'object') {
-    factory(jquery()); /* CommonJS */
+    factory(); /* CommonJS */
   } else {
-    root.Navstack = factory(jquery()); /* Globals */
+    root.Navstack = factory(); /* Globals */
   }
 
-  function jquery() {
-    var $ = (typeof require === 'function' && require('jquery')) || root.jQuery || root.$ || null;
-    if (!$) throw new Error("Navstack: jQuery not found.");
-    return $;
-  }
-
-})(this, function ($) {
+})(this, function () {
 
   var Navstack, Pane, setImmediate;
 
