@@ -1,3 +1,7 @@
+## v0.3.0 - unreleased
+
+ * Supress `onwake` and `onsleep` errors.
+
 ## v0.2.2 - July 3, 2014
 
  * Rename `transition` event to `push`.
