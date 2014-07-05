@@ -1,6 +1,9 @@
 require './setup'
 
 testSuite 'Transition basic', ->
+  div = ->
+    document.createElement('DIV')
+
   it 'should have transitions object', ->
     expect(Navstack.transitions).be.object
 
@@ -18,7 +21,7 @@ testSuite 'Transition basic', ->
       transition: 'foobar'
 
     try
-      @stack.push 'home', -> $("<div>")
+      @stack.push 'home', -> div()
     catch e
       expect(e.message).match /invalid 'transition' value/
 
@@ -40,7 +43,7 @@ testSuite 'Transition basic', ->
       @stack = new Navstack
         transition: 'moo'
 
-      @stack.push 'home', -> $("<div>")
+      @stack.push 'home', -> div()
 
     afterEach ->
       delete Navstack.transitions.moo

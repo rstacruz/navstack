@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mocha</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../vendor/mocha.css" />
+    <script src="../vendor/coffeescript.js"></script>
+  </head>
+  <body>
+    <div id="mocha"></div>
+    <script src="../vendor/mocha.js"></script>
+    <script src="../vendor/chai.js"></script>
+    <script src="../vendor/sinon.js"></script>
+    <script src="../navstack.js"></script>
+    <script>
+      mocha.setup('bdd');
+      window.Sinon = window.sinon;
+      window.expect = chai.expect;
+      window.require = function () {};
+      window.testSuite = window.describe;
+      window.setImmediate = function(fn) { window.setTimeout(fn, 0); };
+
+      beforeEach(function () {
+        window.sinon = Sinon.sandbox.create();
+      });
+      afterEach(function () {
+        window.sinon.restore();
+      });
+
+      describe('Tests', function() {
+        it('', function() {});
+      });
+    </script>
+
+    <script src="adaptors_test.coffee" type="text/coffeescript"></script>
+    <script src="basic_features_test.coffee" type="text/coffeescript"></script>
+    <script src="event_test.coffee" type="text/coffeescript"></script>
+    <script src="extend_test.coffee" type="text/coffeescript"></script>
+    <script src="go_delegates_test.coffee" type="text/coffeescript"></script>
+    <script src="group_test.coffee" type="text/coffeescript"></script>
+    <!-- <script src="individual_adaptors_test.coffee" type="text/coffeescript"></script> -->
+    <script src="invalid_pane_test.coffee" type="text/coffeescript"></script>
+    <script src="no_extra_markup_test.coffee" type="text/coffeescript"></script>
+    <!-- <script src="purge_all_test.coffee" type="text/coffeescript"></script> -->
+    <!-- <script src="purge_test.coffee" type="text/coffeescript"></script> -->
+    <script src="push_errors.coffee" type="text/coffeescript"></script>
+    <script src="ready_test.coffee" type="text/coffeescript"></script>
+    <script src="repeat_test.coffee" type="text/coffeescript"></script>
+    <script src="stack_array_test.coffee" type="text/coffeescript"></script>
+    <!-- <script src="stack_test.coffee" type="text/coffeescript"></script> -->
+    <script src="transition_basic_test.coffee" type="text/coffeescript"></script>
+    <script src="transition_direction_test.coffee" type="text/coffeescript"></script>
+    <!-- <script src="transition_test.coffee" type="text/coffeescript"></script> -->
+
+    <script>mocha.run();</script>
+  </body>
+</html>

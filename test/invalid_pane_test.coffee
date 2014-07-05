@@ -3,7 +3,7 @@ require './setup'
 testSuite 'Invalid pane', ->
   beforeEach ->
     @stack = new Navstack()
-    @stack.push 'a', -> $("<div>")
+    @stack.push 'a', -> document.createElement('DIV')
 
   it 'should error', ->
     expect(=>

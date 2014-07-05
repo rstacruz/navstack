@@ -32,6 +32,7 @@ function myEnv() {
         global.jQuery  = window.jQuery;
         global.Ractive = window.Ractive;
         global.Navstack = window.Navstack;
+        global.document = window.document;
         // window._$jscoverage = global._$jscoverage;
         global._$jscoverage = window._$jscoverage;
 

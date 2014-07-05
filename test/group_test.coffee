@@ -1,6 +1,11 @@
 require './setup'
 
 testSuite 'Groups', ->
+  div = (id) ->
+    el = document.createElement('div')
+    el.setAttribute 'id', id
+    el
+
   beforeEach ->
     @stack = new Navstack
       transition: 'slide'
@@ -18,40 +23,40 @@ testSuite 'Groups', ->
     @stack.ready -> done()
 
   it 'ok', ->
-    @stack.push 'root!x', -> $("<div id='root-x'>")
-    @stack.push 'modal!a', -> $("<div id='modal-a'>")
+    @stack.push 'root!x', -> div('root-x')
+    @stack.push 'modal!a', -> div('modal-a')
     expect(@stack.stack).eql ['root!x', 'modal!a']
 
   it 'save the proper group names', ->
-    @stack.push 'root!x', -> $("<div>")
+    @stack.push 'root!x', -> div()
     pane = @stack.panes['root!x']
     expect(pane.name).eql 'root!x'
     expect(pane.group).eql 'root'
 
   it 'default group name', ->
-    @stack.push 'x', -> $("<div>")
+    @stack.push 'x', -> div()
     pane = @stack.panes['x']
     expect(pane.group).eql ''
 
   it 'insert into proper position', ->
-    @stack.push 'root!x', -> $("<div>")
-    @stack.push 'modal!a', -> $("<div>")
-    @stack.push 'root!y', -> $("<div>")
+    @stack.push 'root!x', -> div()
+    @stack.push 'modal!a', -> div()
+    @stack.push 'root!y', -> div()
     expect(@stack.stack).eql ['root!x', 'root!y', 'modal!a']
 
   it 'do the correct transitions', ->
-    @stack.push 'root!x', -> $("<div>")
-    @stack.push 'modal!a', -> $("<div>")
-    @stack.push 'root!y', -> $("<div>")
+    @stack.push 'root!x', -> div()
+    @stack.push 'modal!a', -> div()
+    @stack.push 'root!y', -> div()
     expect(@transitions()).eql ['slide', 'modal', 'modal']
 
   describe 'pane element', ->
     beforeEach ->
-      @div = $("<div>")
+      @div = div()
       @stack.push 'root!x', => @div
 
     it 'should have data-stack-pane', ->
-      expect(@div.attr('data-stack-pane')).eql 'root!x'
+      expect(@div.getAttribute('data-stack-pane')).eql 'root!x'
 
     it 'should have data-stack-group', ->
-      expect(@div.attr('data-stack-group')).eql 'root'
+      expect(@div.getAttribute('data-stack-group')).eql 'root'

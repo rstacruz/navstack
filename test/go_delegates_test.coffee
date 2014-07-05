@@ -1,6 +1,9 @@
 require './setup'
 
 describe 'Go delegates', ->
+  div = ->
+    document.createElement('DIV')
+
   beforeEach ->
     @stack = new Navstack()
 
@@ -9,8 +12,8 @@ describe 'Go delegates', ->
 
   describe 'getDirection()', ->
     beforeEach ->
-      @stack.push 'home', -> $("<div>")
-      @stack.push 'settings', -> $("<div>")
+      @stack.push 'home', -> div()
+      @stack.push 'settings', -> div()
 
     it 'forward', ->
       dir = @stack.getDirection('home', 'settings')

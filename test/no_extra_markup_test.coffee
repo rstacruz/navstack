@@ -5,7 +5,11 @@ testSuite 'No extra markup', ->
     @stack = new Navstack()
 
   it 'don\'t create elements', ->
-    @stack.push 'home', -> $("<div>hi</div>")
+    @stack.push 'home', ->
+      el = document.createElement('DIV')
+      el.innerHTML = 'hi'
+      el
 
-    expect($(@stack.el).find('> div:first-child:last-child').html()).eq 'hi'
+    expect(@stack.el.children).have.length 1
+    expect(@stack.el.children[0].innerHTML).eq 'hi'
 

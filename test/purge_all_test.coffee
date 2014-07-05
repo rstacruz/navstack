@@ -1,6 +1,6 @@
 require './setup'
 
-testSuite 'Purge all:', ->
+describe 'Purge all:', ->
   beforeEach ->
     @stack = new Navstack()
 
