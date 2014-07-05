@@ -19,7 +19,7 @@
 
 })(this, function () {
 
-  var Navstack, Pane, setImmediate;
+  var Navstack, Pane, setImmediate, Queue;
 
   /***
    * Navstack : new Navstack(options)
@@ -924,7 +924,12 @@
    */
 
   Navstack.queue = function (fn) {
-    $(document).queue(fn);
+    // use the jQuery queue if possible.
+    if (window.jQuery) {
+      jQuery(window.document).queue(fn);
+    } else {
+      Queue.add(fn);
+    }
   };
 
   /**
@@ -1206,6 +1211,24 @@
       if( event in this._events === false) return;
       for(var i = 0; i < this._events[event].length; i++){
         this._events[event][i].apply(this, Array.prototype.slice.call(arguments, 1));
+      }
+    }
+  };
+
+  Queue = {
+    commands: [],
+
+    add: function (fn) {
+      // Adds a command to the buffer, and executes it if it's
+      // the only command to be ran.
+      var commands = this.commands;
+      commands.push(fn);
+      if (this.commands.length === 1) fn(next);
+
+      // Moves onto the next command in the buffer.
+      function next() {
+        commands.shift();
+        if (commands.length) commands[0](next);
       }
     }
   };
