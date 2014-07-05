@@ -29,10 +29,10 @@ describe 'Transitions', ->
   # Before any animations start
   describe 'before', ->
     it 'leave parent alone', ->
-      expect(className "#parent").eq '-navstack'
+      expect(className("#parent").split(' ')).include '-navstack'
 
     it 'hide at first', ->
-      expect(className "#current").match /slide-hide/
+      expect(className("#current").split(' ')).include 'slide-hide'
 
     it 'run queue', ->
       expect(Navstack.queue.callCount).gte 1

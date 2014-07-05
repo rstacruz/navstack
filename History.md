@@ -1,6 +1,7 @@
 ## v0.3.0 - unreleased
 
  * Supress `onwake` and `onsleep` errors.
+ * `.el` is now always a DOM node, not a jQuery object.
 
 ## v0.2.2 - July 3, 2014
 

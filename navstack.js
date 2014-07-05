@@ -112,10 +112,10 @@
      *     $(nav.el).show()
      */
     this.el = (options && options.el) ? $(options.el) : $('<div>');
+    if (this.el[0]) this.el = this.el[0];
 
-    $(this.el)
-      .attr('data-stack', true)
-      .addClass('-navstack');
+    addClass(this.el, '-navstack');
+    attr(this.el, 'data-stack', true);
 
     this.init(options);
   };
@@ -153,7 +153,7 @@
      */
 
     on: function (event, handler) {
-      this.emitter.on(event, $.proxy(handler, this));
+      this.emitter.on(event, proxy(handler, this));
       return this;
     },
 
@@ -165,7 +165,7 @@
      */
 
     off: function (event, handler) {
-      this.emitter.off(event, $.proxy(handler, this));
+      this.emitter.off(event, proxy(handler, this));
       return this;
     },
 
@@ -175,7 +175,7 @@
      */
 
     one: function (event, handler) {
-      this.emitter.one(event, $.proxy(handler, this));
+      this.emitter.one(event, proxy(handler, this));
       return this;
     },
 
@@ -1030,6 +1030,24 @@
   function getGroupName (name) {
     var m = name.match(/^([^!]+)!/);
     return m && m[1];
+  }
+
+  function proxy (fn, context) {
+    return function () {
+      fn.apply(context, arguments);
+    };
+  }
+
+  function addClass (el, className) {
+    if (el.classList)
+      el.classList.add(className);
+    else
+      el.className += ' ' + className;
+    return el;
+  }
+
+  function attr (el, key, val) {
+    el.setAttribute(key, val);
   }
 
   /*
