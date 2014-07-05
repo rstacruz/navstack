@@ -1,5 +1,4 @@
 var cov = (!! process.env.cov);
-var fast = (!! process.env.fast);
 
 // Deps
 global.chai = require('chai');
@@ -8,20 +7,18 @@ chai.use(require('chai-fuzzy'));
 chai.should();
 
 var fs = require('fs');
-var multisuite = require('./support/multisuite');
 
 var scripts = {
-  'jq-1.7': fs.readFileSync('vendor/jquery-1.7b2.js'),
-  'jq-2.0': fs.readFileSync('vendor/jquery-2.0.2.js'),
+  'jq': fs.readFileSync('vendor/jquery-2.0.2.js'),
   'navstack': fs.readFileSync('navstack.js')
 };
 
-function myEnv(jq) {
+function myEnv() {
   var jsdom = require('jsdom');
   return function(done) {
     jsdom.env({
       html: '<!doctype html>',
-      src: [ scripts[jq], scripts.navstack ],
+      src: [ scripts.jq, scripts.navstack ],
       done: function(errors, window) {
         if (errors) {
           errors.forEach(function (e) { console.error(e.data); });
@@ -45,21 +42,8 @@ function myEnv(jq) {
   };
 }
 
-if (!cov && !fast) {
-  global.testSuite = function(name, fn) {
-    describe("jq-1.7: "+name, function () {
-      before(myEnv('jq-1.7'));
-      fn();
-    });
-    describe("jq-2.0: "+name, function () {
-      before(myEnv('jq-2.0'));
-      fn();
-    });
-  };
-} else {
-  before(myEnv('jq-2.0'));
-  global.testSuite = describe;
-}
+before(myEnv());
+global.testSuite = describe;
 
 beforeEach(function () {
   global.sinon = require('sinon').sandbox.create();
