@@ -6,6 +6,11 @@ Update site/ with new files:
 
     make site
 
+Run browser tests:
+
+    python -m SimpleHTTPServer
+    open http://localhost:8000/test
+
 Opening examples:
 
     npm run examples

@@ -67,7 +67,7 @@
     // this.transition = 'slide';
     // this.paneTransition = 'modal';
 
-    $.extend(this, options);
+    extend(this, options);
 
     /**
      * panes:
@@ -784,7 +784,7 @@
 
   Navstack.extend = function (proto) {
     var klass = function() { Navstack.apply(this, arguments); };
-    $.extend(klass.prototype, Navstack.prototype, proto);
+    extend(klass.prototype, Navstack.prototype, proto);
     return klass;
   };
 
@@ -846,8 +846,10 @@
           addClass(previousEl, exit);
           remClass(currentEl, hide);
           addClass(currentEl, enter);
-          $previous.one(animationend, after); // TODO
-          $current.one(animationend, after); // TODO
+          // $previous.one(animationend, after); // TODO
+          // $current.one(animationend, after); // TODO
+          one(previousEl, animationend, after);
+          one(currentEl, animationend, after);
         }
       };
 
@@ -1076,21 +1078,58 @@
     return el;
   }
 
+  // Adds an event listener.
+  // (also adds el._onxxxx for tests to pick up)
   function on (el, eventName, fn) {
-    el.addEventListener(eventName, fn);
+    if (~eventName.indexOf(' ')) {
+      var names = eventName.split(' ');
+      for (var i = 0, len = names.length; i < len; i++) {
+        if (names[i].length > 0) {
+          el.addEventListener(names[i], fn);
+          el['_on'+names[i]] = fn;
+        }
+      }
+    } else {
+      el.addEventListener(eventName, fn);
+      el['_on'+eventName] = fn;
+    }
     return el;
   }
 
+  // Removes an event listener
   function off (el, eventName, fn) {
-    el.removeEventListener(eventName, fn);
+    if (~eventName.indexOf(' ')) {
+      var names = eventName.split(' ');
+      for (var i = 0, len = names.length; i < len; i++) {
+        if (names[i].length > 0) {
+          delete el['_on'+names[i]];
+          el.removeEventListener(names[i], fn);
+        }
+      }
+    } else {
+      el.removeEventListener(eventName, fn);
+      delete el['_on'+eventName];
+    }
     return el;
+  }
+
+  function one (el, eventName, fn) {
+    var called, result;
+    var callback = function () {
+      if (called) return result;
+      called = true;
+      result = fn.apply(this, arguments);
+      off(el, eventName, callback);
+      return result;
+    };
+    on(el, eventName, callback);
   }
 
   // triggers a custom event
   function trigger (el, eventName, data) {
     var event;
     if (window.CustomEvent) {
-      event = new CustomEvent(eventName, { detail: data || {} });
+      event = new window.CustomEvent(eventName, { detail: data || {} });
     } else {
       event = document.createEvent('CustomEvent');
       if (!event.initCustomEvent) return;
@@ -1098,6 +1137,22 @@
     }
     el.dispatchEvent(event);
     return true;
+  }
+
+  // Reimplementation of jQuery.extend
+  function extend (out) {
+    if (!out) out = {};
+
+    for (var i = 1; i < arguments.length; i++) {
+      if (!arguments[i]) continue;
+
+      for (var key in arguments[i]) {
+        if (arguments[i].hasOwnProperty(key))
+          out[key] = arguments[i][key];
+      }
+    }
+
+    return out;
   }
 
   /*

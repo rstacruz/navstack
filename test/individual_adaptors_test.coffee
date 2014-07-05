@@ -2,7 +2,11 @@ require './setup'
 
 testSuite 'Individual adaptors', ->
   beforeEach ->
-    @stack = new Navstack(el: $("<div>").appendTo('body'))
+    @parent = $("<div>").appendTo('body')
+    @stack = new Navstack(el: @parent)
+
+  afterEach ->
+    @parent.remove()
 
   describe 'adaptors.dom', ->
     beforeEach ->

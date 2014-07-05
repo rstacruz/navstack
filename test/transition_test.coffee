@@ -1,7 +1,7 @@
 require './setup'
 
 # For some reason, it randomly fails in jQuery 1.7
-describe 'Transitions', ->
+describe 'Transitions:', ->
   classNames = (what) -> window.document.querySelector(what).className.split(' ')
 
   # Stub the queueing mechanism
@@ -9,33 +9,35 @@ describe 'Transitions', ->
     sinon.stub Navstack, 'queue', (fn) -> fn(->)
 
   beforeEach ->
+    @parent = $("<section id='parent'>").appendTo("body")
     @stack = new Navstack
       transition: 'slide'
-      el: $("<section id='parent'>").appendTo("body")
+      el: @parent
 
   beforeEach ->
     @stack.push 'home', -> $("<div id='previous'>")
-
-  beforeEach (done) ->
-    setTimeout done, 10
-
-  beforeEach ->
     @stack.push 'messages', -> $("<div id='current'>")
+
+  afterEach ->
+    @stack.teardown()
 
   # Ensure that the animations die off properly
   afterEach ->
     $("<div>").trigger('animationend')
 
   # Before any animations start
-  describe 'before', ->
+  describe 'before animations start', ->
     it 'leave parent alone', ->
       expect(classNames "#parent").include '-navstack'
 
-    it 'hide at first', ->
+    it 'should keep the current pane hidden', ->
       expect(classNames "#current").include 'slide-hide'
 
-    it 'run queue', ->
-      expect(Navstack.queue.callCount).gte 1
+    it 'run queue', (done) ->
+      setTimeout (->
+        expect(Navstack.queue.callCount).gte 1
+        done()
+      ), 25
 
   # While animations are running
   describe 'run', ->
@@ -59,8 +61,19 @@ describe 'Transitions', ->
     beforeEach (done) ->
       setTimeout done, 10
 
+    trigger = (el, event) ->
+      if el['_on'+event]
+        el['_on'+event]()
+      else
+        event = window.document.createEvent('HTMLEvents')
+        event.initEvent(event, true, false)
+        el.dispatchEvent(event)
+
+    qs = (sel) ->
+      window.document.querySelector(sel)
+
     beforeEach (done) ->
-      $('#current').trigger('animationend')
+      trigger qs('#current'), 'animationend'
       setTimeout done, 10
 
     it 'remove classes from parent', ->

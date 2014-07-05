@@ -19,7 +19,8 @@ testSuite 'Stack', ->
 
   describe 'tabs', ->
     beforeEach ->
-      @chrome = new Navstack(el: 'body')
+      @parent = $("<div>").appendTo('body')
+      @chrome = new Navstack(el: @parent)
 
       @chrome.register 'home', ->
         { el: $('<div><h1>hi</h1></div>')[0], number: 31337, remove: (->), trigger: sinon.spy() }
@@ -27,9 +28,12 @@ testSuite 'Stack', ->
       @chrome.register 'messages', ->
         $('<div>')
 
+    afterEach ->
+      @chrome.teardown()
+
     describe 'before navigation', ->
       it 'class', ->
-        expect($ 'body[data-stack]').length 1
+        expect($ 'body [data-stack]').length 1
 
       it 'empty', ->
         expect($(@chrome.el).find('>*').length).eql 0
@@ -55,7 +59,7 @@ testSuite 'Stack', ->
         expect(@$pane.is('[data-stack-pane]')).true
 
       it '.panes["home"]', ->
-        expect($ @chrome.panes.home.el).have.html '<h1>hi</h1>'
+        expect($(@chrome.panes.home.el).html()).eql '<h1>hi</h1>'
 
       it '.stack.length', ->
         expect(@chrome.stack.length).eq 1
