@@ -233,7 +233,7 @@
       }
 
       // tell it
-      current.adaptor.onwake();
+      try { current.adaptor.onwake(); } catch(e) {}
 
       // Register a new 'active' pane
       this.active = current;
@@ -254,7 +254,7 @@
       var transition = this.getTransition(transName);
       self.transitioning = true;
       this.runTransition(transition, direction, current, previous, function () {
-        if (previous) previous.adaptor.onsleep();
+        try { if (previous) previous.adaptor.onsleep(); } catch(e) {}
         self.transitioning = false;
         self.ready();
       });
@@ -832,7 +832,7 @@
             $parent.removeClass(container);
             $previous.addClass(hide).removeClass(exit);
             $current.removeClass(enter);
-            setImmediate(next);
+            next();
           });
 
           $parent
