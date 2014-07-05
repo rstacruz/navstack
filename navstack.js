@@ -798,11 +798,13 @@
     var noscroll = function (e) { e.preventDefault(); };
 
     return function (direction, current, previous) {
-      var $current = $(current && current.el);
-      var $previous = $(previous && previous.el);
-      var $parent =
-        current ? $(current.el).parent() :
-        previous ? $(previous.el).parent() : null;
+      var currentEl = current && current.el;
+      var previousEl = previous && previous.el;
+      var parentEl = (currentEl && currentEl.parentNode) || (previousEl && previousEl.parentNode);
+
+      var $parent = $(parentEl);
+      var $current = $(currentEl);
+      var $previous = $(previousEl);
 
       var hide    = prefix + '-hide',
         container = prefix + '-container',
@@ -813,7 +815,7 @@
       var trans = {
         before: function (next) {
           if (direction !== 'first')
-            $current.addClass(hide);
+            addClass(currentEl, hide);
 
           // Do transitions on next browser tick so that any DOM elements that
           // need rendering will take its time
@@ -821,7 +823,7 @@
         },
 
         after: function (next) {
-          $(document).off('touchmove', noscroll);
+          off(document, 'touchmove', noscroll);
           return next();
         },
 
@@ -829,23 +831,23 @@
           if (direction === 'first') return next();
 
           // prevent scrolling while transitions are working
-          $(document).on('touchmove', noscroll);
+          on(document, 'touchmove', noscroll);
 
           var after = once(function() {
-            $parent.removeClass(container);
-            $previous.addClass(hide).removeClass(exit);
-            $current.removeClass(enter);
+            remClass(parentEl, container);
+            addClass(previousEl, hide);
+            remClass(previousEl, exit);
+            remClass(currentEl, enter);
             next();
           });
 
-          $parent
-            .addClass(container);
-          $previous
-            .removeClass(hide).addClass(exit)
-            .one(animationend, after);
-          $current
-            .removeClass(hide).addClass(enter)
-            .one(animationend, after);
+          addClass(parentEl, container);
+          remClass(previousEl, hide);
+          addClass(previousEl, exit);
+          remClass(currentEl, hide);
+          addClass(currentEl, enter);
+          $previous.one(animationend, after); // TODO
+          $current.one(animationend, after); // TODO
         }
       };
 
@@ -1049,8 +1051,27 @@
     return el;
   }
 
+  function remClass (el, className) {
+    if (el.classList)
+      el.classList.remove(className);
+    else
+      el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+    return el;
+  }
+
   function attr (el, key, val) {
     el.setAttribute(key, val);
+    return el;
+  }
+
+  function on (el, eventName, fn) {
+    el.addEventListener(eventName, fn);
+    return el;
+  }
+
+  function off (el, eventName, fn) {
+    el.removeEventListener(eventName, fn);
+    return el;
   }
 
   /*
