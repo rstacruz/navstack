@@ -762,7 +762,6 @@
         throw new Error("Navstack: pane element is not a DOM node");
 
       var el = this.el;
-      if (el[0]) el = el[0]; // TODO unjQuery
       attr(el, 'data-stack-pane', this.name);
       attr(el, 'data-stack-group', this.group);
       addClass(el, '-navstack-pane');
