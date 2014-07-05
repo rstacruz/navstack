@@ -1007,11 +1007,11 @@
    */
 
   Navstack.adaptors.jquery = buildAdaptor({
-    el: function (obj) { return $(obj)[0]; },
+    el: function (obj) { return obj[0]; },
     check: function (obj) { return obj && obj[0] && obj[0].nodeType === 1; },
-    remove: function (obj) { $(obj).trigger('navstack:remove'); return $(obj).remove(); },
-    onsleep: function (obj) { $(obj).trigger('navstack:sleep'); },
-    onwake: function (obj) { $(obj).trigger('navstack:wake'); }
+    remove: function (obj) { obj.trigger('navstack:remove'); return obj.remove(); },
+    onsleep: function (obj) { obj.trigger('navstack:sleep'); },
+    onwake: function (obj) { obj.trigger('navstack:wake'); }
   });
 
   /*
