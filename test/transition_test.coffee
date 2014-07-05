@@ -2,7 +2,7 @@ require './setup'
 
 # For some reason, it randomly fails in jQuery 1.7
 describe 'Transitions', ->
-  className = (what) -> $("#{what}").attr('class')
+  classNames = (what) -> window.document.querySelector(what).className.split(' ')
 
   # Stub the queueing mechanism
   beforeEach ->
@@ -29,10 +29,10 @@ describe 'Transitions', ->
   # Before any animations start
   describe 'before', ->
     it 'leave parent alone', ->
-      expect(className("#parent").split(' ')).include '-navstack'
+      expect(classNames "#parent").include '-navstack'
 
     it 'hide at first', ->
-      expect(className("#current").split(' ')).include 'slide-hide'
+      expect(classNames "#current").include 'slide-hide'
 
     it 'run queue', ->
       expect(Navstack.queue.callCount).gte 1
@@ -46,13 +46,13 @@ describe 'Transitions', ->
       expect(Navstack.queue.callCount).gte 2
 
     it 'parent container', ->
-      expect(className "#parent").match /slide-container/
+      expect(classNames "#parent").include 'slide-container'
 
     it 'enter animation', ->
-      expect(className "#current").match /slide-enter-forward/
+      expect(classNames "#current").include 'slide-enter-forward'
 
     it 'exit animation', ->
-      expect(className "#previous").match /slide-exit-forward/
+      expect(classNames "#previous").include 'slide-exit-forward'
 
   # After animations run
   describe 'after', ->
@@ -64,13 +64,14 @@ describe 'Transitions', ->
       setTimeout done, 10
 
     it 'remove classes from parent', ->
-      expect(className "#parent").eq '-navstack'
+      expect(classNames "#parent").include '-navstack'
 
     it 'remove classes from current', ->
-      expect(className "#current").eq '-navstack-pane'
+      expect(classNames "#current").include '-navstack-pane'
 
     it 'remove classes from previous', ->
-      expect(className "#previous").eq '-navstack-pane slide-hide'
+      expect(classNames "#previous").include '-navstack-pane'
+      expect(classNames "#previous").include 'slide-hide'
 
     it 'run queue', ->
       expect(Navstack.queue.calledTwice).be.true
