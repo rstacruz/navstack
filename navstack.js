@@ -996,22 +996,34 @@
 
 
   /*
-   * Generic adaptor. Accounts for any object that gives off an `el` property.
+   * jQuery adaptor
    */
 
   Navstack.adaptors.jquery = buildAdaptor({
     el: function (obj) { return $(obj)[0]; },
-    check: function (obj) { return $(obj)[0].nodeType === 1; },
+    check: function (obj) { return obj && obj[0] && obj[0].nodeType === 1; },
     remove: function (obj) { $(obj).trigger('navstack:remove'); return $(obj).remove(); },
     onsleep: function (obj) { $(obj).trigger('navstack:sleep'); },
     onwake: function (obj) { $(obj).trigger('navstack:wake'); }
   });
 
   /*
+   * Generic adaptor
+   */
+
+  Navstack.adaptors.dom = buildAdaptor({
+    el: function (obj) { return obj; },
+    check: function (obj) { return obj && obj.nodeType === 1; },
+    remove: function (obj) { trigger(obj, 'navstack:remove'); obj.parentNode.removeChild(obj); return obj; },
+    onsleep: function (obj) { trigger(obj, 'navstack:sleep'); },
+    onwake: function (obj) { trigger(obj, 'navstack:wake'); }
+  });
+
+  /*
    * Adaptors in use
    */
 
-  Navstack.adapt = ['backbone', 'ractive', 'react', 'jquery'];
+  Navstack.adapt = ['backbone', 'ractive', 'react', 'jquery', 'dom'];
 
   /*
    * Helpers
@@ -1072,6 +1084,18 @@
   function off (el, eventName, fn) {
     el.removeEventListener(eventName, fn);
     return el;
+  }
+
+  // triggers a custom event
+  function trigger (el, eventName, data) {
+    var event;
+    if (window.CustomEvent) {
+      event = new CustomEvent(eventName, { detail: data || {} });
+    } else {
+      event = document.createEvent('CustomEvent');
+      event.initCustomEvent(eventName, true, true, data || {});
+    }
+    el.dispatchEvent(event);
   }
 
   /*
