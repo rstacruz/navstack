@@ -1,8 +1,8 @@
-## v0.3.0 - unreleased
+## v0.3.0 - July 5, 2014
 
+ * Navstack no longer requires jQuery.
  * Supress `onwake` and `onsleep` errors.
  * `.el` is now always a DOM node, not a jQuery object.
- * Tone down the jQuery dependencies.
  * Add a new `dom` adaptor.
  * Make the test suite run in the browser as well.
  * `Navstack#on` now passes the pane data as the first argument.
