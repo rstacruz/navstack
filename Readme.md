@@ -4,7 +4,7 @@ Navstack
 <img src="http://ricostacruz.com/navstack/assets/navstack.gif" align="right">
 
 Manage a stack of multiple views. Perfect for tabs, navigation stacks, and 
-similar.  Inspired by iOS's UINavigationController.
+similar. Inspired by iOS's UINavigationController.
 
  * __Framework-agnostic__: made to play fair with [Backbone], [Ractive], 
  [React.js] and more. Can even work with plain old jQuery.
@@ -14,8 +14,6 @@ similar.  Inspired by iOS's UINavigationController.
 
  * __Mobile-like transitions__: buttery-smooth transitions are available out of 
  the box, modeled after iOS7.
-
-Requires jQuery 1.7+.
 
 [![Status](https://travis-ci.org/rstacruz/navstack.png?branch=master)](https://travis-ci.org/rstacruz/navstack)
 
@@ -36,7 +34,6 @@ Or get it via Bower:
 Then use it:
 
 ``` html
-<script src="jquery.js"></script>
 <script src="navstack.js"></script>
 <link rel="stylesheet" href="navstack.css">
 ```
