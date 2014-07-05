@@ -285,12 +285,12 @@
     transition: function (direction, current, previous) {
       return {
         before: function(next) {
-          if (current)  $(current.el).hide();
+          if (current)  hide(current.el);
           return next();
         },
         run: function(next) {
-          if (current)  $(current.el).show();
-          if (previous) $(previous.el).hide();
+          if (current)  show(current.el);
+          if (previous) hide(previous.el);
           return next();
         },
         after: function (next) {
@@ -1167,9 +1167,17 @@
   function eachChild (el, fn) {
     for (var i=el.children.length; i--;){
       // Skip comment nodes on IE8
-      if (el.children[i].nodeType != 8)
+      if (el.children[i].nodeType !== 8)
         fn.call(el.children[i], i, el.children[i]);
     }
+  }
+
+  function hide (el) {
+    el.style.display = 'none';
+  }
+
+  function show (el) {
+    el.style.display = '';
   }
 
   /*
