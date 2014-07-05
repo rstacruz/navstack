@@ -4,6 +4,7 @@
  * `.el` is now always a DOM node, not a jQuery object.
  * Tone down the jQuery dependencies.
  * Add a new `dom` adaptor.
+ * Make the test suite run in the browser as well.
 
 ## v0.2.2 - July 3, 2014
 

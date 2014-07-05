@@ -104,14 +104,14 @@
 
     /** emitter:
      * (internal) event emitter. */
-    this.emitter = $({});
+    this.emitter = $({}); // TODO unJquery
 
     /** el:
      * The DOM element.
      *
      *     $(nav.el).show()
      */
-    this.el = (options && options.el) ? $(options.el) : $('<div>');
+    this.el = (options && options.el) ? $(options.el) : $('<div>'); // TODO unJquery
     if (this.el[0]) this.el = this.el[0];
 
     addClass(this.el, '-navstack');
@@ -266,7 +266,7 @@
       };
 
       // Events
-      this.emitter.trigger($.Event('push:'+current.name, eventData));
+      this.emitter.trigger($.Event('push:'+current.name, eventData)); // TODO unJquery
       this.emitter.trigger($.Event('push', eventData));
 
       // clear out other panes
@@ -310,7 +310,8 @@
     remove: function () {
       // TODO: destroy each pane
       this.emitter.trigger('remove');
-      $(this.el).remove();
+      if (this.el.parentNode)
+        this.el.parentNode.removeChild(this.el);
     },
 
     /**
@@ -548,15 +549,17 @@
     runTransition: function (transitionFn, direction, current, previous, callback) {
       var transition = transitionFn(direction, current, previous);
       var nav = this;
-      var $nav = $(this.el);
+      var el = this.el;
 
       transition.before(function () {
         Navstack.queue(function (next) {
           if (transition.nav)
             nav.runOverlay(direction, current, previous);
           transition.run(function () {
-            if (transition.nav)
-              $nav.find('.-navstack-nav').remove();
+            if (transition.nav) {
+              navEl = el.querySelector('.-navstack-nav');
+              if (navEl) navEl.parentNode.removeChild(navEl);
+            }
             transition.after(function () {
               if (callback) callback();
               next();
@@ -624,48 +627,55 @@
     runOverlay: function (direction, current, previous) {
       if (direction === 'first' || !this.nav) return;
 
-      var $current = $(current && current.el);
-      var $previous = $(previous && previous.el);
-      var $parent = $current.add($previous).parent();
+      var currentEl = current && current.el;
+      var previousEl = previous && previous.el;
+      var parentEl = currentEl.parentNode || previousEl.parentNode;
+      if (!currentEl || !previousEl) return;
+
       var nav = this.nav;
 
       // build the nav in there
-      var $nav1 = $current.find(nav);
-      var $nav2 = $previous.find(nav);
-      if (!$nav1.length || !$nav2.length) return;
+      var nav1 = currentEl.querySelector(nav);
+      var nav2 = previousEl.querySelector(nav);
+      if (!nav1 || !nav2) return;
 
       // create the overlay bar
-      var $bar = $("<" + $nav2[0].nodeName + ">");
-      $bar.attr('class', $nav2.attr('class'));
+      var bar = document.createElement(nav2.nodeName);
+      bar.className = nav2.className;
 
       // add the previous stuff as exiting
-      $nav2.children().each(function () {
-        var $el = $(this.outerHTML);
+      eachChild(nav2, function () {
+        var el = this.cloneNode(true);
+
         // skip if the same data-id exists in the current pane
-        var id = $el.attr('data-id');
-        if (id && $nav1.find('>[data-id="'+id+'"]').length) return;
-        $el.addClass('nav-slide-exit-'+direction);
-        $bar.append($el);
+        var id = attr(this, 'data-id');
+        if (id && nav1.querySelector('>[data-id="'+id+'"]')) return;
+
+        addClass(el, 'nav-slide-exit-'+direction);
+        bar.appendChild(el);
       });
 
       // add the current stuff as entering
-      $nav1.children().each(function () {
-        var $el = $(this.outerHTML);
-        var id = $el.attr('data-id');
+      eachChild(nav1, function () {
+        var el = this.cloneNode(true);
+
         // skip entrance animation if the same data-id exists in the previous
-        if (!id || !$nav2.find('>[data-id="'+id+'"]').length)
-          $el.addClass('nav-slide-enter-'+direction);
-        $bar.append($el);
+        var id = attr(this, 'data-id');
+        if (!id || !nav2.querySelector('>[data-id="'+id+'"]'))
+          addClass(el, 'nav-slide-enter-'+direction);
+
+        bar.appendChild(el);
       });
 
       // build the overlay bar
-      var $overlay = $("<div class='-navstack-nav'>");
-      $overlay.append($bar);
-      $overlay.appendTo($parent);
+      var overlay = document.createElement('DIV');
+      overlay.className = '-navstack-nav';
+      overlay.appendChild(bar);
+      parentEl.appendChild(overlay);
 
       // change the classname to transition
       setImmediate(function () {
-        $bar.attr('class', $nav1.attr('class'));
+        bar.className = nav1.className;
       });
     }
 
@@ -751,7 +761,8 @@
       if (!this.el.nodeType)
         throw new Error("Navstack: pane element is not a DOM node");
 
-      var el = $(this.el)[0];
+      var el = this.el;
+      if (el[0]) el = el[0]; // TODO unjQuery
       attr(el, 'data-stack-pane', this.name);
       attr(el, 'data-stack-group', this.group);
       addClass(el, '-navstack-pane');
@@ -802,10 +813,6 @@
       var previousEl = previous && previous.el;
       var parentEl = (currentEl && currentEl.parentNode) || (previousEl && previousEl.parentNode);
 
-      var $parent = $(parentEl);
-      var $current = $(currentEl);
-      var $previous = $(previousEl);
-
       var hide    = prefix + '-hide',
         container = prefix + '-container',
         enter     = prefix + '-enter-' + direction,
@@ -846,8 +853,6 @@
           addClass(previousEl, exit);
           remClass(currentEl, hide);
           addClass(currentEl, enter);
-          // $previous.one(animationend, after); // TODO
-          // $current.one(animationend, after); // TODO
           one(previousEl, animationend, after);
           one(currentEl, animationend, after);
         }
@@ -1074,8 +1079,12 @@
   }
 
   function attr (el, key, val) {
-    el.setAttribute(key, val);
-    return el;
+    if (arguments.length === 3) {
+      el.setAttribute(key, val);
+      return el;
+    } else {
+      return el.getAttribute(key);
+    }
   }
 
   // Adds an event listener.
@@ -1153,6 +1162,14 @@
     }
 
     return out;
+  }
+
+  function eachChild (el, fn) {
+    for (var i=el.children.length; i--;){
+      // Skip comment nodes on IE8
+      if (el.children[i].nodeType != 8)
+        fn.call(el.children[i], i, el.children[i]);
+    }
   }
 
   /*
