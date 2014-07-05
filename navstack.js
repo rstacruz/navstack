@@ -1093,9 +1093,11 @@
       event = new CustomEvent(eventName, { detail: data || {} });
     } else {
       event = document.createEvent('CustomEvent');
+      if (!event.initCustomEvent) return;
       event.initCustomEvent(eventName, true, true, data || {});
     }
     el.dispatchEvent(event);
+    return true;
   }
 
   /*

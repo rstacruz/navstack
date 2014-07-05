@@ -4,6 +4,39 @@ testSuite 'Individual adaptors', ->
   beforeEach ->
     @stack = new Navstack(el: $("<div>").appendTo('body'))
 
+  describe 'adaptors.dom', ->
+    beforeEach ->
+      @sleep = sinon.spy()
+      @wake = sinon.spy()
+      @div = $("<div class='xyz'>hello</div>")[0]
+      @div.addEventListener 'navstack:sleep', @sleep
+      @div.addEventListener 'navstack:wake', @wake
+      @stack.adapt = ['dom']
+      @stack.push 'home', => @div
+
+    it 'push', ->
+      expect($('body > div > .xyz')[0]).not.be.undefined
+
+    it 'el is a DOM node', ->
+      expect(@stack.panes.home.el.nodeType).eql 1
+
+    it 'el', ->
+      expect($(@stack.panes.home.el).html()).eq "hello"
+
+    it 'remove', ->
+      @stack.panes.home.adaptor.remove()
+      expect($('.xyz')[0]).be.undefined
+
+    xdescribe 'jsdom doesnt support custom events', ->
+      it 'wake', ->
+        expect(@wake.calledOnce).eql.true
+
+      it 'sleep', ->
+        @stack.push 'other', =>
+          $("<div class='xyz'>hello</div>")[0]
+
+        expect(@sleep.calledOnce).eql true
+
   describe 'adaptors.jquery', ->
     beforeEach ->
       @sleep = sinon.spy()

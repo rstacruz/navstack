@@ -2,6 +2,8 @@
 
  * Supress `onwake` and `onsleep` errors.
  * `.el` is now always a DOM node, not a jQuery object.
+ * Tone down the jQuery dependencies.
+ * Add a new `dom` adaptor.
 
 ## v0.2.2 - July 3, 2014
 
