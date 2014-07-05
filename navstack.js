@@ -748,8 +748,8 @@
       if (!this.el)
         throw new Error("Navstack: no element found");
 
-      // if (!this.el.nodename)
-      //   throw new error("navstack: pane has no element");
+      if (!this.el.nodeType)
+        throw new Error("Navstack: pane element is not a DOM node");
 
       var el = $(this.el)[0];
       attr(el, 'data-stack-pane', this.name);
