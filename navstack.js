@@ -111,7 +111,9 @@
      *
      *     $(nav.el).show()
      */
-    this.el = (options && options.el) ? $(options.el) : $('<div>'); // TODO unJquery
+    this.el = (options && options.el) || document.createElement('DIV');
+
+    // Un-jQuery
     if (this.el[0]) this.el = this.el[0];
 
     addClass(this.el, '-navstack');
