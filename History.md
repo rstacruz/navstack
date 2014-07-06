@@ -1,3 +1,8 @@
+## v0.3.1 - unreleased
+
+ * Fix issue where going from one group to another and back may leave a blank 
+ screen.
+
 ## v0.3.0 - July 5, 2014
 
  * Navstack no longer requires jQuery.
