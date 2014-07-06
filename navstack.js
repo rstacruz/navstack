@@ -808,7 +808,7 @@
       var previousEl = previous && previous.el;
       var parentEl = (currentEl && currentEl.parentNode) || (previousEl && previousEl.parentNode);
 
-      var hide    = prefix + '-hide',
+      var hide    = '-navstack-hide',
         container = prefix + '-container',
         enter     = prefix + '-enter-' + direction,
         exit      = prefix + '-exit-' + direction,

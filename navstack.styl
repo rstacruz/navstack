@@ -33,6 +33,9 @@ $noshadow ?= 0 0 20px rgba(black, 0.0), 0 0 10px rgba(black, 0.0)
   pointer-events: none
   background: transparent
 
+.-navstack-hide
+  transform: translate(-9999px, 0)
+
 /* ----------------------------------------------------------------------------------
  * Animations: slide
  */
@@ -58,9 +61,6 @@ $noshadow ?= 0 0 20px rgba(black, 0.0), 0 0 10px rgba(black, 0.0)
   z-index: 2
   animation: slide-exit-backward (navstack-speed * 0.7) navstack-ease
   box-shadow: navstack-shadow
-
-.slide-hide
-  transform: translate(-9999px, 0)
 
 @keyframes slide-enter-forward
   0%
@@ -159,9 +159,6 @@ $noshadow ?= 0 0 20px rgba(black, 0.0), 0 0 10px rgba(black, 0.0)
   z-index: 2
   animation: modal-exit-backward (navstack-speed * 0.7) navstack-ease
   box-shadow: navstack-shadow
-
-.modal-hide
-  transform: translate(-9999px, 0)
 
 @keyframes modal-enter-forward
   0%
