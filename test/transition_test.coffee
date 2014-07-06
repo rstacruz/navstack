@@ -31,7 +31,7 @@ describe 'Transitions:', ->
       expect(classNames "#parent").include '-navstack'
 
     it 'should keep the current pane hidden', ->
-      expect(classNames "#current").include 'slide-hide'
+      expect(classNames "#current").include '-navstack-hide'
 
     it 'run queue', (done) ->
       setTimeout (->
@@ -84,7 +84,7 @@ describe 'Transitions:', ->
 
     it 'remove classes from previous', ->
       expect(classNames "#previous").include '-navstack-pane'
-      expect(classNames "#previous").include 'slide-hide'
+      expect(classNames "#previous").include '-navstack-hide'
 
     it 'run queue', ->
       expect(Navstack.queue.calledTwice).be.true
