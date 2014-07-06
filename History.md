@@ -1,4 +1,4 @@
-## v0.3.1 - unreleased
+## v0.3.1 - July 6, 2014
 
  * Fix issue where going from one group to another and back may leave a blank 
  screen.
