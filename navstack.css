@@ -23,6 +23,11 @@
   pointer-events: none;
   background: transparent;
 }
+.-navstack-hide {
+  -webkit-transform: translate(-9999px, 0);
+  -ms-transform: translate(-9999px, 0);
+  transform: translate(-9999px, 0);
+}
 /* ----------------------------------------------------------------------------------
  * Animations: slide
  */
@@ -55,11 +60,6 @@
   animation: slide-exit-backward 350ms cubic-bezier(0.3, 0.5, 0, 1);
   -webkit-box-shadow: 0 0 20px rgba(0,0,0,0.3), 0 0 10px rgba(0,0,0,0.1);
   box-shadow: 0 0 20px rgba(0,0,0,0.3), 0 0 10px rgba(0,0,0,0.1);
-}
-.slide-hide {
-  -webkit-transform: translate(-9999px, 0);
-  -ms-transform: translate(-9999px, 0);
-  transform: translate(-9999px, 0);
 }
 /* ----------------------------------------------------------------------------
  */
@@ -111,11 +111,6 @@
   animation: modal-exit-backward 350ms cubic-bezier(0.3, 0.5, 0, 1);
   -webkit-box-shadow: 0 0 20px rgba(0,0,0,0.3), 0 0 10px rgba(0,0,0,0.1);
   box-shadow: 0 0 20px rgba(0,0,0,0.3), 0 0 10px rgba(0,0,0,0.1);
-}
-.modal-hide {
-  -webkit-transform: translate(-9999px, 0);
-  -ms-transform: translate(-9999px, 0);
-  transform: translate(-9999px, 0);
 }
 /* ----------------------------------------------------------------------------------
  * Token animation
