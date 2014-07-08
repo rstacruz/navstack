@@ -12,7 +12,7 @@
   if (typeof define === 'function' && define.amd) {
     define(factory); /* AMD */
   } else if (typeof exports === 'object') {
-    factory(); /* CommonJS */
+    module.exports = factory(); /* CommonJS */
   } else {
     root.Navstack = factory(); /* Globals */
   }
@@ -1270,7 +1270,7 @@
     };
   })();
 
-  Navstack.version = '0.3.1';
+  Navstack.version = '0.3.2';
 
   return Navstack;
 

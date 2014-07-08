@@ -1,3 +1,7 @@
+## v0.3.2 - July 8, 2014
+
+ * Fix Common.js loading errors.
+
 ## v0.3.1 - July 6, 2014
 
  * Fix issue where going from one group to another and back may leave a blank 

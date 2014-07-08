@@ -23,6 +23,7 @@ $noshadow ?= 0 0 20px rgba(black, 0.0), 0 0 10px rgba(black, 0.0)
   bottom: 0
   right: 0
   overflow: hidden
+  transform: translate3d(0, 0, 0)
 
 .-navstack-pane,
 .full-screen
@@ -34,7 +35,7 @@ $noshadow ?= 0 0 20px rgba(black, 0.0), 0 0 10px rgba(black, 0.0)
   background: transparent
 
 .-navstack-hide
-  transform: translate(-9999px, 0)
+  transform: translate3d(-9999px, 0, 0)
 
 /* ----------------------------------------------------------------------------------
  * Animations: slide

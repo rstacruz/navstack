@@ -13,6 +13,9 @@
   bottom: 0;
   right: 0;
   overflow: hidden;
+  -webkit-transform: translate3d(0, 0, 0);
+  -ms-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
 }
 .-navstack-pane,
 .full-screen {
@@ -24,9 +27,9 @@
   background: transparent;
 }
 .-navstack-hide {
-  -webkit-transform: translate(-9999px, 0);
-  -ms-transform: translate(-9999px, 0);
-  transform: translate(-9999px, 0);
+  -webkit-transform: translate3d(-9999px, 0, 0);
+  -ms-transform: translate3d(-9999px, 0, 0);
+  transform: translate3d(-9999px, 0, 0);
 }
 /* ----------------------------------------------------------------------------------
  * Animations: slide
