@@ -207,49 +207,49 @@
       var self = this;
 
       // Switching to the same thing? No need to do anything
-      if (this.active && this.active.name === name)
-        return this.active.view;
+      if (self.active && self.active.name === name)
+        return self.active.view;
 
-      if (!this.panes[name])
+      if (!self.panes[name])
         throw new Error("Navstack: unknown pane '"+name+"'");
 
       // Get the current pane so we can transition later
-      var previous = this.active;
+      var previous = self.active;
 
       // Spawn the pane if it hasn't been spawned before
-      if (!this.panes[name].el) {
-        this.spawnPane(name);
+      if (!self.panes[name].el) {
+        self.spawnPane(name);
       }
 
-      var current = this.panes[name];
+      var current = self.panes[name];
 
       // Insert into stack
-      if (this.stack.indexOf(name) === -1) {
-        this.insertIntoStack(current);
+      if (self.stack.indexOf(name) === -1) {
+        self.insertIntoStack(current);
       }
 
       // tell it
       try { current.adaptor.onwake(); } catch(e) {}
 
       // Register a new 'active' pane
-      this.active = current;
+      self.active = current;
 
       // Perform the transition
-      var direction = this.getDirection(previous, current);
+      var direction = self.getDirection(previous, current);
 
       // determine transition
       var transName;
       if (direction === 'forward') transName = current.transition;
       else if (direction === 'backward') transName = previous.transition;
       if (!transName) {
-        if (current && previous && current.group !== previous.group) transName = this.groupTransition;
-        if (!transName) transName = this.transition;
+        if (current && previous && current.group !== previous.group) transName = self.groupTransition;
+        if (!transName) transName = self.transition;
       }
 
       // use transition
-      var transition = this.getTransition(transName);
+      var transition = self.getTransition(transName);
       self.transitioning = true;
-      this.runTransition(transition, direction, current, previous, function () {
+      self.runTransition(transition, direction, current, previous, function () {
         try { if (previous) previous.adaptor.onsleep(); } catch(e) {}
         self.transitioning = false;
         self.ready();
@@ -262,12 +262,12 @@
       };
 
       // Events
-      this.emitter.trigger('push:'+current.name, eventData);
-      this.emitter.trigger('push', eventData);
+      self.emitter.trigger('push:'+current.name, eventData);
+      self.emitter.trigger('push', eventData);
 
       // clear out other panes
       this.ready(function () {
-        self.purgeObsolete();
+        self.deferredPurgeObsolete();
       });
 
       return (current && current.view);
@@ -452,6 +452,18 @@
       for (var i = this.stack.length; i>idx; i--) {
         this.purgePane(this.stack[i]);
       }
+    },
+
+    deferredPurgeObsolete: function ()  {
+      var self = this;
+      if (typeof self._purgeTimer !== 'undefined') {
+        clearTimeout(self._purgeTimer);
+        delete self._purgeTimer;
+      }
+      self._purgeTimer = setTimeout(function () {
+        delete self._purgeTimer;
+        self.purgeObsolete();
+      }, 2500);
     },
 
     /*
