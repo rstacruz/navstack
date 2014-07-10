@@ -1,6 +1,6 @@
 require './setup'
 
-testSuite 'Purging:', ->
+describe 'Purging:', ->
   beforeEach ->
     @stack = new Navstack()
 
@@ -47,13 +47,15 @@ testSuite 'Purging:', ->
       expect(adaptor.remove.calledOnce).be.true
 
   describe 'purgeObsolete', ->
-    beforeEach ->
+    beforeEach (next) ->
       @stack.push 'a', -> $("<div>")
       @stack.push 'b', -> $("<div>")
       @stack.push 'c1', -> $("<div>")
       @stack.push 'c2', -> $("<div>")
       @stack.go('b')
+      @stack.purgeObsolete()
       @stack.push 'd', -> $("<div>")
+      setImmediate next
 
     it 'purge forward panes from stack', ->
       expect(@stack.stack).eql ['a', 'b', 'd']
