@@ -1,3 +1,8 @@
+## v0.3.3 - July 10, 2014
+
+ * Prevent problem where panes are cleared out prematurely.
+ * Optimize add/removing class not working properly in some browsers.
+
 ## v0.3.2 - July 8, 2014
 
  * Fix Common.js loading errors.

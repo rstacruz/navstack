@@ -851,7 +851,7 @@
             modClass(previousEl, { rem: exit, add: hide });
             modClass(currentEl,  { rem: enter });
             off(document, 'touchmove', noscroll);
-            setImmediate(next);
+            next();
           });
 
           modClass(parentEl,   { add: container });
