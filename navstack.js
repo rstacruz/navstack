@@ -1289,7 +1289,7 @@
     };
   })();
 
-  Navstack.version = '0.3.2';
+  Navstack.version = '0.3.3';
 
   return Navstack;
 
