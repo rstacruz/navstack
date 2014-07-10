@@ -18,7 +18,7 @@ Opening examples:
 Releasing new versions:
 
     make                      # build css and docs
-    bump *.json navstack.js
+    bump *.json *.js
     vim History.md
     npm publish
     git release v1.0.0
