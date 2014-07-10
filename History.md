@@ -1,3 +1,7 @@
+## v0.3.4 - July 10, 2014
+
+ * Support `transition: false`.
+
 ## v0.3.3 - July 10, 2014
 
  * Prevent problem where panes are cleared out prematurely.
