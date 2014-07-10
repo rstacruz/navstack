@@ -825,7 +825,6 @@
         },
 
         after: function (next) {
-          off(document, 'touchmove', noscroll);
           return next();
         },
 
@@ -836,20 +835,18 @@
           on(document, 'touchmove', noscroll);
 
           var after = once(function() {
-            remClass(parentEl, container);
-            addClass(previousEl, hide);
-            remClass(previousEl, exit);
-            remClass(currentEl, enter);
-            next();
+            modClass(parentEl,   { rem: container });
+            modClass(previousEl, { rem: exit, add: hide });
+            modClass(currentEl,  { rem: enter });
+            off(document, 'touchmove', noscroll);
+            setImmediate(next);
           });
 
-          addClass(parentEl, container);
-          remClass(previousEl, hide);
-          addClass(previousEl, exit);
-          remClass(currentEl, hide);
-          addClass(currentEl, enter);
+          modClass(parentEl,   { add: container });
+          modClass(previousEl, { rem: hide, add: exit });
+          modClass(currentEl,  { rem: hide, add: enter });
           one(previousEl, animationend, after);
-          one(currentEl, animationend, after);
+          one(currentEl,  animationend, after);
         }
       };
 
@@ -1063,18 +1060,28 @@
   }
 
   function addClass (el, className) {
-    if (el.classList)
-      el.classList.add(className);
-    else
-      el.className += ' ' + className;
-    return el;
+    return modClass(el, { add: className });
   }
 
   function remClass (el, className) {
-    if (el.classList)
-      el.classList.remove(className);
-    else
-      el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+    return modClass(el, { rem: className });
+  }
+
+  function modClass (el, opts) {
+    var list = el.className.split(' '), idx;
+    if (opts.rem) {
+      var rm = opts.rem.split(' ');
+      for (var i = rm.length-1; i >= 0; i--) {
+        while ((idx = list.indexOf(rm[i])) > -1) {
+          list.splice(idx, 1);
+        }
+      }
+    }
+    if (opts.add) {
+      list.push(opts.add);
+    }
+
+    el.className = list.join(' ');
     return el;
   }
 
