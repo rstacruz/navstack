@@ -239,12 +239,19 @@
 
       // determine transition
       var transName;
-      if (direction === 'forward') transName = current.transition;
-      else if (direction === 'backward') transName = previous.transition;
-      if (!transName) {
-        if (current && previous && current.group !== previous.group) transName = self.groupTransition;
-        if (!transName) transName = self.transition;
-      }
+      var newGroup = (current && previous && current.group !== previous.group);
+
+      if (direction === 'forward')
+        transName = current.transition;
+
+      if (direction === 'backward')
+        transName = previous.transition;
+
+      if (typeof transName === 'undefined' && newGroup)
+        transName = self.groupTransition;
+
+      if (typeof transName === 'undefined')
+        transName = self.transition;
 
       // use transition
       var transition = self.getTransition(transName);
@@ -278,22 +285,7 @@
      * Pane transition. This can either be a *String* or a *Function*.
      */
 
-    transition: function (direction, current, previous) {
-      return {
-        before: function(next) {
-          if (current)  hide(current.el);
-          return next();
-        },
-        run: function(next) {
-          if (current)  show(current.el);
-          if (previous) hide(previous.el);
-          return next();
-        },
-        after: function (next) {
-          return next();
-        }
-      };
-    },
+    transition: defaultTransition,
 
     /**
      * remove:
@@ -537,6 +529,9 @@
      */
 
     getTransition: function (transition) {
+      if (!transition)
+        return Navstack.transitions['default'];
+
       if (typeof transition === 'string') {
         transition = (this.transitions && this.transitions[transition]) ||
           Navstack.transitions[transition];
@@ -922,6 +917,7 @@
    */
 
   Navstack.transitions = {
+    'default': defaultTransition,
     slide: Navstack.buildTransition('slide', { nav: true }),
     modal: Navstack.buildTransition('modal'),
     flip: Navstack.buildTransition('flip')
@@ -1233,6 +1229,23 @@
       }
     }
   };
+
+  function defaultTransition (direction, current, previous) {
+    return {
+      before: function(next) {
+        if (current)  hide(current.el);
+        return next();
+      },
+      run: function(next) {
+        if (current)  show(current.el);
+        if (previous) hide(previous.el);
+        return next();
+      },
+      after: function (next) {
+        return next();
+      }
+    };
+  }
 
   Queue = {
     commands: [],
