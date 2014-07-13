@@ -47,6 +47,8 @@
   Navstack = function (options) {
     /*** Attributes: */
 
+    extend(this, options);
+
     /**
      * transitions:
      * Registry of pane transitions.
@@ -62,12 +64,6 @@
      */
 
     this.adaptors = {};
-
-    // Later, we'd like to have defaults like these:
-    // this.transition = 'slide';
-    // this.paneTransition = 'modal';
-
-    extend(this, options);
 
     /**
      * panes:
@@ -126,7 +122,8 @@
 
     /**
      * transition:
-     * Pane transition. This can either be a *String* or a *Function*.
+     * The transition name to be used. Defaults to `false`, which means no
+     * animations will be used. This can either be a *String* or a *Function*.
      *
      *     stage = new Navstack({
      *       transition: 'slide',
@@ -141,20 +138,43 @@
      *     stage.push('auth!login', function() { ... });
      */
 
+    if (typeof this.transition === 'undefined')
+      this.transition = false;
+
     /**
      * groupTransition:
-     * Pane transition to use in between groups. See [transition](#transition)
+     * Pane transition to use in between groups. Defaults to `false` which
+     * means no animations will be used. See [transition](#transition)
      * for more details.
      */
 
-    /** el:
-     * The DOM element.
-     *
-     *     $(nav.el).show()
-     */
-    this.el = (options && options.el) || document.createElement('DIV');
+    if (typeof this.groupTransition === 'undefined')
+      this.groupTransition = false;
 
-    // Un-jQuery
+    /** el:
+     * The DOM element of the stack.  You may specify this while creating a
+     * Navstack instance. When no `el` is given, it will default to creating a
+     * new `<div>` element.
+     *
+     *     stage = new Navstack({
+     *       el: document.getElementById('#box')
+     *     });
+     *
+     * You may also pass a jQuery object here for convenience.
+     *
+     *     stage = new Navstack({
+     *       el: $('#box')
+     *     });
+     *
+     * You can access this later in the `Navstack` instance:
+     *
+     *     $(stage.el).show()
+     */
+
+    if (typeof this.el === 'undefined')
+      this.el = document.createElement('DIV');
+
+    // Un-jQuery the element.
     if (this.el[0]) this.el = this.el[0];
 
     addClass(this.el, '-navstack');
@@ -168,11 +188,29 @@
 
     /**
      * push : .push(name, [options], [fn])
-     * Registers a pane.
+     * Registers a pane with the given `name`.
      *
-     *     nav.push('home', function() {
+     * The function will specify the initializer that will return the view to
+     * be pushed. It can return a DOM node, a [jQuery] object, a [Backbone] view,
+     * [Ractive] instance, or a [React] component.
+     *
+     *     stage.push('home', function() {
      *       return $("<div>...</div>");
      *     });
+     *
+     * You can specify a pane's group by prefixing the name with the group name
+     * and a bang.
+     *
+     *     stage.push('modal!form', function() {
+     *       return $("<div>...</div>");
+     *     });
+     *
+     * You can specify options.
+     *
+     *     stage.push('home', { ... }, function() {
+     *       return $("<div>...</div>");
+     *     });
+     *
      */
 
     push: function (name, options, fn) {
@@ -1331,6 +1369,10 @@
    *     Navstack.jQuery = jQuery;
    *
    * [jQuery.queue]: http://api.jquery.com/queue/
+   * [Ractive]: http://ractivejs.org
+   * [React]: http://facebook.github.io/react
+   * [Backbone]: http://backbonejs.org
+   * [jQuery]: http://jquery.com
    * [on]: #on
    * [Pane]: #pane
    * [push]: #push

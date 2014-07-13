@@ -102,7 +102,8 @@ stage.stack == ['home'];
 <a name="transition"></a>
 ### transition
 
-Pane transition. This can either be a *String* or a *Function*.
+The transition name to be used. Defaults to `false`, which means no
+animations will be used. This can either be a *String* or a *Function*.
 
 ```js
 stage = new Navstack({
@@ -121,16 +122,35 @@ stage.push('auth!login', function() { ... });
 <a name="groupTransition"></a>
 ### groupTransition
 
-Pane transition to use in between groups. See [transition](#transition)
+Pane transition to use in between groups. Defaults to `false` which
+means no animations will be used. See [transition](#transition)
 for more details.
 
 <a name="el"></a>
 ### el
 
-The DOM element.
+The DOM element of the stack.  You may specify this while creating a
+Navstack instance. When no `el` is given, it will default to creating a
+new `<div>` element.
 
 ```js
-$(nav.el).show()
+stage = new Navstack({
+  el: document.getElementById('#box')
+});
+```
+
+You may also pass a jQuery object here for convenience.
+
+```js
+stage = new Navstack({
+  el: $('#box')
+});
+```
+
+You can access this later in the `Navstack` instance:
+
+```js
+$(stage.el).show()
 ```
 
 <a name="Methods"></a>
@@ -142,10 +162,31 @@ $(nav.el).show()
 ### push
 > `.push(name, [options], [fn])`
 
-Registers a pane.
+Registers a pane with the given `name`.
+
+The function will specify the initializer that will return the view to
+be pushed. It can return a DOM node, a [jQuery] object, a [Backbone] view,
+[Ractive] instance, or a [React] component.
 
 ```js
-nav.push('home', function() {
+stage.push('home', function() {
+  return $("<div>...</div>");
+});
+```
+
+You can specify a pane's group by prefixing the name with the group name
+and a bang.
+
+```js
+stage.push('modal!form', function() {
+  return $("<div>...</div>");
+});
+```
+
+You can specify options.
+
+```js
+stage.push('home', { ... }, function() {
   return $("<div>...</div>");
 });
 ```
@@ -376,6 +417,10 @@ Navstack.jQuery = jQuery;
 ```
 
 [jQuery.queue]: http://api.jquery.com/queue/
+[Ractive]: http://ractivejs.org
+[React]: http://facebook.github.io/react
+[Backbone]: http://backbonejs.org
+[jQuery]: http://jquery.com
 [on]: #on
 [Pane]: #pane
 [push]: #push
