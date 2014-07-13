@@ -1281,6 +1281,19 @@
     }
   };
 
+
+  /**
+   * Navstack.jQuery:
+   * Pointer to the instance of jQuery to optionally use. Set this if you would
+   * like Navstack to utilize [jQuery.queue].
+   *
+   *     Navstack.jQuery = jQuery;
+   *
+   * [jQuery.queue]: http://api.jquery.com/queue/
+   */
+
+  Navstack.jQuery = undefined;
+
   /*
    * setImmediate helper
    * Taken from browserify's process.nextTick
