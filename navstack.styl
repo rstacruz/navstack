@@ -4,6 +4,7 @@ $navstack-ease ?= cubic-bezier(.3, .5, 0, 1)
 $navstack-tint ?= #345
 $navstack-tint-strength ?= 0.05
 $navstack-nav-displacement ?= 40%
+$navstack-exit ?= 0.9
 
 $noshadow ?= 0 0 20px rgba(black, 0.0), 0 0 10px rgba(black, 0.0)
 
@@ -52,7 +53,7 @@ $noshadow ?= 0 0 20px rgba(black, 0.0), 0 0 10px rgba(black, 0.0)
 
 .slide-enter-backward
   z-index: 1
-  animation: slide-enter-backward ($navstack-speed * 0.7) $navstack-ease
+  animation: slide-enter-backward ($navstack-speed * $navstack-exit) $navstack-ease
 
 .slide-exit-forward
   z-index: 1
@@ -60,7 +61,7 @@ $noshadow ?= 0 0 20px rgba(black, 0.0), 0 0 10px rgba(black, 0.0)
 
 .slide-exit-backward
   z-index: 2
-  animation: slide-exit-backward ($navstack-speed * 0.7) $navstack-ease
+  animation: slide-exit-backward ($navstack-speed * $navstack-exit) $navstack-ease
   box-shadow: $navstack-shadow
 
 @keyframes slide-enter-forward
@@ -99,7 +100,7 @@ $noshadow ?= 0 0 20px rgba(black, 0.0), 0 0 10px rgba(black, 0.0)
 
 .nav-slide-enter-backward
   z-index: 1
-  animation: nav-slide-enter-backward ($navstack-speed * 0.7) $navstack-ease
+  animation: nav-slide-enter-backward ($navstack-speed * $navstack-exit) $navstack-ease
 
 .nav-slide-exit-forward
   z-index: 1
@@ -108,7 +109,7 @@ $noshadow ?= 0 0 20px rgba(black, 0.0), 0 0 10px rgba(black, 0.0)
 
 .nav-slide-exit-backward
   z-index: 2
-  animation: nav-slide-exit-backward ($navstack-speed * 0.7) $navstack-ease
+  animation: nav-slide-exit-backward ($navstack-speed * $navstack-exit) $navstack-ease
   opacity: 0
 
 @keyframes nav-slide-enter-forward
@@ -150,7 +151,7 @@ $noshadow ?= 0 0 20px rgba(black, 0.0), 0 0 10px rgba(black, 0.0)
 
 .modal-enter-backward
   z-index: 1
-  animation: nil ($navstack-speed * 0.7) $navstack-ease
+  animation: nil ($navstack-speed * $navstack-exit) $navstack-ease
 
 .modal-exit-forward
   z-index: 1
@@ -158,7 +159,7 @@ $noshadow ?= 0 0 20px rgba(black, 0.0), 0 0 10px rgba(black, 0.0)
 
 .modal-exit-backward
   z-index: 2
-  animation: modal-exit-backward ($navstack-speed * 0.7) $navstack-ease
+  animation: modal-exit-backward ($navstack-speed * $navstack-exit) $navstack-ease
   box-shadow: $navstack-shadow
 
 @keyframes modal-enter-forward

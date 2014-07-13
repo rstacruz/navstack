@@ -49,8 +49,8 @@
 }
 .slide-enter-backward {
   z-index: 1;
-  -webkit-animation: slide-enter-backward 350ms cubic-bezier(0.3, 0.5, 0, 1);
-  animation: slide-enter-backward 350ms cubic-bezier(0.3, 0.5, 0, 1);
+  -webkit-animation: slide-enter-backward 450ms cubic-bezier(0.3, 0.5, 0, 1);
+  animation: slide-enter-backward 450ms cubic-bezier(0.3, 0.5, 0, 1);
 }
 .slide-exit-forward {
   z-index: 1;
@@ -59,8 +59,8 @@
 }
 .slide-exit-backward {
   z-index: 2;
-  -webkit-animation: slide-exit-backward 350ms cubic-bezier(0.3, 0.5, 0, 1);
-  animation: slide-exit-backward 350ms cubic-bezier(0.3, 0.5, 0, 1);
+  -webkit-animation: slide-exit-backward 450ms cubic-bezier(0.3, 0.5, 0, 1);
+  animation: slide-exit-backward 450ms cubic-bezier(0.3, 0.5, 0, 1);
   -webkit-box-shadow: 0 0 20px rgba(0,0,0,0.3), 0 0 10px rgba(0,0,0,0.1);
   box-shadow: 0 0 20px rgba(0,0,0,0.3), 0 0 10px rgba(0,0,0,0.1);
 }
@@ -73,8 +73,8 @@
 }
 .nav-slide-enter-backward {
   z-index: 1;
-  -webkit-animation: nav-slide-enter-backward 350ms cubic-bezier(0.3, 0.5, 0, 1);
-  animation: nav-slide-enter-backward 350ms cubic-bezier(0.3, 0.5, 0, 1);
+  -webkit-animation: nav-slide-enter-backward 450ms cubic-bezier(0.3, 0.5, 0, 1);
+  animation: nav-slide-enter-backward 450ms cubic-bezier(0.3, 0.5, 0, 1);
 }
 .nav-slide-exit-forward {
   z-index: 1;
@@ -84,8 +84,8 @@
 }
 .nav-slide-exit-backward {
   z-index: 2;
-  -webkit-animation: nav-slide-exit-backward 350ms cubic-bezier(0.3, 0.5, 0, 1);
-  animation: nav-slide-exit-backward 350ms cubic-bezier(0.3, 0.5, 0, 1);
+  -webkit-animation: nav-slide-exit-backward 450ms cubic-bezier(0.3, 0.5, 0, 1);
+  animation: nav-slide-exit-backward 450ms cubic-bezier(0.3, 0.5, 0, 1);
   opacity: 0;
 }
 /* ----------------------------------------------------------------------------------
@@ -100,8 +100,8 @@
 }
 .modal-enter-backward {
   z-index: 1;
-  -webkit-animation: nil 350ms cubic-bezier(0.3, 0.5, 0, 1);
-  animation: nil 350ms cubic-bezier(0.3, 0.5, 0, 1);
+  -webkit-animation: nil 450ms cubic-bezier(0.3, 0.5, 0, 1);
+  animation: nil 450ms cubic-bezier(0.3, 0.5, 0, 1);
 }
 .modal-exit-forward {
   z-index: 1;
@@ -110,8 +110,8 @@
 }
 .modal-exit-backward {
   z-index: 2;
-  -webkit-animation: modal-exit-backward 350ms cubic-bezier(0.3, 0.5, 0, 1);
-  animation: modal-exit-backward 350ms cubic-bezier(0.3, 0.5, 0, 1);
+  -webkit-animation: modal-exit-backward 450ms cubic-bezier(0.3, 0.5, 0, 1);
+  animation: modal-exit-backward 450ms cubic-bezier(0.3, 0.5, 0, 1);
   -webkit-box-shadow: 0 0 20px rgba(0,0,0,0.3), 0 0 10px rgba(0,0,0,0.1);
   box-shadow: 0 0 20px rgba(0,0,0,0.3), 0 0 10px rgba(0,0,0,0.1);
 }
