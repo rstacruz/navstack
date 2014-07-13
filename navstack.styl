@@ -1,9 +1,9 @@
-navstack-speed ?= 500ms
-navstack-shadow ?= 0 0 20px rgba(black, 0.3), 0 0 10px rgba(black, 0.1)
-navstack-ease ?= cubic-bezier(.3, .5, 0, 1)
-navstack-tint ?= #345
-navstack-tint-strength ?= 0.05
-navstack-nav-displacement ?= 40%
+$navstack-speed ?= 500ms
+$navstack-shadow ?= 0 0 20px rgba(black, 0.3), 0 0 10px rgba(black, 0.1)
+$navstack-ease ?= cubic-bezier(.3, .5, 0, 1)
+$navstack-tint ?= #345
+$navstack-tint-strength ?= 0.05
+$navstack-nav-displacement ?= 40%
 
 $noshadow ?= 0 0 20px rgba(black, 0.0), 0 0 10px rgba(black, 0.0)
 
@@ -42,26 +42,26 @@ $noshadow ?= 0 0 20px rgba(black, 0.0), 0 0 10px rgba(black, 0.0)
  */
 
 .slide-container
-  background: navstack-tint
+  background: $navstack-tint
   transform: translate3d(0, 0, 0)
 
 .slide-enter-forward
   z-index: 2
-  animation: slide-enter-forward navstack-speed navstack-ease
-  box-shadow: navstack-shadow
+  animation: slide-enter-forward $navstack-speed $navstack-ease
+  box-shadow: $navstack-shadow
 
 .slide-enter-backward
   z-index: 1
-  animation: slide-enter-backward (navstack-speed * 0.7) navstack-ease
+  animation: slide-enter-backward ($navstack-speed * 0.7) $navstack-ease
 
 .slide-exit-forward
   z-index: 1
-  animation: slide-exit-forward navstack-speed navstack-ease
+  animation: slide-exit-forward $navstack-speed $navstack-ease
 
 .slide-exit-backward
   z-index: 2
-  animation: slide-exit-backward (navstack-speed * 0.7) navstack-ease
-  box-shadow: navstack-shadow
+  animation: slide-exit-backward ($navstack-speed * 0.7) $navstack-ease
+  box-shadow: $navstack-shadow
 
 @keyframes slide-enter-forward
   0%
@@ -73,7 +73,7 @@ $noshadow ?= 0 0 20px rgba(black, 0.0), 0 0 10px rgba(black, 0.0)
 @keyframes slide-enter-backward
   0%
     transform: translate3d(-40%, 0, 0)
-    opacity: (1.0 - navstack-tint-strength)
+    opacity: (1.0 - $navstack-tint-strength)
   100%
     transform: translate3d(0, 0, 0)
 
@@ -82,7 +82,7 @@ $noshadow ?= 0 0 20px rgba(black, 0.0), 0 0 10px rgba(black, 0.0)
     transform: translate3d(0%, 0, 0)
   100%
     transform: translate3d(-40%, 0, 0)
-    opacity: (1.0 - navstack-tint-strength)
+    opacity: (1.0 - $navstack-tint-strength)
 
 @keyframes slide-exit-backward
   0%
@@ -95,32 +95,32 @@ $noshadow ?= 0 0 20px rgba(black, 0.0), 0 0 10px rgba(black, 0.0)
  */
 .nav-slide-enter-forward
   z-index: 2
-  animation: nav-slide-enter-forward navstack-speed navstack-ease
+  animation: nav-slide-enter-forward $navstack-speed $navstack-ease
 
 .nav-slide-enter-backward
   z-index: 1
-  animation: nav-slide-enter-backward (navstack-speed * 0.7) navstack-ease
+  animation: nav-slide-enter-backward ($navstack-speed * 0.7) $navstack-ease
 
 .nav-slide-exit-forward
   z-index: 1
-  animation: nav-slide-exit-forward navstack-speed navstack-ease
+  animation: nav-slide-exit-forward $navstack-speed $navstack-ease
   opacity: 0
 
 .nav-slide-exit-backward
   z-index: 2
-  animation: nav-slide-exit-backward (navstack-speed * 0.7) navstack-ease
+  animation: nav-slide-exit-backward ($navstack-speed * 0.7) $navstack-ease
   opacity: 0
 
 @keyframes nav-slide-enter-forward
   0%
-    transform: translate3d(navstack-nav-displacement, 0, 0)
+    transform: translate3d($navstack-nav-displacement, 0, 0)
     opacity: 0
   100%
     transform: translate3d(0, 0, 0)
 
 @keyframes nav-slide-enter-backward
   0%
-    transform: translate3d(-1 * navstack-nav-displacement, 0, 0)
+    transform: translate3d(-1 * $navstack-nav-displacement, 0, 0)
     opacity: 0
   100%
     transform: translate3d(0, 0, 0)
@@ -130,14 +130,14 @@ $noshadow ?= 0 0 20px rgba(black, 0.0), 0 0 10px rgba(black, 0.0)
     transform: translate3d(0%, 0, 0)
     opacity: 1
   100%
-    transform: translate3d(-1 * navstack-nav-displacement, 0, 0)
+    transform: translate3d(-1 * $navstack-nav-displacement, 0, 0)
 
 @keyframes nav-slide-exit-backward
   0%
     transform: translate3d(0%, 0, 0)
     opacity: 1
   100%
-    transform: translate3d(navstack-nav-displacement, 0, 0)
+    transform: translate3d($navstack-nav-displacement, 0, 0)
 
 /* ----------------------------------------------------------------------------------
  * Animations: vertical slide
@@ -145,21 +145,21 @@ $noshadow ?= 0 0 20px rgba(black, 0.0), 0 0 10px rgba(black, 0.0)
 
 .modal-enter-forward
   z-index: 2
-  animation: modal-enter-forward navstack-speed navstack-ease
-  box-shadow: navstack-shadow
+  animation: modal-enter-forward $navstack-speed $navstack-ease
+  box-shadow: $navstack-shadow
 
 .modal-enter-backward
   z-index: 1
-  animation: nil (navstack-speed * 0.7) navstack-ease
+  animation: nil ($navstack-speed * 0.7) $navstack-ease
 
 .modal-exit-forward
   z-index: 1
-  animation: nil navstack-speed navstack-ease
+  animation: nil $navstack-speed $navstack-ease
 
 .modal-exit-backward
   z-index: 2
-  animation: modal-exit-backward (navstack-speed * 0.7) navstack-ease
-  box-shadow: navstack-shadow
+  animation: modal-exit-backward ($navstack-speed * 0.7) $navstack-ease
+  box-shadow: $navstack-shadow
 
 @keyframes modal-enter-forward
   0%
