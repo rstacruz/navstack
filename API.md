@@ -1,5 +1,6 @@
 <a name="Navstack"></a>
-## Navstack `new Navstack(options)`
+## Navstack
+> `new Navstack(options)`
 
 A stack. Instanciate a new stack:
 
@@ -55,7 +56,8 @@ nav.panes['home'].view
 Alias for the active pane. This is a `Pane` instance.
 
 <a name="stack"></a>
-### stack `Array`
+### stack
+> `Array`
 
 Ordered array of pane names of what are the panes present in the stack.
 When doing [push()], you are adding an item to the stack.
@@ -103,7 +105,8 @@ A stack may emit events, which you can listen to via [on()]. Available events ar
 * `remove` <span class='dash'>&mdash;</span> called when removing the stack.
 
 <a name="on"></a>
-### on `.on(event, function)`
+### on
+> `.on(event, function)`
 
 Binds an event handler.
 
@@ -114,7 +117,8 @@ stage.on('remove', function() {
 ```
 
 <a name="off"></a>
-### off `.off(event, callback)`
+### off
+> `.off(event, callback)`
 
 Removes an event handler.
 
@@ -123,12 +127,14 @@ stage.off('remove', myfunction);
 ```
 
 <a name="one"></a>
-### one `.one(event, callback)`
+### one
+> `.one(event, callback)`
 
 Works like `.on`, except it unbinds itself right after.
 
 <a name="push"></a>
-### push `.push(name, [options], [fn])`
+### push
+> `.push(name, [options], [fn])`
 
 Registers a pane.
 
@@ -160,7 +166,8 @@ Alias for [remove()]. This alias exists so that stacks behave a bit more like
 Ractive components.
 
 <a name="ready"></a>
-### ready `ready(fn)`
+### ready
+> `ready(fn)`
 
 Runs a function `fn` when transitions have elapsed. If no transitions
 are happening, run the function immediately.
@@ -235,7 +242,8 @@ A wrapped version of the `view`
 These are static members you can access from the global `Navstack` object.
 
 <a name="Navstack_extend"></a>
-### Navstack.extend `extend(prototype)`
+### Navstack.extend
+> `extend(prototype)`
 
 Subclasses Navstack to create your new Navstack class. This allows you to
 create 'presets' of the options to be passed onto the constructor.
