@@ -937,6 +937,14 @@
     }
   };
 
+  /*
+   * Only used for testing
+   */
+
+  Navstack.flushQueue = function (fn) {
+    Queue.flush();
+  };
+
   /**
    * Navstack.adaptors:
    * Adaptors registry.
@@ -1262,6 +1270,10 @@
         commands.shift();
         if (commands.length) commands[0](next);
       }
+    },
+
+    flush: function () {
+      this.commands = [];
     }
   };
 

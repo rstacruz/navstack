@@ -57,4 +57,5 @@ afterEach(function () {
 // Reset when needed
 beforeEach(function () {
   $('body').html('');
+  Navstack.flushQueue();
 });
