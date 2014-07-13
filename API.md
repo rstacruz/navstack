@@ -16,10 +16,14 @@ You may pass these options (all of them are optional):
 * `transition` <span class='dash'>&mdash;</span> a string of the transition name to use.
 * `groupTransition` <span class='dash'>&mdash;</span> a string of the transition to use in between groups.
 
-You'll then use [push()].
+You'll then use [push].
+
+```js
+stage
+```
 
 <a name="Attributes"></a>
-### Attributes
+## Attributes
 
 
 
@@ -39,21 +43,39 @@ A local version of `Navstack.adaptors`.
 ### panes
 
 Index of panes that have been registered with this Navstack.
-Object with pane names as keys and `Pane` instances as values.
+Object with pane names as keys and [Pane] instances as values.
 
 ```js
 nav.push('home', function () { ... });
 
 nav.panes['home']
-nav.panes['home'].name
-nav.panes['home'].el
+nav.panes['home'].name   //=> 'home'
+nav.panes['home'].el     //=> DOMElement
 nav.panes['home'].view
 ```
 
 <a name="active"></a>
 ### active
 
-Alias for the active pane. This is a `Pane` instance.
+The active pane. This is a [Pane] instance.
+
+```js
+nav.push('home', function() { ... });
+
+// later:
+nav.active.name   //=> 'home'
+nav.active.el     //=> DOMElement
+nav.active.view
+```
+
+It is a pointer to the active pane in the [panes] object.
+
+```js
+nav.push('home', function() { ... });
+
+// later:
+nav.active === nav.panes['home']
+```
 
 <a name="stack"></a>
 ### stack
@@ -81,6 +103,11 @@ The DOM element.
 ```js
 $(nav.el).show()
 ```
+
+<a name="Methods"></a>
+## Methods
+
+
 
 <a name="init"></a>
 ### init
@@ -149,14 +176,34 @@ nav.push('home', function() {
 
 Pane transition. This can either be a *String* or a *Function*.
 
+```js
+stage = new Navstack({
+  transition: 'slide',
+  groupTransition: 'modal'
+});
+
+// the second push here will use the slide animation.
+stage.push('home', function() { ... });
+stage.push('mentions', function() { ... });
+
+// this will use the modal transition, as its in a different group.
+stage.push('auth!login', function() { ... });
+```
+
+<a name="groupTransition"></a>
+### groupTransition
+
+Pane transition to use in between groups.
+
 <a name="remove"></a>
 ### remove
 
-Removes and destroys the Navstack.
+Destroys the Navstack instance, removes the DOM element associated with
+it.
 
 ```js
-nav = new Navstack({ el: '#stack' });
-nav.remove();
+stage = new Navstack({ el: '#stack' });
+stage.remove();
 ```
 
 <a name="teardown"></a>
@@ -328,3 +375,6 @@ Navstack.jQuery = jQuery;
 ```
 
 [jQuery.queue]: http://api.jquery.com/queue/
+[on]: #on
+[Pane]: #pane
+[push]: #push

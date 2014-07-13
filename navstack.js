@@ -35,11 +35,13 @@
    * ~ transition: a string of the transition name to use.
    * ~ groupTransition: a string of the transition to use in between groups.
    *
-   * You'll then use [push()].
+   * You'll then use [push].
+   *
+   *     stage
    */
 
   Navstack = function (options) {
-    /** Attributes: */
+    /*** Attributes: */
 
     /**
      * transitions:
@@ -66,18 +68,36 @@
     /**
      * panes:
      * Index of panes that have been registered with this Navstack.
-     * Object with pane names as keys and `Pane` instances as values.
+     * Object with pane names as keys and [Pane] instances as values.
      *
      *     nav.push('home', function () { ... });
      *
      *     nav.panes['home']
-     *     nav.panes['home'].name
-     *     nav.panes['home'].el
+     *     nav.panes['home'].name   //=> 'home'
+     *     nav.panes['home'].el     //=> DOMElement
      *     nav.panes['home'].view
      */
     this.panes = {};
 
-    /** active: Alias for the active pane. This is a `Pane` instance. */
+    /**
+     * active:
+     * The active pane. This is a [Pane] instance.
+     *
+     *     nav.push('home', function() { ... });
+     *
+     *     // later:
+     *     nav.active.name   //=> 'home'
+     *     nav.active.el     //=> DOMElement
+     *     nav.active.view
+     *
+     * It is a pointer to the active pane in the [panes] object.
+     *
+     *     nav.push('home', function() { ... });
+     *
+     *     // later:
+     *     nav.active === nav.panes['home']
+     */
+
     this.active = null;
 
     /**
@@ -117,6 +137,8 @@
   };
 
   Navstack.prototype = {
+    /*** Methods: */
+
     /**
      * init:
      * Constructor. You may override this function when subclassing via
@@ -287,16 +309,36 @@
     /**
      * transition:
      * Pane transition. This can either be a *String* or a *Function*.
+     *
+     *     stage = new Navstack({
+     *       transition: 'slide',
+     *       groupTransition: 'modal'
+     *     });
+     *
+     *     // the second push here will use the slide animation.
+     *     stage.push('home', function() { ... });
+     *     stage.push('mentions', function() { ... });
+     *
+     *     // this will use the modal transition, as its in a different group.
+     *     stage.push('auth!login', function() { ... });
      */
 
     transition: defaultTransition,
 
     /**
+     * groupTransition:
+     * Pane transition to use in between groups.
+     */
+
+    paneTransition: undefined,
+
+    /**
      * remove:
-     * Removes and destroys the Navstack.
+     * Destroys the Navstack instance, removes the DOM element associated with
+     * it.
      *
-     *     nav = new Navstack({ el: '#stack' });
-     *     nav.remove();
+     *     stage = new Navstack({ el: '#stack' });
+     *     stage.remove();
      */
 
     remove: function () {
@@ -1290,6 +1332,9 @@
    *     Navstack.jQuery = jQuery;
    *
    * [jQuery.queue]: http://api.jquery.com/queue/
+   * [on]: #on
+   * [Pane]: #pane
+   * [push]: #push
    */
 
   Navstack.jQuery = undefined;
