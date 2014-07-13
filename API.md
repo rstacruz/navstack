@@ -7,6 +7,8 @@ A stack. Instanciate a new stack:
 ```js
 stage = new Navstack({
   el: '#stack'
+  transition: 'slide',
+  groupTransition: 'modal'
 });
 ```
 
@@ -16,10 +18,12 @@ You may pass these options (all of them are optional):
 * `transition` <span class='dash'>&mdash;</span> a string of the transition name to use.
 * `groupTransition` <span class='dash'>&mdash;</span> a string of the transition to use in between groups.
 
-You'll then use [push].
+You'll then use [push] to add panes into the stage.
 
 ```js
-stage
+stage.push('home', function () {
+  return $("<div>Hello</div>");
+});
 ```
 
 <a name="Attributes"></a>
@@ -95,6 +99,31 @@ stage.push('home');
 stage.stack == ['home'];
 ```
 
+<a name="transition"></a>
+### transition
+
+Pane transition. This can either be a *String* or a *Function*.
+
+```js
+stage = new Navstack({
+  transition: 'slide',
+  groupTransition: 'modal'
+});
+
+// the second push here will use the slide animation.
+stage.push('home', function() { ... });
+stage.push('mentions', function() { ... });
+
+// this will use the modal transition, as its in a different group.
+stage.push('auth!login', function() { ... });
+```
+
+<a name="groupTransition"></a>
+### groupTransition
+
+Pane transition to use in between groups. See [transition](#transition)
+for more details.
+
 <a name="el"></a>
 ### el
 
@@ -108,6 +137,18 @@ $(nav.el).show()
 ## Methods
 
 
+
+<a name="push"></a>
+### push
+> `.push(name, [options], [fn])`
+
+Registers a pane.
+
+```js
+nav.push('home', function() {
+  return $("<div>...</div>");
+});
+```
 
 <a name="init"></a>
 ### init
@@ -124,8 +165,38 @@ var MyStack = Navstack.extend({
 });
 ```
 
+<a name="remove"></a>
+### remove
+
+Destroys the Navstack instance, removes the DOM element associated with
+it.
+
+```js
+stage = new Navstack({ el: '#stack' });
+stage.remove();
+```
+
+This is also aliased as *.teardown()*, following Ractive's naming conventions.
+
+<a name="ready"></a>
+### ready
+> `ready(fn)`
+
+Runs a function `fn` when transitions have elapsed. If no transitions
+are happening, run the function immediately.
+
+```js
+nav = new Navstack();
+nav.push('home', function () { ... });
+nav.push('messages', function () { ... });
+
+nav.ready(function () {
+  // gets executed only after transitions are done
+});
+```
+
 <a name="Events"></a>
-### Events
+## Events
 
 A stack may emit events, which you can listen to via [on()]. Available events are:
 
@@ -158,76 +229,6 @@ stage.off('remove', myfunction);
 > `.one(event, callback)`
 
 Works like `.on`, except it unbinds itself right after.
-
-<a name="push"></a>
-### push
-> `.push(name, [options], [fn])`
-
-Registers a pane.
-
-```js
-nav.push('home', function() {
-  return $("<div>...</div>");
-});
-```
-
-<a name="transition"></a>
-### transition
-
-Pane transition. This can either be a *String* or a *Function*.
-
-```js
-stage = new Navstack({
-  transition: 'slide',
-  groupTransition: 'modal'
-});
-
-// the second push here will use the slide animation.
-stage.push('home', function() { ... });
-stage.push('mentions', function() { ... });
-
-// this will use the modal transition, as its in a different group.
-stage.push('auth!login', function() { ... });
-```
-
-<a name="groupTransition"></a>
-### groupTransition
-
-Pane transition to use in between groups.
-
-<a name="remove"></a>
-### remove
-
-Destroys the Navstack instance, removes the DOM element associated with
-it.
-
-```js
-stage = new Navstack({ el: '#stack' });
-stage.remove();
-```
-
-<a name="teardown"></a>
-### teardown
-
-Alias for [remove()]. This alias exists so that stacks behave a bit more like
-Ractive components.
-
-<a name="ready"></a>
-### ready
-> `ready(fn)`
-
-Runs a function `fn` when transitions have elapsed. If no transitions
-are happening, run the function immediately.
-
-```js
-nav = new Navstack();
-nav.push('home', function () { ... });
-nav.push('messages', function () { ... });
-
-nav.ready(function () {
-  // gets executed only after transitions are done
-});
-```
 
 <a name="Navstack_Pane"></a>
 ## Navstack.Pane

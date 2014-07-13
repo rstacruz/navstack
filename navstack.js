@@ -27,6 +27,8 @@
    *
    *     stage = new Navstack({
    *       el: '#stack'
+   *       transition: 'slide',
+   *       groupTransition: 'modal'
    *     });
    *
    * You may pass these options (all of them are optional):
@@ -35,9 +37,11 @@
    * ~ transition: a string of the transition name to use.
    * ~ groupTransition: a string of the transition to use in between groups.
    *
-   * You'll then use [push].
+   * You'll then use [push] to add panes into the stage.
    *
-   *     stage
+   *     stage.push('home', function () {
+   *       return $("<div>Hello</div>");
+   *     });
    */
 
   Navstack = function (options) {
@@ -120,6 +124,29 @@
      * (internal) event emitter. */
     this.emitter = new Emitter();
 
+    /**
+     * transition:
+     * Pane transition. This can either be a *String* or a *Function*.
+     *
+     *     stage = new Navstack({
+     *       transition: 'slide',
+     *       groupTransition: 'modal'
+     *     });
+     *
+     *     // the second push here will use the slide animation.
+     *     stage.push('home', function() { ... });
+     *     stage.push('mentions', function() { ... });
+     *
+     *     // this will use the modal transition, as its in a different group.
+     *     stage.push('auth!login', function() { ... });
+     */
+
+    /**
+     * groupTransition:
+     * Pane transition to use in between groups. See [transition](#transition)
+     * for more details.
+     */
+
     /** el:
      * The DOM element.
      *
@@ -138,64 +165,6 @@
 
   Navstack.prototype = {
     /*** Methods: */
-
-    /**
-     * init:
-     * Constructor. You may override this function when subclassing via
-     * [Navstack.extend] to run some code when subclassed stack is
-     * instanciated.
-     *
-     *   var MyStack = Navstack.extend({
-     *     init: function() {
-     *       // initialize here
-     *     }
-     *   });
-     */
-
-    init: function () {},
-
-    /**
-     * Events:
-     * A stack may emit events, which you can listen to via [on()]. Available events are:
-     *
-     * ~ remove: called when removing the stack.
-     */
-
-    /**
-     * on : .on(event, function)
-     * Binds an event handler.
-     *
-     *     stage.on('remove', function() {
-     *       // do things
-     *     });
-     */
-
-    on: function (event, handler) {
-      this.emitter.on(event, proxy(handler, this));
-      return this;
-    },
-
-    /**
-     * off : .off(event, callback)
-     * Removes an event handler.
-     *
-     *     stage.off('remove', myfunction);
-     */
-
-    off: function (event, handler) {
-      this.emitter.off(event, proxy(handler, this));
-      return this;
-    },
-
-    /**
-     * one : .one(event, callback)
-     * Works like `.on`, except it unbinds itself right after.
-     */
-
-    one: function (event, handler) {
-      this.emitter.one(event, proxy(handler, this));
-      return this;
-    },
 
     /**
      * push : .push(name, [options], [fn])
@@ -219,6 +188,21 @@
 
       return this.go(name);
     },
+
+    /**
+     * init:
+     * Constructor. You may override this function when subclassing via
+     * [Navstack.extend] to run some code when subclassed stack is
+     * instanciated.
+     *
+     *   var MyStack = Navstack.extend({
+     *     init: function() {
+     *       // initialize here
+     *     }
+     *   });
+     */
+
+    init: function () {},
 
     /**
      * go : .go(name)
@@ -306,31 +290,7 @@
       return (current && current.view);
     },
 
-    /**
-     * transition:
-     * Pane transition. This can either be a *String* or a *Function*.
-     *
-     *     stage = new Navstack({
-     *       transition: 'slide',
-     *       groupTransition: 'modal'
-     *     });
-     *
-     *     // the second push here will use the slide animation.
-     *     stage.push('home', function() { ... });
-     *     stage.push('mentions', function() { ... });
-     *
-     *     // this will use the modal transition, as its in a different group.
-     *     stage.push('auth!login', function() { ... });
-     */
-
     transition: defaultTransition,
-
-    /**
-     * groupTransition:
-     * Pane transition to use in between groups.
-     */
-
-    paneTransition: undefined,
 
     /**
      * remove:
@@ -339,6 +299,8 @@
      *
      *     stage = new Navstack({ el: '#stack' });
      *     stage.remove();
+     *
+     * This is also aliased as *.teardown()*, following Ractive's naming conventions.
      */
 
     remove: function () {
@@ -347,12 +309,6 @@
       if (this.el.parentNode)
         this.el.parentNode.removeChild(this.el);
     },
-
-    /**
-     * teardown:
-     * Alias for [remove()]. This alias exists so that stacks behave a bit more like
-     * Ractive components.
-     */
 
     teardown: function () {
       return this.remove.apply(this, arguments);
@@ -476,6 +432,49 @@
     cleanup: function () {
       var self = this;
       self.ready(function () { self.purgeAll(); });
+    },
+
+    /***
+     * Events:
+     * A stack may emit events, which you can listen to via [on()]. Available events are:
+     *
+     * ~ remove: called when removing the stack.
+     */
+
+    /**
+     * on : .on(event, function)
+     * Binds an event handler.
+     *
+     *     stage.on('remove', function() {
+     *       // do things
+     *     });
+     */
+
+    on: function (event, handler) {
+      this.emitter.on(event, proxy(handler, this));
+      return this;
+    },
+
+    /**
+     * off : .off(event, callback)
+     * Removes an event handler.
+     *
+     *     stage.off('remove', myfunction);
+     */
+
+    off: function (event, handler) {
+      this.emitter.off(event, proxy(handler, this));
+      return this;
+    },
+
+    /**
+     * one : .one(event, callback)
+     * Works like `.on`, except it unbinds itself right after.
+     */
+
+    one: function (event, handler) {
+      this.emitter.one(event, proxy(handler, this));
+      return this;
     },
 
     /*
