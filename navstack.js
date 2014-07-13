@@ -792,12 +792,6 @@
 
     this.transition = (options && options.transition);
 
-    /**
-     * zIndex: determines the position in the stack. (Number)
-     */
-
-    this.zIndex = (options && options.zIndex);
-
     /** initializer: Function to create the view. */
     this.initializer = initializer;
 

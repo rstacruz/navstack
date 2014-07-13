@@ -295,11 +295,6 @@ The identification `name` of this pane, as passed to [push()] and
 
 the transition to use for this pane. (String)
 
-<a name="zIndex"></a>
-### zIndex
-
-determines the position in the stack. (Number)
-
 <a name="initializer"></a>
 ### initializer
 
