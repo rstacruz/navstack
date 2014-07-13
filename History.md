@@ -1,3 +1,9 @@
+## v0.4.0 - unreleased
+
+ * `.push()` will now queue pushing until transitions are complete.
+ * Navstack now doesn't use the jQuery queue by default. Use `Navstack.jQuery = 
+ jQuery` to reenable it.
+
 ## v0.3.4 - July 10, 2014
 
  * Support `transition: false`.
