@@ -55,7 +55,8 @@
      * A local version of `Navstack.transitions`.
      */
 
-    this.transitions = {};
+    if (typeof this.transitions === 'undefined')
+      this.transitions = {};
 
     /**
      * adaptors:
@@ -63,7 +64,8 @@
      * A local version of `Navstack.adaptors`.
      */
 
-    this.adaptors = {};
+    if (typeof this.adaptors === 'undefined')
+      this.adaptors = {};
 
     /**
      * panes:
