@@ -203,7 +203,15 @@
      * (internal) Switches to a given pane `name`.
      */
 
-    go: function (name) {
+    go: function (name, options) {
+      var nav = this;
+      Navstack.queue(function (next) {
+        nav.goNow(name, options);
+        next();
+      });
+    },
+
+    goNow: function (name) {
       var self = this;
 
       // Switching to the same thing? No need to do anything
@@ -259,6 +267,7 @@
       self.runTransition(transition, direction, current, previous, function () {
         try { if (previous) previous.adaptor.onsleep(); } catch(e) {}
         self.transitioning = false;
+        self.deferredPurgeObsolete();
         self.ready();
       });
 
@@ -271,11 +280,6 @@
       // Events
       self.emitter.trigger('push:'+current.name, eventData);
       self.emitter.trigger('push', eventData);
-
-      // clear out other panes
-      this.ready(function () {
-        self.deferredPurgeObsolete();
-      });
 
       return (current && current.view);
     },
@@ -930,8 +934,8 @@
 
   Navstack.queue = function (fn) {
     // use the jQuery queue if possible.
-    if (window.jQuery) {
-      jQuery(window.document).queue(fn);
+    if (Navstack.jQuery) {
+      Navstack.jQuery(window.document).queue(fn);
     } else {
       Queue.add(fn);
     }
