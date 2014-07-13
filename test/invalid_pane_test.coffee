@@ -1,6 +1,6 @@
 require './setup'
 
-testSuite 'Invalid pane', ->
+describe 'Invalid pane', ->
   beforeEach ->
     @stack = new Navstack()
     @stack.push 'a', -> document.createElement('DIV')

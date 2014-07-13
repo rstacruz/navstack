@@ -1,6 +1,6 @@
 require './setup'
 
-testSuite 'Repeat', ->
+describe 'Repeat:', ->
   div = ->
     document.createElement('DIV')
 
@@ -14,13 +14,15 @@ testSuite 'Repeat', ->
     @stack.remove()
 
   describe '.push', ->
-    it '.push', ->
-      view = @stack.push 'home', ->
+    it 'should create the correct view', (done) ->
+      @stack.push 'home', ->
         { el: div(), title: "Home view", remove: (->), trigger: sinon.spy() }
 
-      expect(view.title).eq "Home view"
+      @stack.ready =>
+        expect(@stack.active.view.title).eq "Home view"
+        done()
 
-    it '.push x2', ->
+    it 'twice will ignore the next fn()', (done) ->
       count = 0
 
       view1 = @stack.push 'home', ->
@@ -30,23 +32,32 @@ testSuite 'Repeat', ->
       view2 = @stack.push 'home', ->
         { el: div(), title: "I'm ignored", remove: (->), trigger: sinon.spy() }
 
-      expect(view1.title).eq "Home view"
-      expect(view2.title).eq "Home view"
-      expect(count).eq 1
+      @stack.ready =>
+        expect(@stack.active.view.title).eq "Home view"
+        expect(count).eq 1
+        done()
 
-  describe '.register, .go', ->
+  describe '.register() and .go():', ->
     beforeEach ->
       sinon.spy @stack, 'spawnPane'
 
       @stack.register 'home', ->
         { el: div(), title: "Home view", remove: (->), trigger: sinon.spy() }
 
-    it 'should work', ->
-      view = @stack.go 'home'
-      expect(view.title).eq "Home view"
+    it 'should work', (done) ->
+      @stack.go 'home'
 
-    it 'double .go', ->
-      view = @stack.go 'home'
-      expect(view.title).eq "Home view"
-      expect(@stack.spawnPane).calledOnce
+      @stack.ready =>
+        expect(@stack.active.view.title).eq "Home view"
+        done()
 
+    it 'calling double .go should spawn pane just once', (done) ->
+      @stack.go 'home'
+
+      @stack.ready =>
+        @stack.go 'home'
+
+        @stack.ready =>
+          expect(@stack.active.view.title).eq "Home view"
+          expect(@stack.spawnPane).calledOnce
+          done()

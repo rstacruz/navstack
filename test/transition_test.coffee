@@ -6,7 +6,7 @@ describe 'Transitions:', ->
 
   # Stub the queueing mechanism
   beforeEach ->
-    sinon.stub Navstack, 'queue', (fn) -> fn(->)
+    sinon.stub Navstack, 'queue', (fn) -> setImmediate -> fn(->)
 
   beforeEach ->
     @parent = $("<section id='parent'>").appendTo("body")
@@ -30,7 +30,7 @@ describe 'Transitions:', ->
     it 'leave parent alone', ->
       expect(classNames "#parent").include '-navstack'
 
-    it 'should keep the current pane hidden', ->
+    it 'must keep the current pane hidden', ->
       expect(classNames "#current").include '-navstack-hide'
 
     it 'run queue', (done) ->
@@ -40,24 +40,24 @@ describe 'Transitions:', ->
       ), 25
 
   # While animations are running
-  describe 'run', ->
+  describe 'an animation run', ->
     beforeEach (done) ->
       setTimeout done, 10
 
-    it 'run queue', ->
+    it 'must run queue() a few times', ->
       expect(Navstack.queue.callCount).gte 2
 
-    it 'parent container', ->
+    it 'must work on the parent container', ->
       expect(classNames "#parent").include 'slide-container'
 
-    it 'enter animation', ->
+    it 'must trigger the enter animation', ->
       expect(classNames "#current").include 'slide-enter-forward'
 
-    it 'exit animation', ->
+    it 'must trigger the exit animation', ->
       expect(classNames "#previous").include 'slide-exit-forward'
 
   # After animations run
-  describe 'after', ->
+  describe 'completing an animation', ->
     beforeEach (done) ->
       setTimeout done, 10
 
@@ -76,15 +76,15 @@ describe 'Transitions:', ->
       trigger qs('#current'), 'animationend'
       setTimeout done, 10
 
-    it 'remove classes from parent', ->
+    it 'must remove classes from parent', ->
       expect(classNames "#parent").include '-navstack'
 
-    it 'remove classes from current', ->
+    it 'must remove classes from current', ->
       expect(classNames "#current").include '-navstack-pane'
 
-    it 'remove classes from previous', ->
+    it 'must remove classes from previous', ->
       expect(classNames "#previous").include '-navstack-pane'
       expect(classNames "#previous").include '-navstack-hide'
 
-    it 'run queue', ->
-      expect(Navstack.queue.calledTwice).be.true
+    it 'must run queue() a few times', ->
+      expect(Navstack.queue.callCount).gte 2
