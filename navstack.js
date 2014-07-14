@@ -473,9 +473,26 @@
 
     /***
      * Events:
-     * A stack may emit events, which you can listen to via [on()]. Available events are:
+     * A stack may emit events, which you can listen to via [on()].
      *
-     * ~ remove: called when removing the stack.
+     *     stage = new Navstack();
+     *     
+     *     stage.on('push', function (e) {
+     *       e.direction  // 'forward' or 'backward'
+     *       e.current    // current pane
+     *       e.previous   // previous pane
+     *     });
+     *     
+     *     // to listen for a specific pane:
+     *     stage.on('push:NameHere', function (e) {
+     *       ...
+     *     });
+     *
+     * Available events are:
+     *
+     * - `push` -- called after a [push()] succeeds
+     * - `push:NAME` -- called after a pane with the name *NAME* is pushed
+     * - `remove` -- called when removing the stack
      */
 
     /**
@@ -1352,15 +1369,6 @@
    * like Navstack to utilize [jQuery.queue].
    *
    *     Navstack.jQuery = jQuery;
-   *
-   * [jQuery.queue]: http://api.jquery.com/queue/
-   * [Ractive]: http://ractivejs.org
-   * [React]: http://facebook.github.io/react
-   * [Backbone]: http://backbonejs.org
-   * [jQuery]: http://jquery.com
-   * [on]: #on
-   * [Pane]: #pane
-   * [push]: #push
    */
 
   Navstack.jQuery = undefined;

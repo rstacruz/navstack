@@ -40,12 +40,12 @@ Then use it:
 Getting started
 ---------------
 
-Create your stack. You may pass a selector to `el`, or a jQuery object (eg,
-`$('#stage')`), or a DOM node.
+Create your stack by instanciating [Navstack]. Pass a jQuery object or a DOM 
+node to `el`.
 
 ``` js
 stage = new Navstack({
-  el: '#stage'
+  el: $('#stage')
 });
 ```
 
@@ -102,33 +102,14 @@ stage.push('/task/1', function() { ... });
 stage.push('/home', function() { ... });
 ```
 
-### Events
-
-You can detect when pushes are completed.
-
-```js
-stage = new Navstack();
-
-stage.on('push', function (e) {
-  e.direction  // 'forward' or 'backward'
-  e.current    // current pane
-  e.previous   // previous pane
-});
-
-// to listen for a specific pane:
-stage.on('push:yourpanenamehere', function (e) {
-  ...
-});
-```
-
 ### Groups
 
-You can group your panes together. Panes of the same group will slide 
-left-and-right by default, while panes of a different group will pop up like 
-modal dialogs.
+You can group your panes together by prefixing their names with `groupname!`.
+Panes of the same group will slide left-and-right by default, while panes of a 
+different group will pop up like modal dialogs.
 
 This allows you to create logical sections of your app UI. In this example 
-below, the settings pages will pop up in a modal.
+below, the settings pages will pop up in a modal:
 
 ```js
 stage = new Navstack({ el: ... });
@@ -651,6 +632,7 @@ Navstack.transitions = {...};
 [push]: #push
 [push()]: #push
 [Navstack.extend]: #navstack-extend
+[Navstack]: #navstack
 
 Thanks
 ------
