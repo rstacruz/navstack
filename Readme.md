@@ -69,8 +69,8 @@ stage.push('/task/1', function() {
 });
 ```
 
-The initializer can return [jQuery] elements, [Backbone] views, [Ractive] 
-instances, or [React.js] components.
+__Libraries support:__ The initializer can return [jQuery] elements, [Backbone] 
+views, [Ractive] instances, or [React.js] components.
 
 ``` js
 stage.push('task:1', function() {
@@ -86,12 +86,11 @@ stage.push('task:1', function() {
 });
 ```
 
-If you call `.push()` again with a pane that is already part of the stack, the 
-stage will go backwards (slide left) to that old pane.
-
-If the pane is recent (ie, last 5 panes used or so), the pane's DOM element is
-previously hidden and will be made visible. If it's an old pane, it will be
-recreated based on the initializer first passed onto `.push()`.
+__Returning back:__ Calling `.push()` again with a pane that is already part of 
+the stack will make the stage will animate backwards (slide left) to that old 
+pane.  If the pane is recent (ie, last 5 panes used or so), the pane's DOM 
+element is previously hidden and will be made visible. If it's an old pane, it 
+will be recreated based on the initializer first passed onto `.push()`.
 
 ``` js
 stage.push('/home', function() { ... });
@@ -151,9 +150,10 @@ stage.push('home', function () { ... });
 
 ### Sleeping and waking
 
-When a view is about to be hidden, a `navstack:sleep` event is called.
-
-When a view is about to be shown, a `navstack:wake` event is called.
+When a view is about to be hidden, a `navstack:sleep` event is called. When a 
+view is about to be shown, a `navstack:wake` event is called. These are 
+triggered as [jQuery], [Backbone], [Ractive] or [React] events, depending on 
+what your pane is.
 
 ```js
 var $box = $("<div>hello</div>");
@@ -168,33 +168,28 @@ stage.push('home', function () {
 ### Use with routers
 
 To take full advantage of Navstack, it's recommended to use it with a router to
-manage browser history states (read: makes the browser "Back" button work).
-
-An example usage of Navstack with [page.js]:
+manage browser history states (read: makes the browser "Back" button work). 
+Here's an example usage of Navstack with [page.js]:
 
 ``` js
 var stack = new Navstack();
 
-page('/home', function () {
-  stack.push('home', function () {
+page('/home', function (ctx) {
+  stack.push(ctx.canonicalPath, function () {
     return $("<div>...</div>");
   });
 });
 
 page('/book/:id', function (ctx) {
-  var id = ['book', ctx.params.id].join(':');
-  stack.push(id, function () {
+  stack.push(ctx.canonicalPath, function () {
     return $("<div>...</div>");
   });
 });
 
-$(function () {
-  $(stack.el).appendTo('body');
-});
-
+document.body.appendChild(stack.el);
 ```
 
-Or with Backbone.Router:
+Or with [Backbone].Router:
 
 ``` js
 var stack = new Navstack();
