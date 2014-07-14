@@ -17,8 +17,8 @@ similar. Inspired by iOS's UINavigationController.
 
 [![Status](https://travis-ci.org/rstacruz/navstack.png?branch=master)](https://travis-ci.org/rstacruz/navstack)
 
-Install
--------
+Installation
+------------
 
 Navstack is a JS + CSS bundle.
 
@@ -36,8 +36,8 @@ Then use it:
 <link rel="stylesheet" href="navstack.css">
 ```
 
-Usage
------
+Getting started
+---------------
 
 Create your stack. You may pass a selector to `el`, or a jQuery object (eg,
 `$('#stage')`), or a DOM node.
@@ -235,6 +235,427 @@ stage = new Stage({ el: '#stage' });
 stage.go('home');
 ```
 
+<!-- include: navstack.js -->
+<a name="Navstack"></a>
+## Navstack
+> `new Navstack(options)`
+
+Instanciates a new Navstack stage that manages multiple panes.
+
+```js
+stage = new Navstack({
+  el: '#stack'
+});
+```
+
+You may pass any of these options below. All of them are optional.
+
+* `el` <span class='dash'>&mdash;</span> a selector, a jQuery object, or a DOM element.
+* `transition` <span class='dash'>&mdash;</span> a string of the transition name to use.
+* `groupTransition` <span class='dash'>&mdash;</span> a string of the transition to use in between groups.
+
+You'll then use [push] to add panes into the stage.
+
+```js
+stage.push('home', function () {
+  return $("<div>Hello</div>");
+});
+```
+
+<a name="Attributes"></a>
+## Attributes
+
+
+
+<a name="transitions"></a>
+### transitions
+
+Registry of pane transitions.
+A local version of `Navstack.transitions`.
+
+<a name="adaptors"></a>
+### adaptors
+
+Registry of suitable adaptors.
+A local version of `Navstack.adaptors`.
+
+<a name="panes"></a>
+### panes
+
+Index of panes that have been registered with this Navstack.
+Object with pane names as keys and [Pane] instances as values.
+
+```js
+nav.push('home', function () { ... });
+
+nav.panes['home']
+nav.panes['home'].name   //=> 'home'
+nav.panes['home'].el     //=> DOMElement
+nav.panes['home'].view
+```
+
+<a name="active"></a>
+### active
+
+The active pane. This is a [Pane] instance.
+
+```js
+nav.push('home', function() { ... });
+
+// later:
+nav.active.name   //=> 'home'
+nav.active.el     //=> DOMElement
+nav.active.view
+```
+
+It is a pointer to the active pane in the [panes] object.
+
+```js
+nav.push('home', function() { ... });
+
+// later:
+nav.active === nav.panes['home']
+```
+
+<a name="stack"></a>
+### stack
+> `Array`
+
+Ordered array of pane names of what are the panes present in the stack.
+When doing [push()], you are adding an item to the stack.
+
+```js
+stage.push('home', function() { ... });
+stage.stack == ['home'];
+
+stage.push('timeline', function() { ... });
+stage.stack == ['home', 'timeline'];
+
+stage.push('home');
+stage.stack == ['home'];
+```
+
+<a name="transition"></a>
+### transition
+
+The transition name to be used. Defaults to `"slide"`.  This can either
+be a *String* (a transition name), a *Function*, or `false` (no animations).
+
+```js
+stage = new Navstack({
+  transition: 'slide',
+  groupTransition: 'modal'
+});
+
+// the second push here will use the slide animation.
+stage.push('home', function() { ... });
+stage.push('mentions', function() { ... });
+
+// this will use the modal transition, as its in a different group.
+stage.push('auth!login', function() { ... });
+```
+
+<a name="groupTransition"></a>
+### groupTransition
+
+Pane transition to use in between groups. Defaults to `"modal"`.
+See [transition](#transition) for more details.
+
+<a name="el"></a>
+### el
+
+The DOM element of the stack.  You may specify this while creating a
+Navstack instance. When no `el` is given, it will default to creating a
+new `<div>` element.
+
+```js
+stage = new Navstack({
+  el: document.getElementById('#box')
+});
+```
+
+You may also pass a jQuery object here for convenience.
+
+```js
+stage = new Navstack({
+  el: $('#box')
+});
+```
+
+You can access this later in the `Navstack` instance:
+
+```js
+$(stage.el).show()
+```
+
+<a name="Methods"></a>
+## Methods
+
+
+
+<a name="push"></a>
+### push
+> `.push(name, [options], [fn])`
+
+Registers a pane with the given `name`.
+
+The function will specify the initializer that will return the view to
+be pushed. It can return a DOM node, a [jQuery] object, a [Backbone] view,
+[Ractive] instance, or a [React] component.
+
+```js
+stage.push('home', function() {
+  return $("<div>...</div>");
+});
+```
+
+You can specify a pane's group by prefixing the name with the group name
+and a bang.
+
+```js
+stage.push('modal!form', function() {
+  return $("<div>...</div>");
+});
+```
+
+You can specify options.
+
+```js
+stage.push('home', { ... }, function() {
+  return $("<div>...</div>");
+});
+```
+
+<a name="init"></a>
+### init
+
+Constructor. You may override this function when subclassing via
+[Navstack.extend] to run some code when subclassed stack is
+instanciated.
+
+```js
+var MyStack = Navstack.extend({
+  init: function() {
+    // initialize here
+  }
+});
+```
+
+<a name="remove"></a>
+### remove
+
+Destroys the Navstack instance, removes the DOM element associated with
+it.
+
+```js
+stage = new Navstack({ el: '#stack' });
+stage.remove();
+```
+
+This is also aliased as *.teardown()*, following Ractive's naming conventions.
+
+<a name="ready"></a>
+### ready
+> `ready(fn)`
+
+Runs a function `fn` when transitions have elapsed. If no transitions
+are happening, run the function immediately.
+
+```js
+nav = new Navstack();
+nav.push('home', function () { ... });
+nav.push('messages', function () { ... });
+
+nav.ready(function () {
+  // gets executed only after transitions are done
+});
+```
+
+<a name="Events"></a>
+## Events
+
+A stack may emit events, which you can listen to via [on()]. Available events are:
+
+* `remove` <span class='dash'>&mdash;</span> called when removing the stack.
+
+<a name="on"></a>
+### on
+> `.on(event, function)`
+
+Binds an event handler.
+
+```js
+stage.on('remove', function() {
+  // do things
+});
+```
+
+<a name="off"></a>
+### off
+> `.off(event, callback)`
+
+Removes an event handler.
+
+```js
+stage.off('remove', myfunction);
+```
+
+<a name="one"></a>
+### one
+> `.one(event, callback)`
+
+Works like `.on`, except it unbinds itself right after.
+
+<a name="Navstack_Pane"></a>
+## Navstack.Pane
+
+A pane. Panes are accessible via `navstack.panes['name']` or
+`navstack.active`. You'll find these properties:
+
+```js
+pane.name
+pane.initializer  // function
+pane.el
+pane.view
+```
+
+<a name="name"></a>
+### name
+
+The identification `name` of this pane, as passed to [push()] and
+[register()].
+
+<a name="transition"></a>
+### transition
+
+the transition to use for this pane. (String)
+
+<a name="initializer"></a>
+### initializer
+
+Function to create the view.
+
+<a name="parent"></a>
+### parent
+
+Reference to `Navstack`.
+
+<a name="el"></a>
+### el
+
+DOM element. Created on `init()`.
+
+<a name="view"></a>
+### view
+
+View instance as created by initializer. Created on `init()`.
+
+<a name="adaptor"></a>
+### adaptor
+
+A wrapped version of the `view`
+
+<a name="Static_members"></a>
+## Static members
+
+These are static members you can access from the global `Navstack` object.
+
+<a name="Navstack_extend"></a>
+### Navstack.extend
+> `extend(prototype)`
+
+Subclasses Navstack to create your new Navstack class. This allows you to
+create 'presets' of the options to be passed onto the constructor.
+
+```js
+var Mystack = Navstack.extend({
+  transition: 'slide'
+});
+
+// doing this is equivalent to passing `transition: 'slide'` to the
+// options object.
+var stack = new Mystack({ el: '#stack' });
+```
+
+<a name="Navstack_transitions"></a>
+### Navstack.transitions
+
+The global transitions registry. It's an Object where transition functions are
+stored.
+
+Whenever a transition is used on a Navstack (eg, with `new Navstack({
+transition: 'foo' })`), it is first looked up in the stack's own registry
+([transitions]). If it's not found there, it's then looked up in the
+global transitions registry, `Navstack.transitions`.
+
+You can define your own transitions via:
+
+```js
+Navstack.transitions.foo = function (direction, previous, current) {
+
+  // this function should return an object with 3 keys: `before`,
+  // `run`, and `after`. Each of them are asynchronous functions
+  // that will perform different phases of the transition.
+  //
+  // you can use the arguments:
+  //
+  //   direction - this is either "first", "forward", or "backward".
+  //   previous  - the previous pane. This an instance of [Pane].
+  //   current   - the pane to transition to.
+
+  return {
+    before: function (next) {
+      // things to perform in preparation of a transition,
+      // such as hide the current pane.
+      // invoke next() after it's done.
+
+      if (current) $(current.el).hide();
+      next();
+    },
+
+    run: function (next) {
+      // run the actual transition.
+      // invoke next() after it's done.
+
+      if (current)  $(current.el).show();
+      if (previous) $(previous.el).hide();
+      next();
+    },
+
+    after: function (next) {
+      // things to perform after running the transition.
+      // invoke next() after it's done.
+      next();
+    }
+  }
+};
+```
+
+<a name="Navstack_adaptors"></a>
+### Navstack.adaptors
+
+Adaptors registry.
+
+<a name="Navstack_jQuery"></a>
+### Navstack.jQuery
+
+Pointer to the instance of jQuery to optionally use. Set this if you would
+like Navstack to utilize [jQuery.queue].
+
+```js
+Navstack.jQuery = jQuery;
+```
+
+[jQuery.queue]: http://api.jquery.com/queue/
+[Ractive]: http://ractivejs.org
+[React]: http://facebook.github.io/react
+[Backbone]: http://backbonejs.org
+[jQuery]: http://jquery.com
+[on]: #on
+[Pane]: #pane
+[push]: #push
+<!-- /include: navstack.js -->
+
 Cheat sheet
 -----------
 
@@ -286,6 +707,9 @@ Navstack.transitions = {...};
 [React.js]: http://facebook.github.io/react
 [Backbone]: http://backbonejs.org
 [page.js]: http://visionmedia.github.io/page.js/
+[on]: #on
+[Pane]: #pane
+[push]: #push
 
 Thanks
 ------
