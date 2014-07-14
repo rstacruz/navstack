@@ -23,15 +23,13 @@
 
   /***
    * Navstack : new Navstack(options)
-   * A stack. Instanciate a new stack:
+   * Instanciates a new Navstack stage that manages multiple panes.
    *
    *     stage = new Navstack({
    *       el: '#stack'
-   *       transition: 'slide',
-   *       groupTransition: 'modal'
    *     });
    *
-   * You may pass these options (all of them are optional):
+   * You may pass any of these options below. All of them are optional.
    *
    * ~ el: a selector, a jQuery object, or a DOM element.
    * ~ transition: a string of the transition name to use.

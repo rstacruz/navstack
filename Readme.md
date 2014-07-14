@@ -50,21 +50,23 @@ stage = new Navstack({
 });
 ```
 
-### Basic usage
+### Adding panes
 
 Use `.push()` to create your panes. It takes 2 arguments:
 
- * `name` (string): the ID of the pane. This allows you to go back to previous panes.
+ * `name` (string): the ID of the pane. This will the unique identifier that 
+                    will identify your pane.
  * `initializer` (function): a function to return the pane's contents.
 
 ``` js
 // Navigate to new pages using push.
-stage.push('home', function() {
+stage.push('/home', function() {
   return $("<div class='full-screen'>This is the home screen</div>");
 });
 
 // The first parameter is an ID for the pane to be pushed.
-stage.push('task:1', function() {
+// This will animate the stage to slide into the new view.
+stage.push('/task/1', function() {
   return $("<div class='full-screen'>Task #1 details: ...</div>");
 });
 ```
@@ -86,61 +88,67 @@ stage.push('task:1', function() {
 });
 ```
 
-### Switching back
-
-To switch back to previously-defined panes, use `.push(name)`.
+If you call `.push()` again with a pane that is already part of the stack, the 
+stage will go backwards (slide left) to that old pane.
 
 If the pane is recent (ie, last 5 panes used or so), the pane's DOM element is
 previously hidden and will be made visible. If it's an old pane, it will be
 recreated based on the initializer first passed onto `.push()`.
 
 ``` js
-stage.push('home');
+stage.push('/home', function() { ... });
+
+stage.push('/task/1', function() { ... });
+
+// this will slide left into the first screen.
+stage.push('/home', function() { ... });
 ```
-
-### Transitions
-
-Include the [navstack.css](navstack.css) file and use:
-
-``` js
-stage = new Navstack({
-  el: '#hello',
-  transition: 'slide'
-})
-```
-
-Available transitions are `slide` and `modal`.
 
 ### Events
 
-You can listen to events.
+You can detect when pushes are completed.
 
 ```js
-stage = new Navstack().
+stage = new Navstack();
+
 stage.on('push', function (e) {
   e.direction  // 'forward' or 'backward'
   e.current    // current pane
   e.previous   // previous pane
 });
 
-stage.on('push:yourpanenamehere', function (e) { ... });
+// to listen for a specific pane:
+stage.on('push:yourpanenamehere', function (e) {
+  ...
+});
 ```
 
 ### Groups
 
-Allows you to do modal dialogs.
+You can group your panes together. Panes of the same group will slide 
+left-and-right by default, while panes of a different group will pop up like 
+modal dialogs.
 
-(TODO: explain this.)
+This allows you to create logical sections of your app UI. In this example 
+below, the settings pages will pop up in a modal.
 
 ```js
-stage = new Navstack({
-  transition: 'slide',
-  groupTransition: 'modal',
-});
+stage = new Navstack({ el: ... });
 
-stage.push('root!hello', function () { ... });
-stage.push('modal!login', function () { ... });
-stage.push('modal!confirm-email', function () { ... });
+// Use no group names for the main parts of your app.
+stage.push('home', function () { ... });
+stage.push('messages', function () { ... });
+stage.push('message/user1', function () { ... });
+
+// this will pop up the `settings!config` dialog with a modal popup animation.
+// the next one, `settings!account`, will animate by sliding to the right,
+// since it's in the same group as the previous pane.
+stage.push('settings!config', function () { ... });
+stage.push('settings!account', function () { ... });
+
+// by going back to `home`, there will be a modal exit animation, since you're 
+// transitioning from one group to another.
+stage.push('home', function () { ... });
 ```
 
 ### Sleeping and waking
@@ -259,7 +267,6 @@ stage.push('pane_id', function () {
 
 // Return to old pane
 stage.push('pane_id');
-
 
 // The main element
 stage.el;           //=> <div>
