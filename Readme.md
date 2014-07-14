@@ -25,9 +25,10 @@ Navstack is a JS + CSS bundle.
  * [navstack.js](https://raw.githubusercontent.com/rstacruz/navstack/master/navstack.js)
  * [navstack.css](https://raw.githubusercontent.com/rstacruz/navstack/master/navstack.css)
 
-Or get it via Bower:
+Or get it via Bower or NPM:
 
-    bower install navstack
+    $ npm install --save navstack
+    $ bower install --save navstack
 
 Then use it:
 
