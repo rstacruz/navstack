@@ -202,21 +202,6 @@ $(function () {
 });
 ```
 
-### As a class
-
-Rather than repetitively defining your constructor parameters across different 
-instances, you can subclass `Navstack` using `Navstack.extend`. This allows you 
-to set preset parameters, as well as define your own methods.
-
-``` js
-Stage = Navstack.extend({
-  /* options go here */
-});
-
-stage = new Stage({ el: '#stage' });
-stage.go('home');
-```
-
 <!-- include: navstack.js -->
 
 ## Navstack
