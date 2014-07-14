@@ -17,8 +17,6 @@ similar. Inspired by iOS's UINavigationController.
 
 [![Status](https://travis-ci.org/rstacruz/navstack.png?branch=master)](https://travis-ci.org/rstacruz/navstack)
 
-__Status:__ very usable - just need to add documentation and examples.
-
 Install
 -------
 
