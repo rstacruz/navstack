@@ -239,51 +239,49 @@ Index of panes that have been registered with this Navstack.
 Object with pane names as keys and [Pane] instances as values.
 
 ```js
-nav.push('home', function () { ... });
+stage.push('home', function () { ... });
 
-nav.panes['home']
-nav.panes['home'].name   //=> 'home'
-nav.panes['home'].el     //=> DOMElement
-nav.panes['home'].view
+stage.panes['home']
+stage.panes['home'].name   //=> 'home'
+stage.panes['home'].el     //=> DOMElement
+stage.panes['home'].view
 ```
 
 ### active
 
-The active pane. This is a [Pane] instance.
+A reference to the active pane. This is a [Navstack.Pane] instance.
 
 ```js
-nav.push('home', function() { ... });
+stage.push('home', function() { ... });
 
 // later:
-nav.active.name   //=> 'home'
-nav.active.el     //=> DOMElement
-nav.active.view
+stage.active.name   //=> 'home'
+stage.active.el     //=> DOMElement
+stage.active.view
 ```
 
 It is a pointer to the active pane in the [panes] object.
 
 ```js
-nav.push('home', function() { ... });
+stage.push('home', function() { ... });
 
 // later:
-nav.active === nav.panes['home']
+stage.active === stage.panes['home']
 ```
 
 ### stack
-> `Array`
 
 Ordered array of pane names of what are the panes present in the stack.
 When doing [push()], you are adding an item to the stack.
 
 ```js
 stage.push('home', function() { ... });
-stage.stack == ['home'];
+stage.stack
+=> ['home']
 
 stage.push('timeline', function() { ... });
-stage.stack == ['home', 'timeline'];
-
-stage.push('home');
-stage.stack == ['home'];
+stage.stack
+=> ['home', 'timeline']
 ```
 
 ### transition
@@ -416,9 +414,28 @@ nav.ready(function () {
 
 ## Events
 
-A stack may emit events, which you can listen to via [on()]. Available events are:
+A stack may emit events, which you can listen to via [on()].
 
-* `remove` <span class='dash'>&mdash;</span> called when removing the stack.
+```js
+stage = new Navstack();
+
+stage.on('push', function (e) {
+  e.direction  // 'forward' or 'backward'
+  e.current    // current pane
+  e.previous   // previous pane
+});
+
+// to listen for a specific pane:
+stage.on('push:NameHere', function (e) {
+  ...
+});
+```
+
+Available events are:
+
+- `push` -- called after a [push()] succeeds
+- `push:NAME` -- called after a pane with the name *NAME* is pushed
+- `remove` -- called when removing the stack
 
 ### on
 > `.on(event, function)`
@@ -550,15 +567,6 @@ like Navstack to utilize [jQuery.queue].
 Navstack.jQuery = jQuery;
 ```
 
-[jQuery.queue]: http://api.jquery.com/queue/
-[Ractive]: http://ractivejs.org
-[React]: http://facebook.github.io/react
-[Backbone]: http://backbonejs.org
-[jQuery]: http://jquery.com
-[on]: #on
-[Pane]: #pane
-[push]: #push
-
 <!-- /include: navstack.js -->
 
 Cheat sheet
@@ -614,9 +622,11 @@ Navstack.transitions = {...};
 [page.js]: http://visionmedia.github.io/page.js/
 [on]: #on
 [Pane]: #pane
+[panes]: #panes
 [push]: #push
 [push()]: #push
 [Navstack.extend]: #navstack-extend
+[Navstack.pane]: #navstack-pane
 [Navstack]: #navstack
 
 Thanks

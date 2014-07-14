@@ -70,50 +70,50 @@
      * Index of panes that have been registered with this Navstack.
      * Object with pane names as keys and [Pane] instances as values.
      *
-     *     nav.push('home', function () { ... });
+     *     stage.push('home', function () { ... });
      *
-     *     nav.panes['home']
-     *     nav.panes['home'].name   //=> 'home'
-     *     nav.panes['home'].el     //=> DOMElement
-     *     nav.panes['home'].view
+     *     stage.panes['home']
+     *     stage.panes['home'].name   //=> 'home'
+     *     stage.panes['home'].el     //=> DOMElement
+     *     stage.panes['home'].view
      */
     this.panes = {};
 
     /**
      * active:
-     * The active pane. This is a [Pane] instance.
+     * A reference to the active pane. This is a [Navstack.Pane] instance.
      *
-     *     nav.push('home', function() { ... });
+     *     stage.push('home', function() { ... });
      *
      *     // later:
-     *     nav.active.name   //=> 'home'
-     *     nav.active.el     //=> DOMElement
-     *     nav.active.view
+     *     stage.active.name   //=> 'home'
+     *     stage.active.el     //=> DOMElement
+     *     stage.active.view
      *
      * It is a pointer to the active pane in the [panes] object.
      *
-     *     nav.push('home', function() { ... });
+     *     stage.push('home', function() { ... });
      *
      *     // later:
-     *     nav.active === nav.panes['home']
+     *     stage.active === stage.panes['home']
      */
 
     this.active = null;
 
     /**
-     * stack : Array
+     * stack:
      * Ordered array of pane names of what are the panes present in the stack.
      * When doing [push()], you are adding an item to the stack.
      *
      *     stage.push('home', function() { ... });
-     *     stage.stack == ['home'];
+     *     stage.stack
+     *     => ['home']
      *
      *     stage.push('timeline', function() { ... });
-     *     stage.stack == ['home', 'timeline'];
-     *
-     *     stage.push('home');
-     *     stage.stack == ['home'];
-     * */
+     *     stage.stack
+     *     => ['home', 'timeline']
+     */
+
     this.stack = [];
 
     /** emitter:
