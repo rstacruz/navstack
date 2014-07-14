@@ -49,7 +49,7 @@
 
     /**
      * transitions:
-     * Registry of pane transitions.
+     * (private) Registry of pane transitions.
      * A local version of `Navstack.transitions`.
      */
 
@@ -58,7 +58,7 @@
 
     /**
      * adaptors:
-     * Registry of suitable adaptors.
+     * (private) Registry of suitable adaptors.
      * A local version of `Navstack.adaptors`.
      */
 
@@ -768,42 +768,33 @@
 
   /***
    * Navstack.Pane:
-   * A pane. Panes are accessible via `navstack.panes['name']` or
-   * `navstack.active`. You'll find these properties:
+   * Panes are accessible via `navstack.panes['name']` or `navstack.active`.
+   *
+   *     stage = new Navstack();
+   *     pane = stage.active;
    *
    *     pane.name
    *     pane.initializer  // function
    *     pane.el
    *     pane.view
+   *
+   * You'll find these properties:
+   *
+   * ~ name (String): the identifier for this pane as passed onto [push()].
+   * ~ transition: TBD
+   * ~ parent: a reference to the [Navstack] instance.
+   * ~ el: DOM element.
+   * ~ view: the view instance created by the initializer passed onto [push()].
+   * ~ adaptor: a wrapped version of `view` (internal).
    */
 
   Pane = Navstack.Pane = function (name, options, initializer, parent) {
-    /**
-     * name: The identification `name` of this pane, as passed to [push()] and
-     * [register()].
-     */
-
     this.name = name;
-
-    /**
-     * transition: the transition to use for this pane. (String)
-     */
-
     this.transition = (options && options.transition);
-
-    /** initializer: Function to create the view. */
     this.initializer = initializer;
-
-    /** parent: Reference to `Navstack`. */
     this.parent = parent;
-
-    /** el: DOM element. Created on `init()`. */
     this.el = null;
-
-    /** view: View instance as created by initializer. Created on `init()`. */
     this.view = null;
-
-    /** adaptor: A wrapped version of the `view` */
     this.adaptor = null;
   };
 
@@ -946,13 +937,13 @@
    * stored.
    *
    * Whenever a transition is used on a Navstack (eg, with `new Navstack({
-   * transition: 'foo' })`), it is first looked up in the stack's own registry
-   * ([transitions]). If it's not found there, it's then looked up in the
+   * transition: 'slide' })`), it is first looked up in the stack's own registry
+   * (`stage.transitions`). If it's not found there, it's then looked up in the
    * global transitions registry, `Navstack.transitions`.
    *
    * You can define your own transitions via:
    *
-   *     Navstack.transitions.foo = function (direction, previous, current) {
+   *     Navstack.transitions.foo = function (direction, current, previous) {
    *
    *       // this function should return an object with 3 keys: `before`,
    *       // `run`, and `after`. Each of them are asynchronous functions
@@ -1013,8 +1004,9 @@
     }
   };
 
-  /*
-   * Only used for testing
+  /**
+   * Navstack.flushQueue:
+   * (internal) Forcibly clears the command queue. Only useful in tests.
    */
 
   Navstack.flushQueue = function (fn) {
@@ -1023,7 +1015,7 @@
 
   /**
    * Navstack.adaptors:
-   * Adaptors registry.
+   * (internal) Adaptors registry.
    */
 
   Navstack.adaptors = {};

@@ -236,7 +236,7 @@ stage.go('home');
 ```
 
 <!-- include: navstack.js -->
-<a name="Navstack"></a>
+
 ## Navstack
 > `new Navstack(options)`
 
@@ -262,24 +262,10 @@ stage.push('home', function () {
 });
 ```
 
-<a name="Attributes"></a>
 ## Attributes
 
 
 
-<a name="transitions"></a>
-### transitions
-
-Registry of pane transitions.
-A local version of `Navstack.transitions`.
-
-<a name="adaptors"></a>
-### adaptors
-
-Registry of suitable adaptors.
-A local version of `Navstack.adaptors`.
-
-<a name="panes"></a>
 ### panes
 
 Index of panes that have been registered with this Navstack.
@@ -294,7 +280,6 @@ nav.panes['home'].el     //=> DOMElement
 nav.panes['home'].view
 ```
 
-<a name="active"></a>
 ### active
 
 The active pane. This is a [Pane] instance.
@@ -317,7 +302,6 @@ nav.push('home', function() { ... });
 nav.active === nav.panes['home']
 ```
 
-<a name="stack"></a>
 ### stack
 > `Array`
 
@@ -335,7 +319,6 @@ stage.push('home');
 stage.stack == ['home'];
 ```
 
-<a name="transition"></a>
 ### transition
 
 The transition name to be used. Defaults to `"slide"`.  This can either
@@ -355,13 +338,11 @@ stage.push('mentions', function() { ... });
 stage.push('auth!login', function() { ... });
 ```
 
-<a name="groupTransition"></a>
 ### groupTransition
 
 Pane transition to use in between groups. Defaults to `"modal"`.
 See [transition](#transition) for more details.
 
-<a name="el"></a>
 ### el
 
 The DOM element of the stack.  You may specify this while creating a
@@ -388,12 +369,10 @@ You can access this later in the `Navstack` instance:
 $(stage.el).show()
 ```
 
-<a name="Methods"></a>
 ## Methods
 
 
 
-<a name="push"></a>
 ### push
 > `.push(name, [options], [fn])`
 
@@ -426,7 +405,6 @@ stage.push('home', { ... }, function() {
 });
 ```
 
-<a name="init"></a>
 ### init
 
 Constructor. You may override this function when subclassing via
@@ -441,7 +419,6 @@ var MyStack = Navstack.extend({
 });
 ```
 
-<a name="remove"></a>
 ### remove
 
 Destroys the Navstack instance, removes the DOM element associated with
@@ -454,7 +431,6 @@ stage.remove();
 
 This is also aliased as *.teardown()*, following Ractive's naming conventions.
 
-<a name="ready"></a>
 ### ready
 > `ready(fn)`
 
@@ -471,14 +447,12 @@ nav.ready(function () {
 });
 ```
 
-<a name="Events"></a>
 ## Events
 
 A stack may emit events, which you can listen to via [on()]. Available events are:
 
 * `remove` <span class='dash'>&mdash;</span> called when removing the stack.
 
-<a name="on"></a>
 ### on
 > `.on(event, function)`
 
@@ -490,7 +464,6 @@ stage.on('remove', function() {
 });
 ```
 
-<a name="off"></a>
 ### off
 > `.off(event, callback)`
 
@@ -500,67 +473,38 @@ Removes an event handler.
 stage.off('remove', myfunction);
 ```
 
-<a name="one"></a>
 ### one
 > `.one(event, callback)`
 
 Works like `.on`, except it unbinds itself right after.
 
-<a name="Navstack_Pane"></a>
 ## Navstack.Pane
 
-A pane. Panes are accessible via `navstack.panes['name']` or
-`navstack.active`. You'll find these properties:
+Panes are accessible via `navstack.panes['name']` or `navstack.active`.
 
 ```js
+stage = new Navstack();
+pane = stage.active;
+
 pane.name
 pane.initializer  // function
 pane.el
 pane.view
 ```
 
-<a name="name"></a>
-### name
+You'll find these properties:
 
-The identification `name` of this pane, as passed to [push()] and
-[register()].
+* `name` *(String)* <span class='dash'>&mdash;</span> the identifier for this pane as passed onto [push()].
+* `transition` <span class='dash'>&mdash;</span> TBD
+* `parent` <span class='dash'>&mdash;</span> a reference to the [Navstack] instance.
+* `el` <span class='dash'>&mdash;</span> DOM element.
+* `view` <span class='dash'>&mdash;</span> the view instance created by the initializer passed onto [push()].
+* `adaptor` <span class='dash'>&mdash;</span> a wrapped version of `view` (internal).
 
-<a name="transition"></a>
-### transition
-
-the transition to use for this pane. (String)
-
-<a name="initializer"></a>
-### initializer
-
-Function to create the view.
-
-<a name="parent"></a>
-### parent
-
-Reference to `Navstack`.
-
-<a name="el"></a>
-### el
-
-DOM element. Created on `init()`.
-
-<a name="view"></a>
-### view
-
-View instance as created by initializer. Created on `init()`.
-
-<a name="adaptor"></a>
-### adaptor
-
-A wrapped version of the `view`
-
-<a name="Static_members"></a>
 ## Static members
 
 These are static members you can access from the global `Navstack` object.
 
-<a name="Navstack_extend"></a>
 ### Navstack.extend
 > `extend(prototype)`
 
@@ -577,21 +521,20 @@ var Mystack = Navstack.extend({
 var stack = new Mystack({ el: '#stack' });
 ```
 
-<a name="Navstack_transitions"></a>
 ### Navstack.transitions
 
 The global transitions registry. It's an Object where transition functions are
 stored.
 
 Whenever a transition is used on a Navstack (eg, with `new Navstack({
-transition: 'foo' })`), it is first looked up in the stack's own registry
-([transitions]). If it's not found there, it's then looked up in the
+transition: 'slide' })`), it is first looked up in the stack's own registry
+(`stage.transitions`). If it's not found there, it's then looked up in the
 global transitions registry, `Navstack.transitions`.
 
 You can define your own transitions via:
 
 ```js
-Navstack.transitions.foo = function (direction, previous, current) {
+Navstack.transitions.foo = function (direction, current, previous) {
 
   // this function should return an object with 3 keys: `before`,
   // `run`, and `after`. Each of them are asynchronous functions
@@ -631,12 +574,6 @@ Navstack.transitions.foo = function (direction, previous, current) {
 };
 ```
 
-<a name="Navstack_adaptors"></a>
-### Navstack.adaptors
-
-Adaptors registry.
-
-<a name="Navstack_jQuery"></a>
 ### Navstack.jQuery
 
 Pointer to the instance of jQuery to optionally use. Set this if you would
@@ -654,6 +591,7 @@ Navstack.jQuery = jQuery;
 [on]: #on
 [Pane]: #pane
 [push]: #push
+
 <!-- /include: navstack.js -->
 
 Cheat sheet
@@ -710,11 +648,13 @@ Navstack.transitions = {...};
 [on]: #on
 [Pane]: #pane
 [push]: #push
+[push()]: #push
+[Navstack.extend]: #navstack-extend
 
 Thanks
 ------
 
-**Navstack** © 2014, Rico Sta. Cruz. Released under the [MIT License].<br>
+**Navstack** © 2014+, Rico Sta. Cruz. Released under the [MIT License].<br>
 Authored and maintained by Rico Sta. Cruz with help from [contributors].
 
 > [ricostacruz.com](http://ricostacruz.com) &nbsp;&middot;&nbsp;
