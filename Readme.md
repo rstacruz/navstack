@@ -45,7 +45,9 @@ Create your stack. You may pass a selector to `el`, or a jQuery object (eg,
 `$('#stage')`), or a DOM node.
 
 ``` js
-stage = new Navstack({ el: '#stage' });
+stage = new Navstack({
+  el: '#stage'
+});
 ```
 
 ### Basic usage
@@ -53,7 +55,7 @@ stage = new Navstack({ el: '#stage' });
 Use `.push()` to create your panes. It takes 2 arguments:
 
  * `name` (string): the ID of the pane. This allows you to go back to previous panes.
- * `callback` (function): a callback to return the pane's contents.
+ * `initializer` (function): a function to return the pane's contents.
 
 ``` js
 // Navigate to new pages using push.
@@ -67,10 +69,8 @@ stage.push('task:1', function() {
 });
 ```
 
-### Libraries support
-
-You may use [Backbone] views, [Ractive] instances, or [React.js] components as
-well.
+The initializer can return [jQuery] elements, [Backbone] views, [Ractive] 
+instances, or [React.js] components.
 
 ``` js
 stage.push('task:1', function() {

@@ -124,8 +124,8 @@
 
     /**
      * transition:
-     * The transition name to be used. Defaults to `false`, which means no
-     * animations will be used. This can either be a *String* or a *Function*.
+     * The transition name to be used. Defaults to `"slide"`.  This can either
+     * be a *String* (a transition name), a *Function*, or `false` (no animations).
      *
      *     stage = new Navstack({
      *       transition: 'slide',
@@ -141,17 +141,16 @@
      */
 
     if (typeof this.transition === 'undefined')
-      this.transition = false;
+      this.transition = 'slide';
 
     /**
      * groupTransition:
-     * Pane transition to use in between groups. Defaults to `false` which
-     * means no animations will be used. See [transition](#transition)
-     * for more details.
+     * Pane transition to use in between groups. Defaults to `"modal"`.
+     * See [transition](#transition) for more details.
      */
 
     if (typeof this.groupTransition === 'undefined')
-      this.groupTransition = false;
+      this.groupTransition = 'modal';
 
     /** el:
      * The DOM element of the stack.  You may specify this while creating a
