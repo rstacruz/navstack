@@ -163,6 +163,7 @@ $box.on('navstack:wake', function () { ... });
 stage.push('home', function () {
   return $box;
 });
+```
 
 ### Use with routers
 
@@ -285,6 +286,7 @@ Navstack.adaptors = {...};
 Navstack.transitions = {...};
 ```
 
+[jQuery]: http://jquery.com
 [Ractive]: http://ractivejs.org
 [React.js]: http://facebook.github.io/react
 [Backbone]: http://backbonejs.org
