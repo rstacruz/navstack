@@ -287,15 +287,6 @@ Navstack.adaptors = {...};
 Navstack.transitions = {...};
 ```
 
-Status
-------
-
-Public API is stable, and is okay for public consumption. The internal API is
-not stable yet (eg, transitions are due for a refactor).
-
-License
--------
-
 [Ractive]: http://ractivejs.org
 [React.js]: http://facebook.github.io/react
 [Backbone]: http://backbonejs.org
