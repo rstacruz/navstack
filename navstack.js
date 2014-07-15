@@ -216,18 +216,20 @@
      */
 
     push: function (name, options, fn) {
-      if (arguments.length === 2) {
+      // support .push(name, fn) as well
+      if (!fn && typeof options === 'function') {
         fn = options;
         options = undefined;
       }
 
+      // support .push(name, { group: x })
       if (options && options.group) {
         name = options.group + "!" + name;
         delete options.group;
       }
 
       if (!this.panes[name]) {
-        if (!fn) throw new Error("Navstack: unknown pane '" + name + "'");
+        if (!fn) throw new Error("Navstack: pane '" + name + "' has no initializer function provided");
         this.register(name, {}, fn);
       }
 
@@ -488,7 +490,10 @@
 
     cleanup: function () {
       var self = this;
-      self.ready(function () { self.purgeAll(); });
+      Navstack.queue(function (next) {
+        self.purgeAll();
+        next();
+      });
     },
 
     /***
