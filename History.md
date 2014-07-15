@@ -1,6 +1,7 @@
-## v0.4.1 - unreleased
+## v0.4.1 - July 15, 2014
 
  * Add the `.push('name', { group: 'group' })` syntax for defining groups.
+ * Add support for Ractive 0.5+.
 
 ## v0.4.0 - July 15, 2014
 
