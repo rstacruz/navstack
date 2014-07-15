@@ -1,3 +1,7 @@
+## v0.4.3
+
+ * Make the default transition compatible with other transitions.
+
 ## v0.4.2 - July 15, 2014
 
  * Fix `.push('name', { transition: false })`.
