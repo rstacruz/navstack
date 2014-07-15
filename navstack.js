@@ -1327,14 +1327,6 @@
     }
   }
 
-  function hide (el) {
-    el.style.display = 'none';
-  }
-
-  function show (el) {
-    el.style.display = '';
-  }
-
   /*
    * Emitter based on microevent.js
    * https://github.com/jeromeetienne/microevent.js
@@ -1371,6 +1363,9 @@
   };
 
   function defaultTransition (direction, current, previous) {
+    function hide (el) { addClass(el, '-navstack-hide'); }
+    function show (el) { remClass(el, '-navstack-hide'); }
+
     return {
       before: function(next) {
         if (current)  hide(current.el);
