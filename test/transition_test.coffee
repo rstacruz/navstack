@@ -57,6 +57,7 @@ describe 'Transitions:', ->
       expect(classNames "#previous").include 'slide-exit-forward'
 
     it 'must prevent clicks', ->
+      expect(classNames "#parent").include '-navstack-animating'
       expect(classNames "#current").include '-navstack-animating'
       expect(classNames "#previous").include '-navstack-animating'
 
@@ -91,6 +92,7 @@ describe 'Transitions:', ->
       expect(classNames "#previous").include '-navstack-hide'
 
     it 'must remove the click prevention', ->
+      expect(classNames "#parent").not.include '-navstack-animating'
       expect(classNames "#current").not.include '-navstack-animating'
       expect(classNames "#previous").not.include '-navstack-animating'
 

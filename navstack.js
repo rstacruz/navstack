@@ -921,8 +921,8 @@
       var parentEl = (currentEl && currentEl.parentNode) || (previousEl && previousEl.parentNode);
 
       var hide    = '-navstack-hide',
-        container = prefix + '-container',
         moving    = '-navstack-animating',
+        container = prefix + '-container' + ' ' + moving,
         enter     = prefix + '-enter-' + direction + ' ' + moving,
         exit      = prefix + '-exit-' + direction + ' ' + moving,
         animationend = 'webkitAnimationEnd oanimationend msAnimationEnd animationend';
