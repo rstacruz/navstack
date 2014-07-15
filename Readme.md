@@ -376,10 +376,15 @@ stage.push('modal!form', function() {
 You can specify options.
 
 ```js
-stage.push('home', { ... }, function() {
+stage.push('home', { group: 'root' }, function() {
   return $("<div>...</div>");
 });
 ```
+
+Available options are (all are optional):
+
+* `group` *(String)* <span class='dash'>&mdash;</span> the group name that the pane should belong to.
+* `transition` *(String)* <span class='dash'>&mdash;</span> the name of the transition to use. See [Navstack.transitions].
 
 ### init
 
@@ -527,6 +532,12 @@ var stack = new Mystack({ el: '#stack' });
 
 The global transitions registry. It's an Object where transition functions are
 stored.
+
+Available transitions are:
+
+* `default` <span class='dash'>&mdash;</span> show new panes immediately, no animation
+* `slide` <span class='dash'>&mdash;</span> slides the new panes horizontally like iOS7
+* `modal` <span class='dash'>&mdash;</span> slides the new panes vertically
 
 Whenever a transition is used on a Navstack (eg, with `new Navstack({
 transition: 'slide' })`), it is first looked up in the stack's own registry

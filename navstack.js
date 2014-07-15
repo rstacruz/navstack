@@ -205,10 +205,14 @@
      *
      * You can specify options.
      *
-     *     stage.push('home', { ... }, function() {
+     *     stage.push('home', { group: 'root' }, function() {
      *       return $("<div>...</div>");
      *     });
      *
+     * Available options are (all are optional):
+     *
+     * ~ group (String): the group name that the pane should belong to.
+     * ~ transition (String): the name of the transition to use. See [Navstack.transitions].
      */
 
     push: function (name, options, fn) {
@@ -969,6 +973,12 @@
    * Navstack.transitions:
    * The global transitions registry. It's an Object where transition functions are
    * stored.
+   *
+   * Available transitions are:
+   *
+   * ~ default: show new panes immediately, no animation
+   * ~ slide: slides the new panes horizontally like iOS7
+   * ~ modal: slides the new panes vertically
    *
    * Whenever a transition is used on a Navstack (eg, with `new Navstack({
    * transition: 'slide' })`), it is first looked up in the stack's own registry
