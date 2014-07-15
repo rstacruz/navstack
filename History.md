@@ -1,6 +1,7 @@
 ## v0.4.3
 
  * Make the default transition compatible with other transitions.
+ * Make the modal dialog animation more exciting. (inspired by Twitter's dialog)
 
 ## v0.4.2 - July 15, 2014
 

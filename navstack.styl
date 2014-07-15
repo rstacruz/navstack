@@ -1,6 +1,7 @@
 $navstack-speed ?= 500ms
 $navstack-shadow ?= 0 0 20px rgba(black, 0.3), 0 0 10px rgba(black, 0.1)
 $navstack-ease ?= cubic-bezier(.3, .5, 0, 1)
+$navstack-modal-backdrop ?= black
 $navstack-tint ?= #345
 $navstack-tint-strength ?= 0.05
 $navstack-nav-displacement ?= 40%
@@ -147,6 +148,9 @@ $noshadow ?= 0 0 20px rgba(black, 0.0), 0 0 10px rgba(black, 0.0)
  * Animations: vertical slide
  */
 
+.modal-container
+  background: $navstack-modal-backdrop
+
 .modal-enter-forward
   z-index: 2
   animation: modal-enter-forward $navstack-speed $navstack-ease
@@ -154,16 +158,15 @@ $noshadow ?= 0 0 20px rgba(black, 0.0), 0 0 10px rgba(black, 0.0)
 
 .modal-enter-backward
   z-index: 1
-  animation: nil ($navstack-speed * $navstack-exit) $navstack-ease
+  animation: modal-enter-backward ($navstack-speed * $navstack-exit) $navstack-ease
 
 .modal-exit-forward
   z-index: 1
-  animation: nil $navstack-speed $navstack-ease
+  animation: modal-exit-forward $navstack-speed $navstack-ease
 
 .modal-exit-backward
   z-index: 2
   animation: modal-exit-backward ($navstack-speed * $navstack-exit) $navstack-ease
-  box-shadow: $navstack-shadow
 
 @keyframes modal-enter-forward
   0%
@@ -176,6 +179,22 @@ $noshadow ?= 0 0 20px rgba(black, 0.0), 0 0 10px rgba(black, 0.0)
     transform: translate3d(0, 0, 0)
   100%
     transform: translate3d(0, 110%, 0)
+
+@keyframes modal-exit-forward
+  0%
+    transform: scale(1.0)
+    opacity: 1.0
+  100%
+    transform: scale(0.94)
+    opacity: 0.1
+  
+@keyframes modal-enter-backward
+  0%
+    transform: scale(0.94)
+    opacity: 0.1
+  100%
+    transform: scale(1.0)
+    opacity: 1.0
 
 /* ----------------------------------------------------------------------------------
  * Token animation
