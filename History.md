@@ -1,3 +1,7 @@
+## v0.4.2 - July 15, 2014
+
+ * Fix `.push('name', { transition: false })`.
+
 ## v0.4.1 - July 15, 2014
 
  * Add the `.push('name', { group: 'group' })` syntax for defining groups.

@@ -459,6 +459,8 @@ Available events are:
 
 - `push` -- called after a [push()] succeeds
 - `push:NAME` -- called after a pane with the name *NAME* is pushed
+- `purge` -- called when a pane is purged from being obsolete
+- `purge:NAME` -- called when pane *NAME* is purged
 - `remove` -- called when removing the stack
 
 ### on
