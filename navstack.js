@@ -679,7 +679,7 @@
             nav.runOverlay(direction, current, previous);
           transition.run(function () {
             if (transition.nav) {
-              navEl = el.querySelector('.-navstack-nav');
+              var navEl = el.querySelector('.-navstack-nav');
               if (navEl) navEl.parentNode.removeChild(navEl);
             }
             transition.after(function () {
@@ -1093,7 +1093,8 @@
   Navstack.adaptors.backbone = buildAdaptor({
     el: function (obj) { return obj.el; },
     check: function (obj) {
-      return (typeof obj.remove === 'function') && (typeof obj.el === 'object');
+      return (typeof obj.remove === 'function') &&
+        (typeof obj.el === 'object');
     },
     remove: function (obj) { obj.trigger('navstack:remove'); return obj.remove(); },
     onsleep: function (obj) { obj.trigger('navstack:sleep'); },
