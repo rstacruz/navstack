@@ -922,8 +922,9 @@
 
       var hide    = '-navstack-hide',
         container = prefix + '-container',
-        enter     = prefix + '-enter-' + direction,
-        exit      = prefix + '-exit-' + direction,
+        moving    = '-navstack-animating',
+        enter     = prefix + '-enter-' + direction + ' ' + moving,
+        exit      = prefix + '-exit-' + direction + ' ' + moving,
         animationend = 'webkitAnimationEnd oanimationend msAnimationEnd animationend';
 
       var trans = {
