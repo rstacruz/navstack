@@ -315,7 +315,7 @@
       var transName;
       var newGroup = (current && previous && current.group !== previous.group);
 
-      if (options && options.transition)
+      if (options && typeof options.transition !== 'undefined')
         transName = options.transition;
 
       if (typeof transName === 'undefined' && newGroup)
@@ -474,7 +474,7 @@
       this.emitter.trigger('purge:'+name, pane);
 
       // remove from DOM
-      this.panes[name].adaptor.remove();
+      pane.adaptor && pane.adaptor.remove();
       delete this.panes[name];
 
       // remove from stack
@@ -512,6 +512,8 @@
      *
      * - `push` -- called after a [push()] succeeds
      * - `push:NAME` -- called after a pane with the name *NAME* is pushed
+     * - `purge` -- called when a pane is purged from being obsolete
+     * - `purge:NAME` -- called when pane *NAME* is purged
      * - `remove` -- called when removing the stack
      */
 
