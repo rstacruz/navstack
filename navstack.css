@@ -31,6 +31,9 @@
   -ms-transform: translate3d(-9999px, 0, 0);
   transform: translate3d(-9999px, 0, 0);
 }
+.-navstack-animating {
+  pointer-events: none;
+}
 /* ----------------------------------------------------------------------------------
  * Animations: slide
  */
