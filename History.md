@@ -2,6 +2,8 @@
 
  * Make the default transition compatible with other transitions.
  * Make the modal dialog animation more exciting. (inspired by Twitter's dialog)
+ * Update the Stylus CSS source variable names to be simpler. (`$navstack-tint` 
+     is now `$ns-tint` and so on)
 
 ## v0.4.2 - July 15, 2014
 
