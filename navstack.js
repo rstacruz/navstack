@@ -809,7 +809,6 @@
    * You'll find these properties:
    *
    * ~ name (String): the identifier for this pane as passed onto [push()].
-   * ~ transition: TBD
    * ~ parent: a reference to the [Navstack] instance.
    * ~ el: DOM element.
    * ~ view: the view instance created by the initializer passed onto [push()].

@@ -3,6 +3,8 @@
  * `.push()` will now queue pushing until transitions are complete.
  * Navstack now doesn't use the jQuery queue by default. Use `Navstack.jQuery = 
  jQuery` to reenable it.
+ * `.push(x, { transition: 'xxx' })` will now *not* remember the transition 
+ used, so you may transition to the same pane with the default transition.
 
 ## v0.3.4 - July 10, 2014
 
