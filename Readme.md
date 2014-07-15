@@ -214,6 +214,7 @@ $(function () {
 ```
 
 <!-- include: navstack.js -->
+
 ## Navstack
 > `new Navstack(options)`
 
@@ -594,6 +595,7 @@ like Navstack to utilize [jQuery.queue].
 ```js
 Navstack.jQuery = jQuery;
 ```
+
 <!-- /include: navstack.js -->
 
 Cheat sheet
