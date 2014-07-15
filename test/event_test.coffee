@@ -1,6 +1,6 @@
 require './setup'
 
-testSuite 'Events', ->
+describe 'Events', ->
   div = ->
     document.createElement('DIV')
 

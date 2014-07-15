@@ -1,4 +1,4 @@
-/* jshint es3: true */
+/* jshint es3: true, expr: true */
 /* globals define */
 /*
  * Navstack
@@ -116,8 +116,7 @@
 
     this.stack = [];
 
-    /** emitter:
-     * (internal) event emitter. */
+    /** emitter: (internal) event emitter. */
     this.emitter = new Emitter();
 
     /**
@@ -220,10 +219,10 @@
 
       if (!this.panes[name]) {
         if (!fn) throw new Error("Navstack: unknown pane '" + name + "'");
-        this.register(name, options, fn);
+        this.register(name, {}, fn);
       }
 
-      return this.go(name);
+      return this.go(name, options);
     },
 
     /**
@@ -242,19 +241,34 @@
     init: function () {},
 
     /**
-     * go : .go(name)
-     * (internal) Switches to a given pane `name`.
+     * go : .go(name, [options])
+     * (internal) Switches to a given pane `name`. The `options` is the options
+     * object passed onto .push(). Delegates to goNow().
+     *
+     * For external API, Use .push() instead.
      */
 
     go: function (name, options) {
       var nav = this;
+
+      // Queue it synchonously (don't wait for the actual switching to finish).
+      // The actual switching will have the transitions push things to the queue,
+      // and we want those to happen immediately.
       Navstack.queue(function (next) {
         nav.goNow(name, options);
         next();
       });
     },
 
-    goNow: function (name) {
+    /**
+     * goNow : .goNow(name, [options])
+     * Performs the actual moving, as delegated to by .go(), which is then
+     * delegated from .push().
+     *
+     * For external API, Use .push() instead.
+     */
+
+    goNow: function (name, options) {
       var self = this;
 
       // Switching to the same thing? No need to do anything
@@ -292,11 +306,8 @@
       var transName;
       var newGroup = (current && previous && current.group !== previous.group);
 
-      if (direction === 'forward')
-        transName = current.transition;
-
-      if (direction === 'backward')
-        transName = previous.transition;
+      if (options && options.transition)
+        transName = options.transition;
 
       if (typeof transName === 'undefined' && newGroup)
         transName = self.groupTransition;
@@ -806,8 +817,10 @@
    */
 
   Pane = Navstack.Pane = function (name, options, initializer, parent) {
+    // `options` is reserved for future use.
+    if (!options) options = {};
+
     this.name = name;
-    this.transition = (options && options.transition);
     this.initializer = initializer;
     this.parent = parent;
     this.el = null;
