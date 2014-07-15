@@ -102,14 +102,16 @@ stage.push('/task/1', function() { ... });
 stage.push('/home', function() { ... });
 ```
 
-### Groups
+### Groups & modal dialogs
 
-You can group your panes together by prefixing their names with `groupname!`.
-Panes of the same group will slide left-and-right by default, while panes of a 
-different group will pop up like modal dialogs.
+Group panes together by passing the `{ group: 'groupname' }` option to 
+[push()].
 
-This allows you to create logical sections of your app UI. In this example 
-below, the settings pages will pop up in a modal:
+This allows you to create logical sections of your app UI. Panes of the same 
+group will slide left-and-right by default, while panes of a different group 
+will pop up like modal dialogs.
+
+In this example below, the settings pages will pop up in a modal:
 
 ```js
 stage = new Navstack({ el: ... });
@@ -119,15 +121,24 @@ stage.push('home', function () { ... });
 stage.push('messages', function () { ... });
 stage.push('message/user1', function () { ... });
 
-// this will pop up the `settings!config` dialog with a modal popup animation.
-// the next one, `settings!account`, will animate by sliding to the right,
+// this will pop up the `config` settings dialog with a modal popup animation.
+// the next one, `account` settings, will animate by sliding to the right,
 // since it's in the same group as the previous pane.
-stage.push('settings!config', function () { ... });
-stage.push('settings!account', function () { ... });
+stage.push('config',  {group: 'settings'}, function () { ... });
+stage.push('account', {group: 'settings'}, function () { ... });
 
 // by going back to `home`, there will be a modal exit animation, since you're 
 // transitioning from one group to another.
 stage.push('home', function () { ... });
+```
+
+__Prefixes:__ You can also prefix names with `groupname!` (eg, 
+    `settings!account`) -- this accomplishes the same thing.
+
+```js
+// these two are equivalent
+stage.push('config',  {group: 'settings'}, function () { ... });
+stage.push('settings!config', function () { ... });
 ```
 
 ### Sleeping and waking
@@ -624,6 +635,7 @@ Navstack.transitions = {...};
 
 [jQuery]: http://jquery.com
 [Ractive]: http://ractivejs.org
+[React]: http://facebook.github.io/react
 [React.js]: http://facebook.github.io/react
 [Backbone]: http://backbonejs.org
 [page.js]: http://visionmedia.github.io/page.js/
