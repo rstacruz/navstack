@@ -2,7 +2,7 @@
   "name": "navstack",
   "repo": "rstacruz/navstack",
   "description": "Manages multiple screens with mobile-friendly transitions",
-  "version": "0.3.4",
+  "version": "0.4.0",
   "keywords": [
     "uinavigationcontroller",
     "navigation",

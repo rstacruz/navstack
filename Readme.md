@@ -384,6 +384,14 @@ var MyStack = Navstack.extend({
 });
 ```
 
+### goNow
+> `.goNow(name, [options])`
+
+Performs the actual moving, as delegated to by .go(), which is then
+delegated from .push().
+
+For external API, Use .push() instead.
+
 ### remove
 
 Destroys the Navstack instance, removes the DOM element associated with
@@ -479,7 +487,6 @@ pane.view
 You'll find these properties:
 
 * `name` *(String)* <span class='dash'>&mdash;</span> the identifier for this pane as passed onto [push()].
-* `transition` <span class='dash'>&mdash;</span> TBD
 * `parent` <span class='dash'>&mdash;</span> a reference to the [Navstack] instance.
 * `el` <span class='dash'>&mdash;</span> DOM element.
 * `view` <span class='dash'>&mdash;</span> the view instance created by the initializer passed onto [push()].
