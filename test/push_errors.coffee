@@ -5,13 +5,13 @@ describe 'Push errors', ->
     expect(->
       @stack = new Navstack()
       @stack.push 'hi', undefined
-    ).throw /unknown pane 'hi'/
+    ).throw /pane 'hi' has no initializer/
 
   it 'invalid pane initializer', ->
     expect(->
       @stack = new Navstack()
       @stack.push 'hi', 323423
-    ).throw /pane initializer is not a function/
+    ).throw /pane 'hi' has no initializer/
 
   it 'no element found', ->
     expect(->
