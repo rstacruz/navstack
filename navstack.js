@@ -1105,9 +1105,20 @@
    */
 
   Navstack.adaptors.ractive = buildAdaptor({
-    el: function (obj) { return obj.find('*'); },
+    el: function (obj) {
+      var el = obj.find('*');
+      if (el) return el;
+
+      // ractive 0.5+ doesn't render the elements by default
+      var fragment = document.createDocumentFragment();
+      obj.render(fragment);
+      return obj.find('*');
+    },
     check: function (obj) {
-      return (typeof obj.teardown === 'function') && (typeof obj.el === 'object');
+      return (typeof obj.teardown === 'function') &&
+        (typeof obj.fire === 'function') &&
+        (typeof obj.find === 'function') &&
+        (typeof obj.render === 'function');
     },
     remove: function (obj) { obj.fire('navstack:remove'); return obj.teardown(); },
     onsleep: function (obj) { obj.fire('navstack:sleep'); },
