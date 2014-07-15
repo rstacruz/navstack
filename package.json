@@ -29,6 +29,7 @@
     "coffee-script": "^1.7.1",
     "jscoverage": "^0.3.8",
     "jsdom": "^0.11.1",
+    "mdextract": "^1.0.0",
     "mocha": "^1.20.1",
     "serve": "^1.4.0",
     "sinon": "^1.8.2",
