@@ -1,6 +1,6 @@
 require './setup'
 
-testSuite 'Individual adaptors', ->
+describe 'Individual adaptors:', ->
   beforeEach ->
     @parent = $("<div>").appendTo('body')
     @stack = new Navstack(el: @parent)
@@ -83,6 +83,7 @@ testSuite 'Individual adaptors', ->
         find: (sel) -> div
         teardown: -> $(".xyz").remove()
         fire: @fire
+        render: ->
 
     it 'push', ->
       expect($('body > div > .xyz')[0]).not.be.undefined
@@ -101,6 +102,7 @@ testSuite 'Individual adaptors', ->
         find: (sel) -> div
         teardown: -> $(".xyz").remove()
         fire: ->
+        render: ->
 
       expect(@fire.callCount).eql 2
       expect(@fire.secondCall.args).eql ['navstack:sleep']

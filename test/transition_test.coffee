@@ -56,6 +56,10 @@ describe 'Transitions:', ->
     it 'must trigger the exit animation', ->
       expect(classNames "#previous").include 'slide-exit-forward'
 
+    it 'must prevent clicks', ->
+      expect(classNames "#current").include '-navstack-animating'
+      expect(classNames "#previous").include '-navstack-animating'
+
   # After animations run
   describe 'completing an animation', ->
     beforeEach (done) ->
@@ -85,6 +89,10 @@ describe 'Transitions:', ->
     it 'must remove classes from previous', ->
       expect(classNames "#previous").include '-navstack-pane'
       expect(classNames "#previous").include '-navstack-hide'
+
+    it 'must remove the click prevention', ->
+      expect(classNames "#current").not.include '-navstack-animating'
+      expect(classNames "#previous").not.include '-navstack-animating'
 
     it 'must run queue() a few times', ->
       expect(Navstack.queue.callCount).gte 2
