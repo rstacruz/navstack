@@ -655,8 +655,9 @@ Navstack.transitions = {...};
 [panes]: #panes
 [push]: #push
 [push()]: #push
-[Navstack.extend]: #navstack-extend
-[Navstack.pane]: #navstack-pane
+[Navstack.extend]: #navstackextend
+[Navstack.pane]: #navstackpane
+[Navstack.transitions]: #navstacktransitions
 [Navstack]: #navstack
 
 Thanks
