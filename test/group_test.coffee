@@ -1,6 +1,6 @@
 require './setup'
 
-testSuite 'Groups', ->
+describe 'Groups:', ->
   div = (id) ->
     el = document.createElement('div')
     el.setAttribute 'id', id
@@ -22,10 +22,15 @@ testSuite 'Groups', ->
   afterEach (done) ->
     @stack.ready -> done()
 
-  it 'ok', ->
+  it 'should update the stack with pushes', ->
     @stack.push 'root!x', -> div('root-x')
     @stack.push 'modal!a', -> div('modal-a')
     expect(@stack.stack).eql ['root!x', 'modal!a']
+
+  it 'should take { group: x } into account', ->
+    @stack.push 'x', group: 'root', -> div('root-x')
+    expect(@stack.panes['root!x']).be.a 'object'
+    expect(@stack.stack).eql ['root!x']
 
   it 'save the proper group names', ->
     @stack.push 'root!x', -> div()

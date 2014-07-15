@@ -1,3 +1,7 @@
+## v0.4.1 - unreleased
+
+ * Add the `.push('name', { group: 'group' })` syntax for defining groups.
+
 ## v0.4.0 - July 15, 2014
 
  * `.push()` will now queue pushing until transitions are complete.

@@ -217,6 +217,11 @@
         options = undefined;
       }
 
+      if (options && options.group) {
+        name = options.group + "!" + name;
+        delete options.group;
+      }
+
       if (!this.panes[name]) {
         if (!fn) throw new Error("Navstack: unknown pane '" + name + "'");
         this.register(name, {}, fn);
