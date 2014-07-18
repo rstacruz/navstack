@@ -244,7 +244,7 @@ stage.push('home', function () {
 
 
 
-### panes
+### .panes
 
 Index of panes that have been registered with this Navstack.
 Object with pane names as keys and [Pane] instances as values.
@@ -280,7 +280,7 @@ stage.push('home', function() { ... });
 stage.active === stage.panes['home']
 ```
 
-### stack
+### .stack
 
 Ordered array of pane names of what are the panes present in the stack.
 When doing [push()], you are adding an item to the stack.
@@ -295,7 +295,7 @@ stage.stack
 => ['home', 'timeline']
 ```
 
-### transition
+### .transition
 
 The transition name to be used. Defaults to `"slide"`.  This can either
 be a *String* (a transition name), a *Function*, or `false` (no animations).
@@ -314,12 +314,12 @@ stage.push('mentions', function() { ... });
 stage.push('auth!login', function() { ... });
 ```
 
-### groupTransition
+### .groupTransition
 
 Pane transition to use in between groups. Defaults to `"modal"`.
 See [transition](#transition) for more details.
 
-### el
+### .el
 
 The DOM element of the stack.  You may specify this while creating a
 Navstack instance. When no `el` is given, it will default to creating a
@@ -349,7 +349,7 @@ $(stage.el).show()
 
 
 
-### push
+### push()
 > `.push(name, [options], [fn])`
 
 Registers a pane with the given `name`.
@@ -386,7 +386,7 @@ Available options are (all are optional):
 * `group` *(String)* <span class='dash'>&mdash;</span> the group name that the pane should belong to.
 * `transition` *(String)* <span class='dash'>&mdash;</span> the name of the transition to use. See [Navstack.transitions].
 
-### init
+### init()
 
 Constructor. You may override this function when subclassing via
 [Navstack.extend] to run some code when subclassed stack is
@@ -400,15 +400,7 @@ var MyStack = Navstack.extend({
 });
 ```
 
-### goNow
-> `.goNow(name, [options])`
-
-Performs the actual moving, as delegated to by .go(), which is then
-delegated from .push().
-
-For external API, Use .push() instead.
-
-### remove
+### remove()
 
 Destroys the Navstack instance, removes the DOM element associated with
 it.
@@ -420,7 +412,7 @@ stage.remove();
 
 This is also aliased as *.teardown()*, following Ractive's naming conventions.
 
-### ready
+### ready()
 > `ready(fn)`
 
 Runs a function `fn` when transitions have elapsed. If no transitions
@@ -463,7 +455,7 @@ Available events are:
 - `purge:NAME` -- called when pane *NAME* is purged
 - `remove` -- called when removing the stack
 
-### on
+### on()
 > `.on(event, function)`
 
 Binds an event handler.
@@ -474,7 +466,7 @@ stage.on('remove', function() {
 });
 ```
 
-### off
+### off()
 > `.off(event, callback)`
 
 Removes an event handler.
@@ -483,7 +475,7 @@ Removes an event handler.
 stage.off('remove', myfunction);
 ```
 
-### one
+### one()
 > `.one(event, callback)`
 
 Works like `.on`, except it unbinds itself right after.
@@ -514,7 +506,7 @@ You'll find these properties:
 
 These are static members you can access from the global `Navstack` object.
 
-### Navstack.extend
+### Navstack.extend()
 > `extend(prototype)`
 
 Subclasses Navstack to create your new Navstack class. This allows you to

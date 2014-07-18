@@ -48,7 +48,7 @@
     extend(this, options);
 
     /**
-     * transitions:
+     * .transitions:
      * (private) Registry of pane transitions.
      * A local version of `Navstack.transitions`.
      */
@@ -57,7 +57,7 @@
       this.transitions = {};
 
     /**
-     * adaptors:
+     * .adaptors:
      * (private) Registry of suitable adaptors.
      * A local version of `Navstack.adaptors`.
      */
@@ -66,7 +66,7 @@
       this.adaptors = {};
 
     /**
-     * panes:
+     * .panes:
      * Index of panes that have been registered with this Navstack.
      * Object with pane names as keys and [Pane] instances as values.
      *
@@ -101,7 +101,7 @@
     this.active = null;
 
     /**
-     * stack:
+     * .stack:
      * Ordered array of pane names of what are the panes present in the stack.
      * When doing [push()], you are adding an item to the stack.
      *
@@ -116,11 +116,11 @@
 
     this.stack = [];
 
-    /** emitter: (internal) event emitter. */
+    /** .emitter: (internal) event emitter. */
     this.emitter = new Emitter();
 
     /**
-     * transition:
+     * .transition:
      * The transition name to be used. Defaults to `"slide"`.  This can either
      * be a *String* (a transition name), a *Function*, or `false` (no animations).
      *
@@ -141,7 +141,7 @@
       this.transition = 'slide';
 
     /**
-     * groupTransition:
+     * .groupTransition:
      * Pane transition to use in between groups. Defaults to `"modal"`.
      * See [transition](#transition) for more details.
      */
@@ -149,7 +149,7 @@
     if (typeof this.groupTransition === 'undefined')
       this.groupTransition = 'modal';
 
-    /** el:
+    /** .el:
      * The DOM element of the stack.  You may specify this while creating a
      * Navstack instance. When no `el` is given, it will default to creating a
      * new `<div>` element.
@@ -185,7 +185,7 @@
     /*** Methods: */
 
     /**
-     * push : .push(name, [options], [fn])
+     * push() : .push(name, [options], [fn])
      * Registers a pane with the given `name`.
      *
      * The function will specify the initializer that will return the view to
@@ -237,7 +237,7 @@
     },
 
     /**
-     * init:
+     * init():
      * Constructor. You may override this function when subclassing via
      * [Navstack.extend] to run some code when subclassed stack is
      * instanciated.
@@ -252,7 +252,7 @@
     init: function () {},
 
     /**
-     * go : .go(name, [options])
+     * go() : .go(name, [options])
      * (internal) Switches to a given pane `name`. The `options` is the options
      * object passed onto .push(). Delegates to goNow().
      *
@@ -272,9 +272,9 @@
     },
 
     /**
-     * goNow : .goNow(name, [options])
-     * Performs the actual moving, as delegated to by .go(), which is then
-     * delegated from .push().
+     * goNow() : .goNow(name, [options])
+     * (internal) Performs the actual moving, as delegated to by .go(), which
+     * is then delegated from .push().
      *
      * For external API, Use .push() instead.
      */
@@ -352,7 +352,7 @@
     transition: defaultTransition,
 
     /**
-     * remove:
+     * remove():
      * Destroys the Navstack instance, removes the DOM element associated with
      * it.
      *
@@ -374,7 +374,7 @@
     },
 
     /**
-     * ready : ready(fn)
+     * ready() : ready(fn)
      * Runs a function `fn` when transitions have elapsed. If no transitions
      * are happening, run the function immediately.
      *
@@ -408,7 +408,7 @@
     },
 
     /**
-     * getAdaptors:
+     * getAdaptors():
      * (internal) Returns the adaptors available.
      */
 
@@ -428,7 +428,7 @@
     },
 
     /**
-     * getAdaptorFor : .getAdaptorFor(obj)
+     * getAdaptorFor() : .getAdaptorFor(obj)
      * (internal) Wraps the given `obj` object with a suitable adaptor.
      *
      *     view = new Backbone.View({ ... });
@@ -455,7 +455,7 @@
     },
 
     /**
-     * purgePane:
+     * purgePane():
      * (internal) Purges a given pane.
      *
      *     this.purgePane('home');
@@ -523,7 +523,7 @@
      */
 
     /**
-     * on : .on(event, function)
+     * on() : .on(event, function)
      * Binds an event handler.
      *
      *     stage.on('remove', function() {
@@ -537,7 +537,7 @@
     },
 
     /**
-     * off : .off(event, callback)
+     * off() : .off(event, callback)
      * Removes an event handler.
      *
      *     stage.off('remove', myfunction);
@@ -549,7 +549,7 @@
     },
 
     /**
-     * one : .one(event, callback)
+     * one() : .one(event, callback)
      * Works like `.on`, except it unbinds itself right after.
      */
 
@@ -603,7 +603,7 @@
     },
 
     /**
-     * getDirection : .getDirection(from, to)
+     * getDirection() : .getDirection(from, to)
      * (internal) Returns the direction of animation based on the
      * indices of panes `from` and `to`.
      *
@@ -634,7 +634,7 @@
     },
 
     /**
-     * spawnPane : .spawnPane(name)
+     * spawnPane() : .spawnPane(name)
      * (internal) Spawns the pane of a given `name`.
      * Returns the pane instance.
      */
@@ -649,7 +649,7 @@
     },
 
     /**
-     * getTransition : .getTransition(transition)
+     * getTransition() : .getTransition(transition)
      * (internal) get the transition object for the given string `transition`.
      * Throws an error if it's invalid.
      */
@@ -670,7 +670,7 @@
     },
 
     /**
-     * runTransition : .runTransition(...)
+     * runTransition() : .runTransition(...)
      * (internal) performs a transition with the given `transition` object.
      * Runs the given `callback` when its done.
      */
@@ -699,7 +699,7 @@
     },
 
     /**
-     * insertIntoStack : .insertIntoStack(pane)
+     * insertIntoStack() : .insertIntoStack(pane)
      * (internal) updates `this.stack` to include `pane`, taking into
      * account Z indices.
      *
@@ -732,7 +732,7 @@
     },
 
     /**
-     * register : .register(name, options, fn)
+     * register() : .register(name, options, fn)
      * (internal) Registers a pane `name` with initializer function `fn`,
      * allowing you to use `.go()` on the registered pane later.
      *
@@ -749,7 +749,7 @@
     },
 
     /**
-     * runOverlay: (internal) makes the overlay div to draw the animating nav
+     * runOverlay(): (internal) makes the overlay div to draw the animating nav
      * elements.
      */
 
@@ -845,7 +845,7 @@
 
   Pane.prototype = {
     /**
-     * init:
+     * init():
      * (internal) Initializes the pane's view if needed.
      */
 
@@ -854,7 +854,7 @@
     },
 
     /**
-     * forceInit:
+     * forceInit():
      * (internal) Forces initialization even if it hasn't been yet.
      */
 
@@ -894,7 +894,7 @@
    */
 
   /**
-   * Navstack.extend : extend(prototype)
+   * Navstack.extend() : extend(prototype)
    * Subclasses Navstack to create your new Navstack class. This allows you to
    * create 'presets' of the options to be passed onto the constructor.
    *
@@ -914,7 +914,7 @@
   };
 
   /**
-   * Navstack.buildTransition : buildTransition(prefix)
+   * Navstack.buildTransition() : buildTransition(prefix)
    * (internal) builds a transition for the given `prefix`.
    */
 
