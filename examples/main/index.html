@@ -20,7 +20,7 @@
      * initialize your stack using `new Navstack()`.
      */
 
-    var stack = new Navstack({ el: '#stack', transition: 'slide' });
+    var stack = new Navstack({ el: $('#stack'), transition: 'slide' });
 
     /*
      * use `stack.push()` to create your new pages.
@@ -60,10 +60,6 @@
   <script type='text/x-template' id='home'>
     <div>
       <section class='top-bar'>
-        <div class='back'>
-          <a class='back-button' href='#'>&lsaquo;</a>
-        </div>
-
         <div class='center'>
           Features
         </div>
@@ -94,7 +90,7 @@
     <div>
       <section class='top-bar'>
         <div class='back'>
-          <a class='back-button' href='#features'>&lsaquo;</a>
+          <a class='back-button' href='#home'>&lsaquo;</a>
         </div>
 
         <div class='center'>
@@ -108,7 +104,7 @@
     <div>
       <section class='top-bar'>
         <div class='back'>
-          <a class='back-button' href='#features'>&lsaquo;</a>
+          <a class='back-button' href='#home'>&lsaquo;</a>
         </div>
 
         <div class='center'>
